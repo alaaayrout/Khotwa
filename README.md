@@ -46,7 +46,7 @@
 | --- | --- |
 | • Analyze profiles and job descriptions | • تحليل الملفات الشخصية ووصف الوظائف |
 | • Use semantic similarity techniques | • استخدام تقنيات التشابه الدلالي |
-| • Recommend relevant opportunities | • اقتراح الفرص المناسبة للمرشحين |
+| • Recommend relevant opportunities | • اقتراح الفرص المناسبة للباحثين عن عمل |
 
 ---
 
@@ -75,7 +75,7 @@
 
 ##  System Architecture | بنية النظام
 
-**English:**
+
 
 The system follows a robust **Client-Server architecture**:
 
@@ -83,7 +83,7 @@ The system follows a robust **Client-Server architecture**:
 * **Backend:** Manages business logic, authentication, data processing, and exposes RESTful API endpoints.
 * **Database:** Securely stores user profiles, company details, job listings, applications, and system data.
 
-**العربية:**
+
 
 يتبع النظام بنية **العميل والخادم (Client-Server Architecture)**:
 
@@ -96,7 +96,7 @@ The system follows a robust **Client-Server architecture**:
 ##  Project Goals | أهداف المشروع
 
 *  **Simplify recruitment:** Discover suitable career opportunities easily. / تبسيط عملية اكتشاف فرص العمل المناسبة.
-*  **Improve communication:** Enhance channels between companies and candidates. / تحسين قنوات التواصل بين الشركات والمرشحين.
+*  **Improve communication:** Enhance channels between companies and candidates. / تحسين قنوات التواصل بين الشركات والباحثين عن عمل .
 *  **Reduce effort:** Minimize the time and effort required for hiring. / تقليل الجهد والوقت اللازم لعمليات التوظيف.
 *  **Intelligent matching:** Provide data-driven recommendations based on skills. / توفير توصيات ذكية تعتمد على المهارات والمتطلبات.
 
