@@ -20,7 +20,7 @@ class EmbeddingService:
 
     def encode_batch(self, texts: list[str]) -> np.ndarray:
         model = self._get_model()
-        cleaned = [(t or "").strip() or " " for t in texts]  # نص فاضي بيكسر الموديل أحياناً
+        cleaned = [(t or "").strip() or " " for t in texts]  
         return model.encode(
             cleaned,
             convert_to_numpy=True,
@@ -33,7 +33,7 @@ class EmbeddingService:
         return self.encode_batch([text])[0]
 
     def cosine_similarity(self, left: np.ndarray, right: np.ndarray) -> float:
-        # الفيكتورز أصلاً normalized (طولها 1)، فالـ dot product = cosine similarity مباشرة
+    
         left = np.asarray(left)
         right = np.asarray(right)
         left_norm = np.linalg.norm(left)
