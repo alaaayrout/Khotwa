@@ -1,0 +1,399 @@
+{
+  "info": {
+    "_postman_id": "job-marketplace-complete",
+    "name": "Job Marketplace — Complete API",
+    "description": "مجموعة Postman الشاملة لمشروع Job Marketplace.\n\n## التطبيقات\n- **users** — المصادقة، التسجيل، القوائم العامة\n- **jobs** — الوظائف، التخصصات، عرض الوظائف\n- **dj-rest-auth** — إعادة تعيين كلمة المرور ومصادقة CustomUser\n\n## المتغيرات\n| المتغير | الاستخدام |\n|---------|----------|\n| `base_url` | عنوان السيرفر (افتراضي: http://localhost:8000) |\n| `company_token` | يُملأ من **Company Login** — لطلبات الوظائف المحمية |\n| `auth_token` | يُملأ من **dj-rest-auth Login** — لطلبات CustomUser |\n| `job_id` | معرّف وظيفة للاختبار |\n| `specialization_id` | معرّف تخصص للاختبار |\n\n## تدفقات الاختبار\n\n### باحث عن عمل\n1. Register Job Seeker → 2. Verify OTP → 3. Login Job Seeker\n\n### شركة\n1. Register Company → 2. Verify Company OTP → 3. موافقة الأدمن → 4. Company Login (يُرجع `token`)\n5. Create Job باستخدام `Authorization: CompanyToken {{company_token}}`\n\n### عرض الوظائف (عام)\n- List Public Jobs / Get Job by ID — بدون مصادقة",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8000", "type": "string" },
+    { "key": "company_token", "value": "", "type": "string" },
+    { "key": "auth_token", "value": "", "type": "string" },
+    { "key": "job_id", "value": "1", "type": "string" },
+    { "key": "specialization_id", "value": "1", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "01 — Utility",
+      "description": "نقاط عامة للتحقق من عمل الـ API",
+      "item": [
+        {
+          "name": "API Home",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/",
+            "description": "التحقق من أن الـ API يعمل.\n\n**Response 200:**\n```json\n{\"message\": \"Job Portal API is working 🚀\"}\n```"
+          }
+        },
+        {
+          "name": "Get User Choices",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/choices/",
+            "description": "قوائم المحافظات وأنواع الشركات (لتسجيل الشركة).\n\n**Response:** `governorates`, `company_types`"
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 — Job Seeker Auth",
+      "description": "تسجيل وتسجيل دخول باحثي العمل",
+      "item": [
+        {
+          "name": "Register Job Seeker",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"full_name\": \"Ahmad Ali\",\n  \"email\": \"ahmad@example.com\",\n  \"phone_number\": \"+963912345678\",\n  \"password\": \"securepass123\",\n  \"password_confirm\": \"securepass123\"\n}"
+            },
+            "url": "{{base_url}}/api/auth/job-seeker/register/",
+            "description": "إرسال رمز OTP إلى البريد الإلكتروني."
+          }
+        },
+        {
+          "name": "Verify Job Seeker OTP",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"ahmad@example.com\",\n  \"otp\": \"123456\"\n}"
+            },
+            "url": "{{base_url}}/api/auth/job-seeker/verify-otp/",
+            "description": "التحقق من OTP وإنشاء الحساب."
+          }
+        },
+        {
+          "name": "Login Job Seeker",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"ahmad@example.com\",\n  \"password\": \"securepass123\"\n}"
+            },
+            "url": "{{base_url}}/api/auth/job-seeker/login/",
+            "description": "تسجيل دخول باحث عن عمل.\n\n**Response:** `message`, `user_type`, `data` (id, full_name, email, phone_number)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 — Company Auth",
+      "description": "تسجيل وتسجيل دخول الشركات",
+      "item": [
+        {
+          "name": "Register Company",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"company_name\": \"Tech Solutions Ltd\",\n  \"email\": \"company@example.com\",\n  \"phone_number\": \"+963912345679\",\n  \"governorate\": \"damascus\",\n  \"company_type\": \"programming\",\n  \"website_url\": \"https://techsolutions.com\",\n  \"description\": \"Software development company.\",\n  \"password\": \"securepass123\",\n  \"password_confirm\": \"securepass123\"\n}"
+            },
+            "url": "{{base_url}}/api/auth/company/register/",
+            "description": "تسجيل شركة وإرسال OTP."
+          }
+        },
+        {
+          "name": "Verify Company OTP",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"company@example.com\",\n  \"otp\": \"123456\"\n}"
+            },
+            "url": "{{base_url}}/api/auth/company/verify-otp/",
+            "description": "التحقق من OTP — الطلب يُرسل لموافقة الأدمن."
+          }
+        },
+        {
+          "name": "Company Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"company@example.com\",\n  \"password\": \"securepass123\"\n}"
+            },
+            "url": "{{base_url}}/api/auth/company/login/",
+            "description": "تسجيل دخول الشركة.\n\n**Response:**\n- `token` — استخدمه في طلبات الوظائف: `Authorization: CompanyToken {{company_token}}`\n- `data` — بيانات الشركة كاملة"
+          }
+        }
+      ]
+    },
+    {
+      "name": "04 — dj-rest-auth",
+      "description": "مصادقة CustomUser وإعادة تعيين كلمة المرور",
+      "item": [
+        {
+          "name": "Login (CustomUser)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"securepass123\"\n}"
+            },
+            "url": "{{base_url}}/api/auth/login/",
+            "description": "تسجيل دخول عبر dj-rest-auth — يُرجع `key` (Token)."
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Token {{auth_token}}" }],
+            "url": "{{base_url}}/api/auth/logout/"
+          }
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Token {{auth_token}}" }],
+            "url": "{{base_url}}/api/auth/user/"
+          }
+        },
+        {
+          "name": "Password Reset Request",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\"\n}"
+            },
+            "url": "{{base_url}}/api/auth/password/reset/"
+          }
+        },
+        {
+          "name": "Password Reset Confirm",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"uid\": \"MQ\",\n  \"token\": \"your-reset-token\",\n  \"new_password1\": \"newsecurepass123\",\n  \"new_password2\": \"newsecurepass123\"\n}"
+            },
+            "url": "{{base_url}}/api/auth/password/reset/confirm/"
+          }
+        },
+        {
+          "name": "Password Change",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Token {{auth_token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"old_password\": \"securepass123\",\n  \"new_password1\": \"newsecurepass123\",\n  \"new_password2\": \"newsecurepass123\"\n}"
+            },
+            "url": "{{base_url}}/api/auth/password/change/"
+          }
+        }
+      ]
+    },
+    {
+      "name": "05 — Jobs: Choices",
+      "description": "القوائم الثابتة للوظائف (مدن، دوام، طريقة عمل، حالة النشر)",
+      "item": [
+        {
+          "name": "Get Job Choices",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/jobs/choices/",
+            "description": "**Response:** `cities`, `employment_types`, `work_modes`, `job_statuses`"
+          }
+        }
+      ]
+    },
+    {
+      "name": "06 — Jobs: Specializations",
+      "description": "إدارة التخصصات — الكتابة تتطلب CompanyToken",
+      "item": [
+        {
+          "name": "List Specializations",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/jobs/specializations/"
+          }
+        },
+        {
+          "name": "Get Specialization by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/jobs/specializations/{{specialization_id}}/"
+          }
+        },
+        {
+          "name": "Create Specialization",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "CompanyToken {{company_token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name_ar\": \"ذكاء اصطناعي\",\n  \"name_en\": \"Artificial Intelligence\"\n}"
+            },
+            "url": "{{base_url}}/api/jobs/specializations/create/"
+          }
+        },
+        {
+          "name": "Update Specialization",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "CompanyToken {{company_token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name_ar\": \"ذكاء اصطناعي\",\n  \"name_en\": \"AI Engineering\",\n  \"is_active\": true\n}"
+            },
+            "url": "{{base_url}}/api/jobs/specializations/{{specialization_id}}/update/"
+          }
+        },
+        {
+          "name": "Delete Specialization",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "CompanyToken {{company_token}}" }],
+            "url": "{{base_url}}/api/jobs/specializations/{{specialization_id}}/delete/",
+            "description": "حذف ناعم (is_active=false)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "07 — Jobs: Company (CRUD)",
+      "description": "إدارة وظائف الشركة — تتطلب CompanyToken من Company Login",
+      "item": [
+        {
+          "name": "Create Job",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "CompanyToken {{company_token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"مطور Backend\",\n  \"description\": \"نبحث عن مطور Django ذو خبرة في بناء APIs.\",\n  \"specialization_id\": 1,\n  \"city\": \"damascus\",\n  \"employment_type\": \"full_time\",\n  \"work_mode\": \"hybrid\",\n  \"status\": \"open\",\n  \"expires_at\": \"2026-12-31\",\n  \"is_active\": true\n}"
+            },
+            "url": "{{base_url}}/api/jobs/company/jobs/",
+            "description": "**الحقول الإجبارية:** title, description, specialization_id, city, employment_type, work_mode, expires_at\n\n**city:** damascus, aleppo, homs...\n**employment_type:** full_time, part_time, contract, internship, freelance\n**work_mode:** onsite, remote, hybrid\n**status:** open, closed, draft"
+          }
+        },
+        {
+          "name": "List My Company Jobs",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "CompanyToken {{company_token}}" }],
+            "url": "{{base_url}}/api/jobs/company/jobs/"
+          }
+        },
+        {
+          "name": "Get My Job by ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "CompanyToken {{company_token}}" }],
+            "url": "{{base_url}}/api/jobs/company/jobs/{{job_id}}/"
+          }
+        },
+        {
+          "name": "Update Job (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "CompanyToken {{company_token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"closed\"\n}"
+            },
+            "url": "{{base_url}}/api/jobs/company/jobs/{{job_id}}/"
+          }
+        },
+        {
+          "name": "Update Job (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "CompanyToken {{company_token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"مطور Backend Senior\",\n  \"description\": \"وصف محدّث للوظيفة.\",\n  \"specialization_id\": 1,\n  \"city\": \"damascus\",\n  \"employment_type\": \"full_time\",\n  \"work_mode\": \"remote\",\n  \"status\": \"open\",\n  \"expires_at\": \"2027-06-30\",\n  \"is_active\": true\n}"
+            },
+            "url": "{{base_url}}/api/jobs/company/jobs/{{job_id}}/"
+          }
+        },
+        {
+          "name": "Delete Job",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "CompanyToken {{company_token}}" }],
+            "url": "{{base_url}}/api/jobs/company/jobs/{{job_id}}/"
+          }
+        }
+      ]
+    },
+    {
+      "name": "08 — Jobs: Public (للواجهة)",
+      "description": "عرض الوظائف للمستخدمين — بدون مصادقة",
+      "item": [
+        {
+          "name": "List All Public Jobs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/jobs/",
+            "description": "الوظائف الظاهرة: status=open, is_active=true, لم تنتهِ مدتها."
+          }
+        },
+        {
+          "name": "List Jobs with Filters",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/jobs/?city=damascus&employment_type=full_time&work_mode=remote&specialization_id=1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "jobs", ""],
+              "query": [
+                { "key": "city", "value": "damascus" },
+                { "key": "employment_type", "value": "full_time" },
+                { "key": "work_mode", "value": "remote" },
+                { "key": "specialization_id", "value": "1" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Public Job by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/jobs/{{job_id}}/",
+            "description": "جلب تفاصيل وظيفة + زيادة عداد المشاهدات."
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,374 @@
+Folder PATH listing
+Volume serial number is 000000B6 FE98:3A24
+C:.
+|   .env
+|   api_endpoints.json
+|   cd
+|   manage.py
+|   python
+|   requirements.txt
+|   tree.txt
+|   
++---admin_dashboard
+|   |   admin.py
+|   |   apps.py
+|   |   authentication.py
+|   |   models.py
+|   |   pagination.py
+|   |   permissions.py
+|   |   serializers.py
+|   |   tests.py
+|   |   urls.py
+|   |   views.py
+|   |   __init__.py
+|   |   
+|   +---management
+|   |   |   __init__ .py
+|   |   |   
+|   |   \---commands
+|   |       |   create_admin.py
+|   |       |   __init__ .py
+|   |       |   
+|   |       \---__pycache__
+|   |               create_admin.cpython-311.pyc
+|   |               
+|   +---migrations
+|   |   |   0001_initial.py
+|   |   |   __init__.py
+|   |   |   
+|   |   \---__pycache__
+|   |           0001_initial.cpython-311.pyc
+|   |           __init__.cpython-311.pyc
+|   |           
+|   \---__pycache__
+|           admin.cpython-311.pyc
+|           apps.cpython-311.pyc
+|           authentication.cpython-311.pyc
+|           models.cpython-311.pyc
+|           pagination.cpython-311.pyc
+|           permissions.cpython-311.pyc
+|           serializers.cpython-311.pyc
+|           urls.cpython-311.pyc
+|           views.cpython-311.pyc
+|           __init__.cpython-311.pyc
+|           
++---applications
+|   |   admin.py
+|   |   apps.py
+|   |   models.py
+|   |   serializers.py
+|   |   tests.py
+|   |   views.py
+|   |   __init__.py
+|   |   
+|   +---migrations
+|   |   |   0001_initial.py
+|   |   |   __init__.py
+|   |   |   
+|   |   \---__pycache__
+|   |           0001_initial.cpython-311.pyc
+|   |           __init__.cpython-311.pyc
+|   |           
+|   \---__pycache__
+|           admin.cpython-311.pyc
+|           apps.cpython-311.pyc
+|           models.cpython-311.pyc
+|           serializers.cpython-311.pyc
+|           views.cpython-311.pyc
+|           __init__.cpython-311.pyc
+|           
++---company_logos
+|       ChatGPT_Image_Jul_8_2026_11_32_11_AM.png
+|       
++---company_profile
+|   |   admin.py
+|   |   apps.py
+|   |   models.py
+|   |   permissions.py
+|   |   serializers.py
+|   |   tests.py
+|   |   urls.py
+|   |   views.py
+|   |   __init__.py
+|   |   
+|   +---migrations
+|   |   |   0001_initial.py
+|   |   |   0002_rename_external_logo_url_companyprofile_external_picture_url_and_more.py
+|   |   |   __init__.py
+|   |   |   
+|   |   \---__pycache__
+|   |           0001_initial.cpython-311.pyc
+|   |           0002_rename_external_logo_url_companyprofile_external_picture_url_and_more.cpython-311.pyc
+|   |           __init__.cpython-311.pyc
+|   |           
+|   \---__pycache__
+|           admin.cpython-311.pyc
+|           apps.cpython-311.pyc
+|           models.cpython-311.pyc
+|           permissions.cpython-311.pyc
+|           serializers.cpython-311.pyc
+|           urls.cpython-311.pyc
+|           views.cpython-311.pyc
+|           __init__.cpython-311.pyc
+|           
++---cvs
+|       ??????_??????.pdf
+|       ?????.pdf
+|       
++---jobportal
+|   |   asgi.py
+|   |   settings.py
+|   |   urls.py
+|   |   wsgi.py
+|   |   __init__.py
+|   |   
+|   \---__pycache__
+|           settings.cpython-311.pyc
+|           settings.cpython-313.pyc
+|           urls.cpython-311.pyc
+|           urls.cpython-313.pyc
+|           wsgi.cpython-311.pyc
+|           wsgi.cpython-313.pyc
+|           __init__.cpython-311.pyc
+|           __init__.cpython-313.pyc
+|           
++---jobs
+|   |   admin.py
+|   |   apps.py
+|   |   authentication.py
+|   |   constants.py
+|   |   permissions.py
+|   |   urls.py
+|   |   
+|   +---migrations
+|   |   |   0001_initial.py
+|   |   |   0002_seed_specializations.py
+|   |   |   0003_jobposting_required_skills.py
+|   |   |   __init__.py
+|   |   |   
+|   |   \---__pycache__
+|   |           0001_initial.cpython-311.pyc
+|   |           0002_seed_specializations.cpython-311.pyc
+|   |           __init__.cpython-311.pyc
+|   |           
+|   +---models
+|   |   |   company_token.py
+|   |   |   job_posting.py
+|   |   |   specialization.py
+|   |   |   __init__.py
+|   |   |   
+|   |   \---__pycache__
+|   |           company_token.cpython-311.pyc
+|   |           job_posting.cpython-311.pyc
+|   |           specialization.cpython-311.pyc
+|   |           __init__.cpython-311.pyc
+|   |           
+|   +---routes
+|   |   |   choices_urls.py
+|   |   |   company_job_urls.py
+|   |   |   public_job_urls.py
+|   |   |   specialization_urls.py
+|   |   |   __init__.py
+|   |   |   
+|   |   \---__pycache__
+|   |           choices_urls.cpython-311.pyc
+|   |           company_job_urls.cpython-311.pyc
+|   |           public_job_urls.cpython-311.pyc
+|   |           specialization_urls.cpython-311.pyc
+|   |           __init__.cpython-311.pyc
+|   |           
+|   +---serializers
+|   |   |   choices_serializers.py
+|   |   |   job_posting_serializers.py
+|   |   |   specialization_serializers.py
+|   |   |   __init__.py
+|   |   |   
+|   |   \---__pycache__
+|   |           choices_serializers.cpython-311.pyc
+|   |           job_posting_serializers.cpython-311.pyc
+|   |           specialization_serializers.cpython-311.pyc
+|   |           __init__.cpython-311.pyc
+|   |           
+|   +---services
+|   |   |   company_auth_service.py
+|   |   |   __init__.py
+|   |   |   
+|   |   \---__pycache__
+|   |           company_auth_service.cpython-311.pyc
+|   |           __init__.cpython-311.pyc
+|   |           
+|   +---views
+|   |   |   choices_views.py
+|   |   |   company_job_views.py
+|   |   |   public_job_views.py
+|   |   |   specialization_views.py
+|   |   |   __init__.py
+|   |   |   
+|   |   \---__pycache__
+|   |           choices_views.cpython-311.pyc
+|   |           company_job_views.cpython-311.pyc
+|   |           public_job_views.cpython-311.pyc
+|   |           specialization_views.cpython-311.pyc
+|   |           __init__.cpython-311.pyc
+|   |           
+|   \---__pycache__
+|           admin.cpython-311.pyc
+|           apps.cpython-311.pyc
+|           authentication.cpython-311.pyc
+|           constants.cpython-311.pyc
+|           permissions.cpython-311.pyc
+|           urls.cpython-311.pyc
+|           
++---media
+|   +---cvs_upload_path
+|   |       ??????_??????.pdf
+|   |       
+|   \---profile_pictures
+|           ChatGPT_Image_Jul_8_2026_11_32_11_AM.png
+|           ChatGPT_Image_Jul_8_2026_11_32_11_AM_21F0wpd.png
+|           surreal-cherry-5120x2880-26233.jpg
+|           
++---postman
+|       Full_Backend_Project.postman_collection.json
+|       Job_Marketplace_Complete.postman_collection.json
+|       Job_Marketplace_Full.postman_collection.json
+|       Job_Marketplace_Local.postman_environment.json
+|       
++---profile_pictures
+|       Blush_Wave_Desktop_Wallpaper.png
+|       surreal-cherry-5120x2880-26233.jpg
+|       
++---recommendations
+|   |   models.py
+|   |   serializers.py
+|   |   services.py
+|   |   tests.py
+|   |   urls.py
+|   |   views.py
+|   |   __init__.py
+|   |   
+|   \---__pycache__
+|           models.cpython-311.pyc
+|           services.cpython-311.pyc
+|           urls.cpython-311.pyc
+|           views.cpython-311.pyc
+|           __init__.cpython-311.pyc
+|           
++---seeker_profiles
+|   |   admin.py
+|   |   apps.py
+|   |   authentication.py
+|   |   models.py
+|   |   permissions.py
+|   |   serializers.py
+|   |   tests.py
+|   |   urls.py
+|   |   views.py
+|   |   __init__.py
+|   |   
+|   +---migrations
+|   |   |   0001_initial.py
+|   |   |   0002_alter_seekerprofile_user_jobseekerauthtoken.py
+|   |   |   0003_seekerprofile_external_picture_url_and_more.py
+|   |   |   0004_alter_seekerprofile_external_picture_url.py
+|   |   |   0005_alter_seekerprofile_cv_file.py
+|   |   |   __init__.py
+|   |   |   
+|   |   \---__pycache__
+|   |           0001_initial.cpython-311.pyc
+|   |           0002_alter_seekerprofile_user_jobseekerauthtoken.cpython-311.pyc
+|   |           0003_seekerprofile_external_picture_url_and_more.cpython-311.pyc
+|   |           0004_alter_seekerprofile_external_picture_url.cpython-311.pyc
+|   |           0005_alter_seekerprofile_cv_file.cpython-311.pyc
+|   |           __init__.cpython-311.pyc
+|   |           
+|   +---services
+|   |   |   job_seeker_auth_service.py
+|   |   |   __init__.py
+|   |   |   
+|   |   \---__pycache__
+|   |           job_seeker_auth_service.cpython-311.pyc
+|   |           __init__.cpython-311.pyc
+|   |           
+|   \---__pycache__
+|           admin.cpython-311.pyc
+|           apps.cpython-311.pyc
+|           authentication.cpython-311.pyc
+|           models.cpython-311.pyc
+|           permissions.cpython-311.pyc
+|           serializers.cpython-311.pyc
+|           urls.cpython-311.pyc
+|           views.cpython-311.pyc
+|           __init__.cpython-311.pyc
+|           
++---tools
+|       normalize_postman.py
+|       
++---users
+|   |   admin.py
+|   |   apps.py
+|   |   email_utils.py
+|   |   models.py
+|   |   serializers.py
+|   |   signals.py
+|   |   tests.py
+|   |   urls.py
+|   |   utils.py
+|   |   views.py
+|   |   __init__.py
+|   |   
+|   +---migrations
+|   |   |   0001_initial.py
+|   |   |   0002_company_jobseeker_alter_customuser_options_and_more.py
+|   |   |   0003_customuser_role.py
+|   |   |   0004_emailverification.py
+|   |   |   0005_alter_company_phone_number_and_more.py
+|   |   |   0006_company_approval_status.py
+|   |   |   0007_emailverification_user_type.py
+|   |   |   0008_alter_company_company_type_alter_company_governorate.py
+|   |   |   0009_company_rejection_reason.py
+|   |   |   0010_company_approval_email_sent_and_more.py
+|   |   |   0011_jobseeker_status.py
+|   |   |   0012_remove_jobseeker_status.py
+|   |   |   0013_remove_emailverification_expires_at_and_more.py
+|   |   |   0014_alter_company_approval_status.py
+|   |   |   __init__.py
+|   |   |   
+|   |   \---__pycache__
+|   |           0001_initial.cpython-311.pyc
+|   |           0002_company_jobseeker_alter_customuser_options_and_more.cpython-311.pyc
+|   |           0003_customuser_role.cpython-311.pyc
+|   |           0004_emailverification.cpython-311.pyc
+|   |           0005_alter_company_phone_number_and_more.cpython-311.pyc
+|   |           0006_company_approval_status.cpython-311.pyc
+|   |           0007_emailverification_user_type.cpython-311.pyc
+|   |           0008_alter_company_company_type_alter_company_governorate.cpython-311.pyc
+|   |           0009_company_rejection_reason.cpython-311.pyc
+|   |           0010_company_approval_email_sent_and_more.cpython-311.pyc
+|   |           0011_jobseeker_status.cpython-311.pyc
+|   |           0012_remove_jobseeker_status.cpython-311.pyc
+|   |           0013_remove_emailverification_expires_at_and_more.cpython-311.pyc
+|   |           0014_alter_company_approval_status.cpython-311.pyc
+|   |           __init__.cpython-311.pyc
+|   |           
+|   +---services
+|   |   |   otp_service.py
+|   |   |   __init__.py
+|   |   |   
+|   |   \---__pycache__
+|   |           otp_service.cpython-311.pyc
+|   |           __init__.cpython-311.pyc
+|   |           
+|   \---__pycache__
+|           admin.cpython-311.pyc
+|           apps.cpython-311.pyc
+|           email_utils.cpython-311.pyc
+|           models.cpython-311.pyc
+|           serializers.cpython-311.pyc
+|           signals.cpython-311.pyc
+|           urls.cpython-311.pyc
+|           utils.cpython-311.pyc
+|           views.cpython-311.pyc
+|           __init__.cpython-311.pyc
+|           
+\---__pycache__

@@ -1,0 +1,687 @@
+{
+  "login": {
+    "title": "Welcome Back",
+    "email": "Email Address",
+    "password": "Password",
+    "forgot": "Forgot password?",
+    "submit": "Login",
+    "no_account": "Don't have an account?",
+    "register": "Sign up",
+    "role_seeker": "Job Seeker",
+    "role_company": "Company / Employer",
+    "continue_google": "Continue with Google",
+    "error_required": "Please fill in all fields",
+    "error_invalid": "Invalid login credentials",
+    "or": "or",
+    "submitting": "Logging in...",
+    "error_network": "A network error occurred. Please try again.",
+    "loading": "Loading..."
+
+  },
+  "password_reset": {
+    "title": "Forgot Password",
+    "subtitle": "Enter your email and we will send a secure password reset link.",
+    "email": "Email Address",
+    "submit": "Send Reset Link",
+    "sending": "Sending...",
+    "request_success": "If an account with that email exists, a reset link has been sent.",
+    "request_error": "Unable to send reset instructions. Please try again.",
+    "error_invalid_email": "Please enter a valid email address.",
+    "remembered": "Remembered your password?",
+    "reset_title": "Reset your password",
+    "reset_subtitle": "Enter a new password to complete the reset process.",
+    "new_password": "New Password",
+    "confirm_password": "Confirm Password",
+    "password_length_error": "Password must be at least 8 characters",
+    "password_mismatch": "Passwords do not match",
+    "saving": "Saving...",
+    "submit_new": "Save new password",
+    "reset_success": "Your password has been reset successfully.",
+    "reset_error": "Unable to reset password. Please try again.",
+    "invalid_token": "The reset link is invalid or has expired.",
+    "validating": "Validating reset link...",
+    "try_again": "Request a new reset link",
+    "back_to_login": "Back to login"
+  },
+  "hero": {
+    "brand": "Khotwa",
+    "tagline_1": "Find your dream",
+    "tagline_2": "job easily",
+    "companies": "Registered companies",
+    "jobs": "Active jobs"
+  },
+  "signup": {
+  "create_account": "Create a new account",
+  "already_have_account": "Already have an account?",
+  "login": "Login",
+  "seeker_title": "Job Seeker",
+  "seeker_desc": "Browse jobs and submit your applications",
+  "company_title": "Company / Employer",
+  "company_desc": "Post jobs and connect with candidates",
+  "continue": "Continue"
+},
+"seeker_signup": {
+  "title": "Create a job seeker account",
+  "already_have_account": "Already have an account?",
+  "login": "Login",
+  "full_name": "Full Name",
+  "full_name_placeholder": "e.g. John Smith",
+  "email": "Email Address",
+  "phone": "Phone Number",
+  "password": "Password",
+  "confirm_password": "Confirm Password",
+  "submit": "Create Account",
+  "error_general": "Something went wrong, please try again",
+  "error_required": "Please fill in all fields",
+"email_already_registered": "This email is already registered",
+  "error_password_match": "Passwords do not match",
+  "error_password_length": "Password must be at least 8 characters",
+  "error_full_name_invalid": "Full name must contain letters and spaces only",
+  "error_phone_length_range": "Phone number must be between 9 and 10 digits",
+  "error_email_format": "Email must be like example@example.com",
+  "otp_title": "Verify your email",
+  "otp_subtitle": "We sent a 6-digit code to",
+  "otp_label": "Verification Code",
+  "verifying": "Verifying...",
+  "verify": "Verify",
+  "resend_code": "Resend Code",
+  "back": "Back",
+  "submitting": "Creating account...",
+  "success_title": "Account created successfully",
+"success_message": "Your account has been created. You can now log in and start applying for jobs.",
+"go_to_login": "Go to Login",
+"otp_error_wait": "Please wait before requesting another code",
+"otp_error_limit": "Too many OTP requests. Please try again later",
+"otp_expired": "Verification code expired",
+"email_exists": "This email is already registered",
+"error_otp_invalid": "Invalid verification code",
+"resend_code_in": "Resend code in {{seconds}}s",
+"email_pending_verification": "Email pending verification",
+"error_network": "A network error occurred. Please try again.",
+"company_pending_approval": "This company account is already under review and awaiting administrator approval.",
+"cannot_change_pending_data": "You cannot change registration data at this time. Please complete registration with the current data and then edit it later, or wait 24 hours to re-register with new data."
+},
+
+"company_signup": {
+  "title": "Register a new company",
+  "company_name": "Company Name",
+  "company_name_placeholder": "e.g. Advanced Tech Co.",
+  "email": "Email Address",
+  "phone": "Phone Number",
+  "governorate": "Governorate",
+  "sector": "Company Sector",
+  "select": "Select...",
+  "website": "Website",
+  "optional": "Optional",
+  "description": "Brief company description",
+  "description_placeholder": "Write a short description about your company...",
+  "password": "Password",
+  "confirm_password": "Confirm Password",
+  "submit": "Submit Registration Request",
+  "error_required": "Please fill in all required fields",
+  "error_password_match": "Passwords do not match",
+  "error_password_length": "Password must be at least 8 characters",
+  "company_pending_approval": "This company account is already under review and awaiting administrator approval.",
+  "otp_title": "Verify your email",
+  "otp_subtitle": "We sent a 6-digit code to",
+  "verify": "Verify",
+  "resend_code": "Resend Code",
+  "back": "Back",
+  "resend_code_in": "Resend code in {{seconds}}s",
+  "verifying": "Verifying...",
+"submitting": "Submitting request...",
+"error_network": "A network error occurred. Please try again.",
+"error_otp_invalid": "Invalid verification code",
+"success_title": "Request submitted successfully",
+"success_message": "Your company registration request has been submitted and is awaiting administrator approval.",
+"go_to_login": "Go to Login",
+"already_verified_pending": "Your email is already verified and pending admin approval."
+
+},
+"country_code": {
+  "select": "Select country code",
+  "loading": "Loading country codes..."
+},
+"pending": {
+  "title": "Your request is under review",
+  "message": "Thank you for registering! Our team will review your request within 24-48 hours.",
+  "email_note": "You will receive an email notification once a decision is made.",
+  "contact": "For inquiries contact us at"
+},
+"navbar": {
+  "jobs": "Jobs",
+  "companies": "Companies",
+  "about": "About",
+  "login": "Login",
+  "register": "Sign Up",
+  "dashboard": "Profile",
+  "logout": "Logout",
+  "start": "Login",
+  "title":"Khotwa"
+},
+"home": {
+  "hero_title_1": "Your first ",
+  "hero_title_2": "step",
+  "hero_title_3": "toward a better career",
+  "hero_sub": "Thousands of jobs from top companies waiting for you",
+  "search_placeholder": "Job title or skill...",
+  "all_governorates": "All Governorates",
+  "search_btn": "Search",
+  "stat_jobs": "Active jobs",
+  "stat_companies": "Registered companies",
+  "stat_seekers": "Job seekers",
+  "browse_by_category": "Browse by category",
+  "recently_viewed": "Recently viewed jobs",
+  "my_applications": "My recent applications",
+  "status_pending": "Under review",
+  "latest_jobs": "Latest jobs",
+  "see_all": "See all",
+  "rights": "All rights reserved",
+  "load_error": "Failed to load data, please try again",
+  "recommended_jobs": "Recommended jobs for you",
+  "no_recommendations": "No recommendations available at the moment, try updating your profile or adding new skills",
+  "footer_name":"Khotwa"
+},
+"company": {
+    "layout": {
+      "panel": "Company Panel",
+      "company_account": "Company Account",
+      "my_company": "My Company",
+      "language": "العربية",
+      "logout": "Logout"
+    },
+    "nav": {
+      "dashboard": "Dashboard",
+      "profile": "Company Profile",
+      "jobs": "Jobs",
+      "applications": "Applications"
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "welcome": "Welcome back, here's your overview",
+      "post_job": "Post a Job",
+      "load_error": "Couldn't load data",
+      "loading": "Loading...",
+      "stats": {
+        "active_jobs": "Active Jobs",
+        "total_apps": "Total Applications",
+        "pending_review": "Pending Review",
+        "total_views": "Total Views"
+      },
+      "recent_apps": {
+        "title": "Recent Applications",
+        "view_all": "View all ",
+        "empty": "No applications yet"
+      },
+      "active_jobs": {
+        "title": "Active Jobs",
+        "view_all": "View all ",
+        "empty": "No active jobs right now",
+        "applicants": "applicants",
+        "views": "views"
+      },
+      "quick_actions": {
+        "manage_jobs": "Manage Jobs",
+        "manage_jobs_sub": "Edit or pause your listings",
+        "review_apps": "Review Applications",
+        "review_apps_sub": "Accept or reject applicants",
+        "company_profile": "Company Profile",
+        "company_profile_sub": "Update your company info"
+      }
+    },
+    "status": {
+      "pending": "Pending",
+      "reviewed": "Reviewed",
+      "accepted": "Accepted",
+      "rejected": "Rejected"
+    },
+    "jobs": {
+      "days_left": "days left",
+       "title": "Manage Jobs",
+      "subtitle": "You have {{count}} posted jobs",
+      "post_new": "Post a Job",
+      "load_error": "Couldn't load jobs",
+      "action_error": "Something went wrong",
+      "loading": "Loading...",
+      "empty": "No jobs in this category",
+      "search_placeholder": "Search jobs...",
+      "tabs": {
+        "all": "All",
+        "active": "Active",
+        "closed": "Closed",
+        "expired": "Expired"
+    },
+     "columns": {
+        "job": "Job",
+        "status": "Status",
+        "applicants": "Applicants",
+        "expires": "Expires",
+        "actions": "Actions"
+      },
+      "status": {
+        "active": "Active",
+        "closed": "Closed",
+        "expired": "Expired"
+      },
+      "actions": {
+        "view": "View applicants",
+        "edit": "Edit",
+        "close": "Close",
+        "reactivate": "Reactivate",
+        "delete": "Delete"
+      },
+      "delete_modal": {
+        "title": "Delete this job?",
+        "body": "\"{{title}}\" will be permanently deleted. This can't be undone.",
+        "cancel": "Cancel",
+        "confirm": "Delete",
+        "deleting": "Deleting..."
+      }
+    },
+    "post_job": {
+      "title": "Post a New Job",
+      "subtitle": "Fill in the details below to publish your job listing",
+      "back": "Back",
+      "cancel": "Cancel",
+      "submit": "Publish Job",
+      "submitting": "Publishing...",
+      "active": "Active",
+      "inactive": "Inactive",
+      "preview_label": "Job Preview",
+      "edit_title": "Edit Job",
+      "edit_subtitle": "Update the details of your posted job",
+      "save": "Save Changes",
+      "saving": "Saving...",
+      "load_error": "Couldn't load job details",
+            "sections": {
+        "basic": "Basic Information",
+        "details": "Job Details",
+        "publish": "Publish Settings"
+      },
+      "fields": {
+        "title": "Job Title",
+        "description": "Job Description",
+        "specialization": "Specialization",
+        "city": "City",
+        "job_type": "Job Type",
+        "work_type": "Work Type",
+        "status": "Status",
+        "is_active": "Job is active",
+        "views_count": "Views",
+        "expiration_date": "Expiration Date",
+        "created_at": "Created At"
+      },
+      "placeholders": {
+        "title": "e.g. Full Stack Developer",
+        "description": "Write a clear description of the role, responsibilities, and required skills...",
+        "select": "Select..."
+      },
+      "errors": {
+        "required": "This field is required",
+        "expiration_past": "Expiration date must be after today"
+      }
+    },
+    "profile": {
+  "default_title": "Your Company",
+  "completion": "Profile {{percent}}% complete",
+  "change_logo": "Change logo",
+  "upload_logo": "Upload logo",
+  "uploading": "Uploading...",
+  "logo_success": "Logo updated successfully",
+  "loading": "Loading profile...",
+  "load_error": "Failed to load profile",
+  "save_success": "Profile updated successfully",
+  "saving": "Saving...",
+  "save": "Save changes",
+  "basic_info": "Basic Information",
+  "rejection_reason_label": "Rejection reason",
+  "generic_error": "Something went wrong. Please try again.",
+  "cancel_logo": "Cancel",
+  "logo_invalid_type": "Please upload a JPG, PNG, or WebP image.",
+  "logo_too_large": "Logo must be smaller than {{max}}MB.",
+  "unsaved_changes": "Unsaved changes",
+  "rejection_cta": "Please update your information and save again to resubmit for review.",
+  "approval_status": {
+    "pending_admin_approval": "Pending approval",
+    "approved": "Approved",
+    "rejected": "Rejected"
+  },
+  "fields": {
+    "company_name": "Company Name",
+    "email": "Email",
+    "description": "Description",
+    "company_type": "Company Type",
+    "governorate": "Governorate",
+    "select_governorate": "Select governorate",
+    "website_url": "Website",
+    "phone_number": "Phone Number",
+    "linkedin_url": "LinkedIn",
+    "select_company_type": "Select company type"
+  }
+},
+ "applications": {
+      "title": "Manage Applications",
+      "subtitle": "{{count}} applications awaiting review",
+      "load_error": "Load error",
+      "sort_label": "Sort by",
+      "sort": {
+        "newest": "Newest",
+        "oldest": "Oldest",
+        "match": "Match",
+        "match_disabled_tooltip": "Match score not available from backend yet"
+      },
+      "hide_rejected": "Hide rejected",
+      "loading": "Loading...",
+      "empty": "No applications yet",
+      "group_summary": "{{total}} applications · {{pending}} pending",
+      "view_all": "View all ({{count}})",
+      "show_less": "Show less",
+      "accept": "Accept",
+      "reject": "Reject",
+      "contact_email": "Contact via email",
+      "email_unavailable": "Email not available yet",
+      "email_subject": "About your job application - {{job}}",
+      "status_updated": "Status updated",
+      "match_unavailable_tooltip": "Match score not available yet",
+      "match_method_tooltip": "Based on overlap between required skills and applicant's skills",
+      "match_value": "{{score}}% match",
+      "mark_reviewed": "Mark as reviewed",
+      "status": {
+        "applied": "Pending",
+        "reviewed": "Reviewed",
+        "accepted": "Accepted",
+        "rejected": "Rejected"
+      },
+      "confirm_reject": {
+        "title": "Confirm rejection",
+        "message": "You're about to reject \"{{name}}\"'s application. Are you sure?",
+        "cancel": "Cancel",
+        "confirm": "Confirm reject"
+      }
+    }
+  },
+  "seeker": {
+    "profile": {
+      "title": "My Profile",
+      "back": "Back",
+      "save": "Save Changes",
+      "saving": "Saving...",
+      "saved": "Saved",
+      "cancel": "Cancel",
+      "save_entry": "Save",
+      "add": "Add",
+      "sections": {
+        "personal": "Personal Information",
+        "cv": "Resume / CV",
+        "skills": "Skills",
+        "experience": "Experience",
+        "education": "Education"
+      },
+      "fields": {
+        "full_name": "Full Name",
+        "email": "Email Address",
+        "phone": "Phone Number",
+        "governorate": "Governorate",
+        "bio": "Bio"
+      },
+      "placeholders": {
+        "select": "Select...",
+        "bio": "Write a short summary about yourself and your experience..."
+      },
+      "cv": {
+        "drag": "Drag your PDF here or click to upload",
+        "hint": "PDF only · Max 5 MB",
+        "existing": "Current Resume",
+        "view": "View",
+        "remove": "Remove file",
+        "error_type": "Please upload a PDF file only",
+        "error_size": "File size exceeds 5 MB"
+      },
+      "skills": {
+        "placeholder": "Add a skill and press Enter",
+        "add": "Add",
+        "empty": "No skills added yet",
+        "label": "skills"
+      },
+      "experience": {
+        "empty": "No experience added yet",
+        "present": "Present",
+        "add": "Add Experience",
+        "edit": "Edit Experience",
+        "fields": {
+          "title": "Job Title",
+          "company": "Company",
+          "from": "From",
+          "to": "To",
+          "current": "I currently work here"
+        }
+      },
+      "education": {
+        "empty": "No education added yet",
+        "add": "Add Education",
+        "edit": "Edit Education",
+        "fields": {
+          "degree": "Degree",
+          "institution": "University / Institution",
+          "year": "Graduation Year"
+        }
+      },
+      "errors": {
+        "required": "This field is required"
+      },
+      "completion": "Profile Complete"
+    }
+  },
+  "jobs": {
+    "title": "Explore Available Jobs",
+    "subtitle": "Thousands of opportunities await you in the Syrian market",
+    "search_placeholder": "Search for a job, company, or skill...",
+    "search_btn": "Search",
+    "clear_filters": "Clear Filters",
+    "results_count": "jobs found",
+    "results_for": "results for",
+    "no_results": "No results found",
+    "no_results_sub": "Try changing your filters or search term"
+  },
+  "job_details": {
+  "back": "Back",
+  "back_to_jobs": "Back to all jobs",
+  "not_found": "Job not found",
+  "apply_btn": "Apply for this job",
+  "apply_submitting": "Submitting your application...",
+  "apply_applied": "Applied successfully",
+  "apply_already_applied": "Already applied",
+  "apply_already_applied_msg": "You have already applied to this job.",
+  "apply_success": "Your application was submitted successfully.",
+  "apply_error": "Something went wrong while applying. Please try again.",
+  "apply_soon": "Apply feature coming soon",
+  "description_title": "Job Description",
+  "company_title": "About the Company",
+  "quick_facts": "Quick Facts",
+  "posted_on": "Posted on",
+  "expires_on": "Expires on",
+  "views": "Views"
+},
+"companies": {
+  "title": "Our Companies",
+  "subtitle": "{{count}} companies posting jobs on the platform",
+  "search_placeholder": "Search for a company...",
+  "load_error": "Couldn't load companies",
+  "empty": "No companies registered yet",
+  "no_results": "No company found with that name"
+},
+  "about": {
+    "brand": "Khotwa",
+    "badge": "About Us",
+    "hero_title_1": "With you at every",
+    "hero_title_2": "step",
+    "hero_title_3": "toward your career",
+    "hero_sub": "Khotwa is a dedicated Syrian platform that closes the gap between job seekers and companies, turning the often complicated hiring journey into clear, simple, and fair steps for everyone.",
+    "stat_jobs": "Active jobs",
+    "stat_companies": "Registered companies",
+    "stat_seekers": "Job seekers",
+    "load_error": "Couldn't load statistics",
+    "story": {
+      "eyebrow": "Our Story",
+      "title": "A simple beginning... and a step toward a real solution",
+      "p1": "Khotwa began with a simple observation: job seekers were spending significant time and effort navigating scattered, unreliable websites, while companies struggled to reach the talent they actually needed. Khotwa was built to solve that — one clear, organized platform that brings both sides together.",
+      "p2": "We're continuously expanding the platform to cover every Syrian governorate, and improving it step by step based on the real needs of our users — both job seekers and companies.",
+      "card1": "Opportunities for fresh graduates and experienced professionals alike",
+      "card2": "Full coverage across every Syrian governorate",
+      "card3": "Verified companies from a wide range of sectors",
+      "card4": "A faster, clearer application and hiring journey"
+    },
+    "mission": {
+      "title": "Our Mission",
+      "desc": "To bring job opportunities closer to every job seeker in Syria through a trustworthy, easy-to-use platform that saves time and effort for job seekers and companies alike."
+    },
+    "vision": {
+      "title": "Our Vision",
+      "desc": "For Khotwa to become the leading destination for Syria's job market, and an active contributor to rebuilding the national economy by connecting talent with the opportunities it deserves."
+    },
+    "values": {
+      "title": "The values that guide our work",
+      "transparency": {
+        "title": "Transparency",
+        "desc": "We present every job opportunity with accurate, clear information, without exaggeration or ambiguity, because trust is the foundation of our relationship with our users."
+      },
+      "equal_opportunity": {
+        "title": "Equal Opportunity",
+        "desc": "We open the job market to everyone, regardless of governorate or background, and connect real talent with the companies best suited to them."
+      },
+      "simplicity": {
+        "title": "Simplicity",
+        "desc": "From sign-up to application, every step is designed to be fast, clear, and free of unnecessary technical friction."
+      },
+      "growth": {
+        "title": "Continuous Improvement",
+        "desc": "We listen to our users and keep evolving the platform based on the real needs of the Syrian job market."
+      }
+    },
+    "how": {
+      "title": "How the platform works",
+      "subtitle": "Four simple steps between you and your next opportunity",
+      "step1_title": "Create your account",
+      "step1_desc": "Sign up as a job seeker or a company in just a few minutes.",
+      "step2_title": "Explore opportunities",
+      "step2_desc": "Browse available jobs by specialization, governorate, or employment type.",
+      "step3_title": "Apply in one step",
+      "step3_desc": "Send your application directly from your profile, with no hassle.",
+      "step4_title": "Start your career journey",
+      "step4_desc": "Connect with companies and track your application status in real time."
+    },
+    "cta": {
+      "title": "Ready to take your next step?",
+      "sub": "Whether you're looking for your next opportunity, or the talent your company needs, start with us today",
+      "seeker_btn": "Sign up as a job seeker",
+      "company_btn": "Register your company"
+    },
+    "rights": "All rights reserved"
+  },
+   "admin": {
+    "nav": {
+      "title": "Admin Panel",
+      "seekers": "Job Seekers",
+      "companies": "Companies",
+      "jobs": "Jobs",
+      "cvs": "CVs",
+      "categories": "Categories"
+    },
+    "auth": {
+      "need_token": "No login page yet. Paste the admin token (from create_admin) to continue.",
+      "token_placeholder": "Admin token",
+      "enter": "Enter",
+      "logout": "Log out",
+      "switch_language": "Switch language"
+    },
+    "common": {
+      "search": "Search...",
+      "loading": "Loading...",
+      "load_error": "Something went wrong loading the data. Please try again.",
+      "empty": "No results",
+      "actions": "Actions",
+      "status": "Status",
+      "active": "Active",
+      "suspended": "Suspended",
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "save": "Save",
+      "delete": "Delete",
+      "edit": "Edit",
+      "view": "View",
+      "suspend": "Suspend",
+      "activate": "Activate",
+      "approve": "Approve",
+      "reject": "Reject",
+      "processing": "Processing...",
+      "prev": "Previous",
+      "next": "Next"
+    },
+    "seekers": {
+      "col_name": "Name",
+      "col_email": "Email",
+      "col_phone": "Phone",
+      "col_joined": "Joined",
+      "search_ph": "Search by name or email...",
+      "confirm_delete_title": "Delete seeker account",
+      "confirm_delete_msg": "Are you sure you want to delete \"{{name}}\"'s account? This cannot be undone.",
+      "confirm_suspend_title": "Suspend account",
+      "confirm_activate_title": "Activate account",
+      "confirm_toggle_msg": "Change status for \"{{name}}\"'s account?"
+    },
+    "companies": {
+      "col_name": "Company name",
+      "col_email": "Email",
+      "col_sector": "Sector",
+      "search_ph": "Search by company name...",
+      "confirm_approve_title": "Approve company",
+      "confirm_approve_msg": "Approve \"{{name}}\" to join the platform?",
+      "confirm_reject_title": "Reject company",
+      "confirm_reject_msg": "Reject \"{{name}}\"'s application?",
+      "confirm_delete_title": "Delete company account",
+      "confirm_delete_msg": "Are you sure you want to delete \"{{name}}\"? This cannot be undone."
+    },
+    "jobs": {
+      "col_title": "Job title",
+      "col_company": "Company",
+      "col_location": "Governorate",
+      "col_posted": "Posted",
+      "search_ph": "Search by job title or company...",
+      "edit_title": "Edit job listing",
+      "field_title": "Title",
+      "field_description": "Description",
+      "field_governorate": "Governorate",
+      "confirm_suspend_title": "Suspend listing",
+      "confirm_suspend_msg": "Suspend \"{{title}}\"? It will be hidden from users.",
+      "confirm_activate_title": "Reactivate listing",
+      "confirm_activate_msg": "Reactivate \"{{title}}\"?",
+      "confirm_delete_title": "Delete listing",
+      "confirm_delete_msg": "Are you sure you want to delete \"{{title}}\"? This cannot be undone."
+    },
+    "cvs": {
+      "col_owner": "Owner",
+      "col_file": "File name",
+      "col_uploaded": "Uploaded",
+      "search_ph": "Search by owner name...",
+      "confirm_delete_title": "Delete CV",
+      "confirm_delete_msg": "Are you sure you want to delete \"{{name}}\"'s CV?"
+    },
+    "categories": {
+      "col_name_ar": "Name (Arabic)",
+      "col_name_en": "Name (English)",
+      "col_jobs_count": "Jobs count",
+      "add": "Add category",
+      "add_title": "Add new category",
+      "edit_title": "Edit category",
+      "field_name_ar": "Name (Arabic)",
+      "field_name_en": "Name (English)",
+      "confirm_delete_title": "Delete category",
+      "confirm_delete_msg": "Are you sure you want to delete \"{{name}}\"?"
+    }
+  }
+
+}
+

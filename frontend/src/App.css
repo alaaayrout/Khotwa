@@ -1,0 +1,300 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: #fffafa;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* الصفحة */
+.page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fffafa;
+ 
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* login-box */
+.login-box {
+  width: 80%;
+  max-width: 450px;
+  padding: 50px 40px;
+  background-color: #fffafa;
+  border: 2px solid #09637E;
+  border-radius: 12px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* اتجاه */
+.rtl {
+  direction: rtl;
+}
+
+.ltr {
+  direction: ltr;
+}
+
+/* inputs */
+.login-box input {
+  height: 45px;
+  padding: 0 15px;
+  border-radius: 8px;
+  border: none;
+  width: 100%;
+  font-size: 16px;
+  color: #ada9a9;
+  outline: none;
+}
+
+.login-box input::placeholder {
+  color: #c5bcbc;
+}
+
+/* زر */
+.login-btn {
+  height: 45px;
+  border-radius: 8px;
+  border: none;
+  background-color: #88D9E6;
+  color: #355872;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.login-btn:hover {
+  background-color: #355872;
+  color: #88D9E6;
+}
+
+/* عنوان */
+.login-box h1 {
+  color: #01070f;
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* focus */
+.login-box input:focus {
+  box-shadow: 0 0 5px rgba(13, 110, 253, 0.5);
+}
+.login-box input {
+  background-color: #e2dddd;
+  color: #302e2e;
+}
+
+/* زر اللغة */
+.language-switch {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  background-color: #088395;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+
+.language-switch:hover {
+  background-color: #0056b3;
+  transform: scale(1.1);
+}
+
+/* زر الثيم */
+.theme-switch {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  background-color: #088395;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+
+.theme-switch:hover {
+  background-color: #0056b3;
+  transform: scale(1.1);
+}
+
+/* DARK MODE */
+.page.dark {
+  background-color: #121212;
+  background-image: linear-gradient(to bottom right, #1a1a1a, #121212);
+  color: #fff;
+}
+
+.page.dark .login-box {
+  background-color: #1f1f1f;
+  border: 2px solid #0d6efd;
+}
+
+.page.dark .login-box input {
+  background-color: #2c2c2c;
+  color: #fff;
+}
+
+.page.dark .login-box input::placeholder {
+  color: #bbb;
+}
+
+.page.dark .login-btn {
+  background-color: #0056b3;
+}
+
+.page.dark .login-btn:hover {
+  background-color: #003f7f;
+}
+.page.dark .login-box h1 {
+  color: #e4eaf3;
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 24px;
+  font-weight: bold;
+}
+/* أنيميشن */
+.page, .login-box, .login-box input, .login-box button {
+  transition: all 0.3s ease;
+}
+
+/* فاصل */
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 10px 0;
+  color: #999;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background-color: #ddd;
+}
+
+
+.social-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  direction: ltr;
+  margin-top: 8px;
+}
+
+.google-btn,
+.facebook-btn,
+.apple-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+  padding: 0;
+}
+
+.google-btn:hover,
+.facebook-btn:hover,
+.apple-btn:hover {
+  transform: scale(1.1);
+}
+
+.icon {
+  font-size: 30px;
+}
+
+.facebook-btn .icon {
+  color: #3361a5;
+}
+
+.apple-btn .icon {
+  color: #4f4b4b;
+}
+
+.page.dark.facebook-btn .icon {
+  color: #3361a5;
+}
+.page.dark .apple-btn .icon {
+  color: #cec4c4;
+}
+
+.signup-text {
+  text-align: center;
+  font-size: 14px;
+  color: #555;
+  margin-top: 15px;
+}
+
+.signup-link {
+  color: #0d6efd;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.signup-link:hover {
+  color: #0056b3;
+}
+
+/* 📱 RESPONSIVE */
+@media (max-width: 480px) {
+  .login-box {
+    padding: 30px 20px;
+  }
+
+  .login-box h1 {
+    font-size: 20px;
+  }
+
+  .login-box input {
+    height: 40px;
+    font-size: 14px;
+  }
+
+  .login-box button {
+    height: 40px;
+    font-size: 14px;
+  }
+
+  .language-switch {
+    top: 10px;
+    right: 10px;
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+
+  .theme-switch {
+    top: 10px;
+    left: 10px;
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+}

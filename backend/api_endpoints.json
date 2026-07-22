@@ -1,0 +1,214 @@
+{
+  "project": "graduation-project",
+  "generated_from": [
+    "backend/jobportal/urls.py",
+    "backend/users/urls.py",
+    "backend/company_profile/urls.py",
+    "backend/seeker_profiles/urls.py",
+    "backend/jobs/urls.py",
+    "backend/jobs/routes/public_job_urls.py",
+    "backend/jobs/routes/choices_urls.py",
+    "backend/jobs/routes/specialization_urls.py",
+    "backend/jobs/routes/company_job_urls.py"
+  ],
+  "endpoints": [
+    {
+      "path": "/admin/",
+      "app": "django-admin"
+    },
+    {
+      "path": "/api/",
+      "app": "users",
+      "name": "home"
+    },
+    {
+      "path": "/api/choices/",
+      "app": "users",
+      "name": "get_choices"
+    },
+    {
+      "path": "/api/auth/job-seeker/register/",
+      "app": "users",
+      "name": "job_seeker_register"
+    },
+    {
+      "path": "/api/auth/job-seeker/verify-otp/",
+      "app": "users",
+      "name": "verify_otp"
+    },
+    {
+      "path": "/api/auth/login/",
+      "app": "users",
+      "name": "login_user"
+    },
+    {
+      "path": "/api/auth/company/register/",
+      "app": "users",
+      "name": "company_register"
+    },
+    {
+      "path": "/api/auth/company/verify-otp/",
+      "app": "users",
+      "name": "company_verify_otp"
+    },
+    {
+      "path": "/api/auth/google/login/",
+      "app": "users",
+      "name": "google_login"
+    },
+    {
+      "path": "/api/auth/password/reset/",
+      "app": "users",
+      "name": "password_reset_request"
+    },
+    {
+      "path": "/api/auth/password/reset/validate/",
+      "app": "users",
+      "name": "password_reset_validate"
+    },
+    {
+      "path": "/api/auth/password/reset/confirm/",
+      "app": "users",
+      "name": "password_reset_confirm"
+    },
+    {
+      "path": "/api/jobseekers/count/",
+      "app": "users",
+      "name": "jobseeker_count",
+      "methods": ["GET"]
+    },
+    {
+      "path": "/api/jobs/",
+      "app": "jobs",
+      "name": "public_job_list"
+    },
+    {
+      "path": "/api/jobs/<int:pk>/",
+      "app": "jobs",
+      "name": "public_job_detail"
+    },
+    {
+      "path": "/api/jobs/choices/",
+      "app": "jobs",
+      "name": "jobs_choices"
+    },
+    {
+      "path": "/api/jobs/specializations/",
+      "app": "jobs",
+      "name": "specialization_list"
+    },
+    {
+      "path": "/api/jobs/specializations/create/",
+      "app": "jobs",
+      "name": "specialization_create"
+    },
+    {
+      "path": "/api/jobs/specializations/<int:pk>/",
+      "app": "jobs",
+      "name": "specialization_detail"
+    },
+    {
+      "path": "/api/jobs/specializations/<int:pk>/update/",
+      "app": "jobs",
+      "name": "specialization_update"
+    },
+    {
+      "path": "/api/jobs/specializations/<int:pk>/delete/",
+      "app": "jobs",
+      "name": "specialization_delete"
+    },
+    {
+      "path": "/api/jobs/company/jobs/",
+      "app": "jobs",
+      "name": "company_jobs_list_create"
+    },
+    {
+      "path": "/api/jobs/company/jobs/<int:pk>/",
+      "app": "jobs",
+      "name": "company_job_detail"
+    },
+    {
+      "path": "/api/jobs/company/jobs/applications/",
+      "app": "jobs",
+      "name": "company_applications_list"
+    },
+    {
+      "path": "/api/jobs/company/jobs/applications/<int:pk>/",
+      "app": "jobs",
+      "name": "company_application_detail"
+    },
+    {
+      "path": "/api/jobs/<int:job_id>/apply/",
+      "app": "jobs",
+      "name": "job-apply"
+    },
+    {
+      "path": "/api/company/profile/",
+      "app": "company_profile",
+      "name": "company-profile"
+    },
+    {
+      "path": "/api/company/profile/picture/",
+      "app": "company_profile",
+      "name": "company-profile-picture"
+    },
+    {
+      "path": "/api/seeker/profile/",
+      "app": "seeker_profiles",
+      "name": "seeker-profile"
+    },
+    {
+      "path": "/api/seeker/profile/cv/",
+      "app": "seeker_profiles",
+      "name": "seeker-cv"
+    },
+    {
+      "path": "/api/seeker/profile/picture/",
+      "app": "seeker_profiles",
+      "name": "seeker-picture"
+    },
+    {
+      "path": "/api/seeker/skills/",
+      "app": "seeker_profiles",
+      "router": true,
+      "basename": "seeker-skill"
+    },
+    {
+      "path": "/api/seeker/skills/<int:pk>/",
+      "app": "seeker_profiles",
+      "router": true,
+      "basename": "seeker-skill"
+    },
+    {
+      "path": "/api/seeker/experience/",
+      "app": "seeker_profiles",
+      "router": true,
+      "basename": "seeker-experience"
+    },
+    {
+      "path": "/api/seeker/experience/<int:pk>/",
+      "app": "seeker_profiles",
+      "router": true,
+      "basename": "seeker-experience"
+    },
+    {
+      "path": "/api/seeker/education/",
+      "app": "seeker_profiles",
+      "router": true,
+      "basename": "seeker-education"
+    },
+    {
+      "path": "/api/seeker/education/<int:pk>/",
+      "app": "seeker_profiles",
+      "router": true,
+      "basename": "seeker-education"
+    }
+    ,
+    {
+      "path": "/api/recommendations/jobs/",
+      "app": "recommendations",
+      "name": "recommended-jobs",
+      "methods": ["GET"]
+    }
+  ]
+}
