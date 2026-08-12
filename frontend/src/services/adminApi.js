@@ -66,6 +66,7 @@ export const seekersApi = {
 export const companiesApi = {
   list: (params) => request("/admin/companies/", { params }),
   // params مقترحة: { search, status: 'pending' | 'approved' | 'rejected', page }
+  get: (id) => request(`/admin/companies/${id}/`),
   approve: (id) => request(`/admin/companies/${id}/approve/`, { method: "POST" }),
   reject: (id, reason) =>
     request(`/admin/companies/${id}/reject/`, { method: "POST", body: { reason } }),

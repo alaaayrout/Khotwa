@@ -1,10 +1,11 @@
 // src/pages/admin/AdminCompanies.jsx
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Trash2, CheckCircle, XCircle } from "lucide-react";
+import { Trash2, CheckCircle, XCircle, Eye } from "lucide-react";
 import DataTable from "../../components/admin/DataTable";
 import ConfirmModal from "../../components/admin/ConfirmModal";
 import StatusBadge from "../../components/admin/StatusBadge";
+import CompanyDetailModal from "./CompanyDetailModal";
 import { companiesApi } from "../../services/adminApi";
 import { useAdminList } from "./useAdminList";
 
@@ -25,6 +26,7 @@ export default function AdminCompanies() {
 
   const [confirmTarget, setConfirmTarget] = useState(null); // { type: 'approve'|'reject'|'delete', row }
   const [busy, setBusy] = useState(false);
+  const [viewingCompanyId, setViewingCompanyId] = useState(null);
 
   const columns = [
     { key: "name", label: t("admin.companies.col_name") },
@@ -66,6 +68,13 @@ export default function AdminCompanies() {
         pagination={{ page, totalPages, onPageChange: setPage }}
         actions={(row) => (
           <div className="flex items-center gap-2">
+            <button
+              title={t("admin.common.view")}
+              onClick={() => setViewingCompanyId(row.id)}
+              className="p-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors"
+            >
+              <Eye size={16} />
+            </button>
             {row.status === PENDING_STATUS && (
               <>
                 <button
@@ -107,6 +116,21 @@ export default function AdminCompanies() {
         onConfirm={handleConfirm}
         onCancel={() => setConfirmTarget(null)}
       />
+
+      {viewingCompanyId && (
+        <CompanyDetailModal
+          companyId={viewingCompanyId}
+          onClose={() => setViewingCompanyId(null)}
+          onApproved={async () => {
+            setViewingCompanyId(null);
+            await runAction(() => Promise.resolve());
+          }}
+          onRejected={async () => {
+            setViewingCompanyId(null);
+            await runAction(() => Promise.resolve());
+          }}
+        />
+      )}
     </div>
   );
 }

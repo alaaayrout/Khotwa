@@ -21,6 +21,7 @@ import AdminLayout from "./pages/admin/AdminLayout"
 import AdminSeekers from "./pages/admin/AdminSeekers"
 import AdminCompanies from "./pages/admin/AdminCompanies"
 import AdminJobs from "./pages/admin/AdminJobs"
+import AdminCVs from "./pages/admin/AdminCVs"
 import AdminCategories from "./pages/admin/AdminCategories"
 import CompanyApplication from "./pages/company/CompanyApplications"
 import { useEffect } from "react"
@@ -62,6 +63,7 @@ function App() {
         <Route path="seekers" element={<AdminSeekers />} />
         <Route path="companies" element={<AdminCompanies />} />
         <Route path="jobs" element={<AdminJobs />} />
+        <Route path="cvs" element={<AdminCVs />} />
         <Route path="categories" element={<AdminCategories />} />
       </Route>
       <Route path="/company/applications" element={<CompanyApplication />} />
