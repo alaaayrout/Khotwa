@@ -24,31 +24,13 @@ function handlePostLoginRedirect(data) {
     navigate("/company/dashboard")
   } else if (userType === "job_seeker") {
     navigate("/")
+  } else if (userType === "admin") {
+    // نفس /auth/login/ عم يرجّع user_type: "admin" للحسابات الإدارية.
+    // AdminLayout بيدوّر تحديداً على مفتاح "admin_token" بالـ localStorage.
+    localStorage.setItem("admin_token", data.token)
+    navigate("/admin")
   }
 }
-
-  // بتجرب تسجيل دخول كأدمن (endpoint منفصل، موديل AdminUser منفصل).
-  // بترجع true إذا نجحت (وبهالحالة بتوجّه مباشرة لـ /admin)، وfalse إذا لأ.
-  const tryAdminLogin = async () => {
-    try {
-      const res = await fetch(`${API_BASE}/admin/login/`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: form.email, password: form.password }),
-      })
-
-      if (!res.ok) return false
-
-      const data = await res.json()
-      if (!data.token) return false
-
-      localStorage.setItem("admin_token", data.token)
-      navigate("/admin")
-      return true
-    } catch {
-      return false
-    }
-  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -77,13 +59,8 @@ function handlePostLoginRedirect(data) {
         return
       }
 
-      // مو باحث عن عمل ولا شركة (البريد/الباسورد ما انطابقو بجدول users العادي)
-      // قبل ما نطلع رسالة خطأ، منجرب إذا هيدا أصلاً حساب أدمن.
-      const loggedInAsAdmin = await tryAdminLogin()
-      if (!loggedInAsAdmin) {
-        const firstError = Object.values(data)[0]
-        setError(Array.isArray(firstError) ? firstError[0] : firstError)
-      }
+      const firstError = Object.values(data)[0]
+      setError(Array.isArray(firstError) ? firstError[0] : firstError)
 
     } catch {
       setError(t("login.error_network"))
