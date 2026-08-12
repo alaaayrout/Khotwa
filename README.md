@@ -66,9 +66,8 @@
 
 ###  Additional Technologies | تقنيات إضافية
 
-* **JWT / Token Authentication**
+
 * **Git & GitHub** for Version Control
-* **Cloud Deployment**
 * **Semantic Text Matching Algorithms**
 
 ---
