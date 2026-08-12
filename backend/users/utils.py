@@ -140,6 +140,37 @@ def send_jobseeker_deleted_email(user):
     )
 
 
+def send_jobseeker_deactivated_email(user):
+    """Notify job seeker that their account has been deactivated."""
+    send_mail(
+        subject='Your account has been deactivated',
+        message=(
+            f'Hello {user.full_name},\n\n'
+            'Your account has been deactivated by the admin team.\n\n'
+            'If you believe this is a mistake, please contact support.'
+        ),
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[user.email],
+        fail_silently=False,
+    )
+
+
+def send_jobseeker_reactivated_email(user):
+    """Notify job seeker that their account has been reactivated."""
+    send_mail(
+        subject='Your account has been reactivated',
+        message=(
+            f'Hello {user.full_name},\n\n'
+            'Good news! Your account has been reactivated.\n\n'
+            'You can now log in and continue using the platform.'
+        ),
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[user.email],
+        fail_silently=False,
+    )
+
+
+
 # =========================
 # CUSTOM EXCEPTION HANDLER
 # =========================
