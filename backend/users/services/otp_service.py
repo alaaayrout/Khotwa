@@ -18,8 +18,8 @@ logger = logging.getLogger(__name__)
 
 
 def generate_otp():
-    if getattr(settings, 'DEBUG', False):
-        return '123456'
+    # if getattr(settings, 'DEBUG', False):
+    #     return '123456'
     return '{:06d}'.format(secrets.randbelow(1000000))
 
 

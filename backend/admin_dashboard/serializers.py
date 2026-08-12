@@ -37,10 +37,13 @@ class AdminCompanySerializer(serializers.ModelSerializer):
     sector = serializers.CharField(source="company_type")
    
     status = serializers.CharField(source="approval_status", read_only=True)
+    phone = serializers.CharField(source="phone_number")
+    website = serializers.URLField(source="website_url", allow_null=True, required=False)
+
 
     class Meta:
         model = Company
-        fields = ["id", "name", "email", "sector", "status"]
+        fields = ["id", "name", "email", "sector", "status", "phone","governorate", "description", "website"]
 
 
 class AdminCompanyRejectSerializer(serializers.Serializer):

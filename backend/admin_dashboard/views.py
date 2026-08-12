@@ -27,7 +27,13 @@ from .serializers import (
     AdminCVSerializer,
     AdminCategorySerializer,
 )
-
+from users.email_utils import (
+    send_company_approval_email,
+    send_company_rejection_email,
+    send_company_deactivation_email,
+    send_company_welcome_back_email,
+    send_company_deletion_email,
+)
 
 
 class AdminBaseView:
@@ -110,16 +116,8 @@ class AdminCompanyDetailView(AdminBaseView, generics.RetrieveDestroyAPIView):
     def destroy(self, request, *args, **kwargs):
         company = self.get_object()
         try:
-            send_mail(
-                subject="تم حذف حساب شركتكم نهائياً",
-                message=(
-                    f"مرحباً {company.company_name}،\n"
-                    f"تم حذف حسابكم وكل الإعلانات المرتبطة فيه نهائياً من المنصة."
-                ),
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[company.email],
-                fail_silently=True,
-            )
+            send_company_deletion_email(company)
+            
         except Exception:
             pass
 
@@ -129,21 +127,21 @@ class AdminCompanyDetailView(AdminBaseView, generics.RetrieveDestroyAPIView):
 class AdminCompanyApproveView(AdminBaseView, APIView):
     def post(self, request, pk):
         company = get_object_or_404(Company, pk=pk)
+        original_status = company.approval_status
+
         company.approve()
         JobPosting.objects.filter(company=company).update(is_active=True)
         if not company.approval_email_sent:
             try:
-                send_mail(
-                    subject="تمت الموافقة على حساب شركتكم",
-                    message=f"مرحباً {company.company_name}،\nتمت الموافقة على حسابكم على المنصة.",
-                    from_email=settings.DEFAULT_FROM_EMAIL,
-                    recipient_list=[company.email],
-                    fail_silently=True,
-                )
+                if original_status == "rejected":
+                   send_company_welcome_back_email(company)
+                else:
+                   send_company_approval_email(company)
                 company.approval_email_sent = True
-                company.save(update_fields=["approval_email_sent"])
+                company.rejection_email_sent = False
+                company.save(update_fields=["approval_email_sent", "rejection_email_sent"])
             except Exception:
-                pass  
+              pass  
 
         return Response(AdminCompanySerializer(company).data)
 
@@ -161,28 +159,11 @@ class AdminCompanyRejectView(AdminBaseView, APIView):
         company.save(update_fields=["rejection_reason"])
 
         if not company.rejection_email_sent:
-            if was_approved:
-                subject = "تم إلغاء تفعيل حساب شركتكم"
-                message = (
-                    f"مرحباً {company.company_name}،\n"
-                    f"تم إلغاء تفعيل حسابكم على المنصة من قبل الإدارة.\n"
-                    f"السبب: {company.rejection_reason or 'غير محدد'}"
-                )
-            else:
-                subject = "بخصوص طلب تسجيل شركتكم"
-                message = (
-                    f"مرحباً {company.company_name}،\n"
-                    f"للأسف تم رفض طلب تسجيل حسابكم.\n"
-                    f"السبب: {company.rejection_reason or 'غير محدد'}"
-                )
             try:
-                send_mail(
-                    subject=subject,
-                    message=message,
-                    from_email=settings.DEFAULT_FROM_EMAIL,
-                    recipient_list=[company.email],
-                    fail_silently=True,
-                )
+                if was_approved:
+                    send_company_deactivation_email(company)
+                else:
+                    send_company_rejection_email(company)
                 company.rejection_email_sent = True
                 company.save(update_fields=["rejection_email_sent"])
             except Exception:
