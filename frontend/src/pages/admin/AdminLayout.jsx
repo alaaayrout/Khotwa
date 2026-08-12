@@ -2,21 +2,12 @@
 import { useEffect, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import {
-  Users,
-  Building2,
-  Briefcase,
-  FileText,
-  Tag,
-  LogOut,
-  Languages,
-} from "lucide-react";
+import { Users, Building2, Briefcase, Tag, LogOut, Languages } from "lucide-react";
 
 const NAV_ITEMS = [
   { to: "/admin/seekers", key: "seekers", Icon: Users },
   { to: "/admin/companies", key: "companies", Icon: Building2 },
   { to: "/admin/jobs", key: "jobs", Icon: Briefcase },
-  { to: "/admin/cvs", key: "cvs", Icon: FileText },
   { to: "/admin/categories", key: "categories", Icon: Tag },
 ];
 
