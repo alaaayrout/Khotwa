@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 
 from users.models import JobSeeker, Company
 from seeker_profiles.models import SeekerProfile
-from jobs.models import JobPosting, Specialization  
+from jobs.models import JobPosting, Specialization
 
 from .authentication import AdminTokenAuthentication
 from .models import AdminUser, AdminAuthToken, JobDeletionLog
@@ -35,6 +35,11 @@ from users.email_utils import (
     send_company_deletion_email,
 )
 
+from users.utils import (
+    send_jobseeker_deleted_email,
+    send_jobseeker_deactivated_email,
+    send_jobseeker_reactivated_email,
+)
 
 class AdminBaseView:
     authentication_classes = [AdminTokenAuthentication]
@@ -54,10 +59,16 @@ class AdminLoginView(APIView):
 
         admin = AdminUser.objects.filter(email__iexact=email).first()
         if not admin or not admin.check_password(password):
-            return Response({"error": "Invalid email or password"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"error": "Invalid email or password"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         if not admin.is_active:
-            return Response({"error": "This admin account is disabled"}, status=status.HTTP_403_FORBIDDEN)
+            return Response(
+                {"error": "This admin account is disabled"},
+                status=status.HTTP_403_FORBIDDEN,
+            )
 
         token, _ = AdminAuthToken.objects.get_or_create(admin=admin)
 
@@ -65,10 +76,15 @@ class AdminLoginView(APIView):
             {
                 "message": "Login successful",
                 "token": token.key,
-                "admin": {"id": admin.id, "full_name": admin.full_name, "email": admin.email},
+                "admin": {
+                    "id": admin.id,
+                    "full_name": admin.full_name,
+                    "email": admin.email,
+                },
             },
             status=status.HTTP_200_OK,
         )
+
 
 # ---------------------------------------------------------------------------
 # 1) Job Seekers
@@ -93,7 +109,27 @@ class AdminSeekerDetailView(AdminBaseView, generics.RetrieveUpdateDestroyAPIView
             return AdminSeekerUpdateSerializer
         return AdminSeekerSerializer
 
+    def perform_update(self, serializer):
+        original_active = self.get_object().is_active
+        instance = serializer.save()
 
+        if original_active and not instance.is_active:
+            try:
+                send_jobseeker_deactivated_email(instance)
+            except Exception:
+                pass
+        elif not original_active and instance.is_active:
+            try:
+                send_jobseeker_reactivated_email(instance)
+            except Exception:
+                pass
+
+    def perform_destroy(self, instance):
+        try:
+            send_jobseeker_deleted_email(instance)
+        except Exception:
+            pass
+        instance.delete()
 # ---------------------------------------------------------------------------
 # 2) Companies
 # ---------------------------------------------------------------------------
@@ -105,7 +141,9 @@ class AdminCompanyListView(AdminBaseView, generics.ListAPIView):
         qs = Company.objects.all().order_by("-created_at")
         search = self.request.query_params.get("search")
         if search:
-            qs = qs.filter(Q(company_name__icontains=search) | Q(email__icontains=search))
+            qs = qs.filter(
+                Q(company_name__icontains=search) | Q(email__icontains=search)
+            )
         return qs
 
 
@@ -117,7 +155,7 @@ class AdminCompanyDetailView(AdminBaseView, generics.RetrieveDestroyAPIView):
         company = self.get_object()
         try:
             send_company_deletion_email(company)
-            
+
         except Exception:
             pass
 
@@ -134,14 +172,16 @@ class AdminCompanyApproveView(AdminBaseView, APIView):
         if not company.approval_email_sent:
             try:
                 if original_status == "rejected":
-                   send_company_welcome_back_email(company)
+                    send_company_welcome_back_email(company)
                 else:
-                   send_company_approval_email(company)
+                    send_company_approval_email(company)
                 company.approval_email_sent = True
                 company.rejection_email_sent = False
-                company.save(update_fields=["approval_email_sent", "rejection_email_sent"])
+                company.save(
+                    update_fields=["approval_email_sent", "rejection_email_sent"]
+                )
             except Exception:
-              pass  
+                pass
 
         return Response(AdminCompanySerializer(company).data)
 
@@ -208,6 +248,7 @@ class AdminJobDetailView(AdminBaseView, generics.RetrieveUpdateDestroyAPIView):
         job.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 class AdminJobSuspendView(AdminBaseView, APIView):
     def post(self, request, pk):
         job = get_object_or_404(JobPosting, pk=pk)
@@ -222,7 +263,6 @@ class AdminJobActivateView(AdminBaseView, APIView):
         job.is_active = True
         job.save(update_fields=["is_active"])
         return Response(AdminJobListSerializer(job).data)
-
 
 
 class AdminCVListView(AdminBaseView, generics.ListAPIView):
@@ -249,7 +289,7 @@ class AdminCVDetailView(AdminBaseView, APIView):
     def delete(self, request, pk):
         profile = get_object_or_404(SeekerProfile, pk=pk)
         if profile.cv_file:
-            profile.cv_file.delete(save=False)  
+            profile.cv_file.delete(save=False)
         profile.cv_file = None
         profile.save(update_fields=["cv_file"])
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -260,7 +300,7 @@ class AdminCVDetailView(AdminBaseView, APIView):
 # ---------------------------------------------------------------------------
 class AdminCategoryListCreateView(AdminBaseView, generics.ListCreateAPIView):
     serializer_class = AdminCategorySerializer
-    pagination_class = None  
+    pagination_class = None
 
     def get_queryset(self):
         return AdminCategorySerializer.annotate_queryset(Specialization.objects.all())
