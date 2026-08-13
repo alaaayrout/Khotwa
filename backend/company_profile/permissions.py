@@ -6,11 +6,7 @@ class IsCompanyAuthenticated(BasePermission):
     message = 'Authentication as a company is required.'
 
     def has_permission(self, request, view):
-
         if not request.auth:
             return False
 
-        return isinstance(
-            request.auth.company,
-            Company
-        )
+        return isinstance(request.auth, Company)

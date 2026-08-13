@@ -62,6 +62,8 @@ def recommended_jobs_for_seeker(request):
     job_texts = []
 
     for job in jobs:
+        is_remote = job.work_mode == "remote"
+        location_text = "" if is_remote else job.city
         job_text = "\n".join(filter(None, [
             job.title,
 
@@ -73,7 +75,7 @@ def recommended_jobs_for_seeker(request):
             "Skills",
             "\n".join(job.required_skills or []),
 
-            job.city,
+            location_text,
             job.employment_type,
             job.work_mode,
         ]))
