@@ -618,7 +618,9 @@
       "reject": "Reject",
       "processing": "Processing...",
       "prev": "Previous",
-      "next": "Next"
+      "next": "Next",
+      "reason_label": "Reason",
+      "reason_placeholder": "Describe the reason..."
     },
     "seekers": {
       "col_name": "Name",
@@ -642,7 +644,17 @@
       "confirm_reject_title": "Reject company",
       "confirm_reject_msg": "Reject \"{{name}}\"'s application?",
       "confirm_delete_title": "Delete company account",
-      "confirm_delete_msg": "Are you sure you want to delete \"{{name}}\"? This cannot be undone."
+      "confirm_delete_msg": "Are you sure you want to delete \"{{name}}\"? This cannot be undone.",
+       "detail_title": "Company details",
+      "field_phone": "Phone",
+      "field_governorate": "Governorate",
+      "field_website": "Website",
+      "field_description": "Description",
+      "field_not_provided": "Not provided",
+      "field_rejection_reason": "Rejection reason",
+      "field_created_at": "Registered on",
+      "reject_reason_label": "Rejection reason",
+      "reject_reason_ph": "Write the rejection reason (optional)..."
     },
     "jobs": {
       "col_title": "Job title",
@@ -659,7 +671,9 @@
       "confirm_activate_title": "Reactivate listing",
       "confirm_activate_msg": "Reactivate \"{{title}}\"?",
       "confirm_delete_title": "Delete listing",
-      "confirm_delete_msg": "Are you sure you want to delete \"{{title}}\"? This cannot be undone."
+      "confirm_delete_msg": "Are you sure you want to delete \"{{title}}\"? This cannot be undone.",
+      "delete_reason_label": "Deletion reason (required)",
+      "delete_reason_ph": "e.g. Listing violates platform policy..."
     },
     "cvs": {
       "col_owner": "Owner",
@@ -679,7 +693,8 @@
       "field_name_ar": "Name (Arabic)",
       "field_name_en": "Name (English)",
       "confirm_delete_title": "Delete category",
-      "confirm_delete_msg": "Are you sure you want to delete \"{{name}}\"?"
+      "confirm_delete_msg": "Are you sure you want to delete \"{{name}}\"?",
+       "delete_error_generic": "Something went wrong deleting the category. Please try again."
     }
   }
 
