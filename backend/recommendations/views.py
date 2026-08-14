@@ -7,6 +7,7 @@ from jobs.models import JobPosting
 from seeker_profiles.authentication import JobSeekerTokenAuthentication
 from seeker_profiles.permissions import IsJobSeekerAuthenticated
 from .services import EmbeddingService
+import numpy as np
 def get_company_logo(company, request):
     profile = getattr(company, 'profile', None)
     if profile is None:
@@ -30,7 +31,7 @@ def recommended_jobs_for_seeker(request):
     if seeker_profile is None:
         return Response({'detail': 'Seeker profile not found.'}, status=status.HTTP_404_NOT_FOUND)
 
-    
+
     embedding_service = EmbeddingService()
 
     seeker_parts = [seeker_profile.bio]
@@ -56,25 +57,38 @@ def recommended_jobs_for_seeker(request):
     skill.name
     for skill in seeker_profile.skills.all()
 ]
+    seeker_skill_text = "\n".join(seeker_skill_names) if seeker_skill_names else ""
+    seeker_skills_vector = (
+        embedding_service.encode(seeker_skill_text)
+        if seeker_skill_text.strip()
+        else np.array([])
+)
     ranked = []
+    SKILLS_WEIGHT = 0.6
+    GENERAL_WEIGHT = 0.4
+
     for job in jobs:
         job_vector = embedding_service.deserialize_vector(job.embedding)
         if job_vector.size == 0:
             continue
 
-        if job.work_mode == "remote":
-            seeker_vector = seeker_vector_without_location
-        else:
-            seeker_vector = seeker_vector_with_location
-  
+        seeker_vector = seeker_vector_without_location if job.work_mode == "remote" else seeker_vector_with_location
+        general_similarity = embedding_service.cosine_similarity(seeker_vector, job_vector)
 
-        similarity = embedding_service.cosine_similarity(seeker_vector, job_vector)
+        job_skills_vector = embedding_service.deserialize_vector(job.skills_embedding)
+        if job_skills_vector.size > 0 and seeker_skills_vector.size > 0:
+            skills_similarity = embedding_service.cosine_similarity(seeker_skills_vector, job_skills_vector)
+        else:
+            skills_similarity = general_similarity  # fallback إذا ما في مهارات مسجّلة
+
+        final_score = (SKILLS_WEIGHT * skills_similarity) + (GENERAL_WEIGHT * general_similarity)
+
         ranked.append({
             'id': job.id,
             'title': job.title,
             'company_name': job.company.company_name,
             'company_logo': get_company_logo(job.company, request),
-            'similarity_score': round(float(similarity), 4),
+            'similarity_score': round(float(final_score), 4),
             'city': job.city,
             'employment_type': job.employment_type,
             'work_mode': job.work_mode,

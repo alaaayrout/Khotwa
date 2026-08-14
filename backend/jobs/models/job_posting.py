@@ -37,6 +37,7 @@ class JobPosting(models.Model):
     is_active = models.BooleanField(default=True)
     views_count = models.PositiveIntegerField(default=0)
     embedding = models.TextField(blank=True, null=True, editable=False)
+    skills_embedding = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

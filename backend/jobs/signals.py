@@ -1,6 +1,6 @@
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
-
+import numpy as np
 from .models import JobPosting
 
 
@@ -30,7 +30,16 @@ def _build_job_embedding_text(job):
 def compute_job_embedding(sender, instance, **kwargs):
     from recommendations.services import EmbeddingService
 
-    text = _build_job_embedding_text(instance)
     service = EmbeddingService()
+
+    text = _build_job_embedding_text(instance)
     vector = service.encode(text)
     instance.embedding = service.serialize_vector(vector)
+
+    skills_text = "\n".join(instance.required_skills or [])
+
+    if skills_text.strip():
+        skills_vector = service.encode(skills_text)
+        instance.skills_embedding = service.serialize_vector(skills_vector)
+    else:
+        instance.skills_embedding = None
