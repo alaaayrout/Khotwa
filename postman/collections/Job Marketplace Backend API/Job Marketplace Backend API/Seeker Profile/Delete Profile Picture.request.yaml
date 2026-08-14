@@ -1,6 +1,0 @@
-$kind: http-request
-url: ""
-method: DELETE
-headers:
-  Authorization: JobSeekerToken {{jobseeker_token}}
-order: 6000

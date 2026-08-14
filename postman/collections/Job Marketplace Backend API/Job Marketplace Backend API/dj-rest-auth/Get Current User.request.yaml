@@ -1,6 +1,0 @@
-$kind: http-request
-url: ""
-method: GET
-headers:
-  Authorization: Token {{auth_token}}
-order: 3000

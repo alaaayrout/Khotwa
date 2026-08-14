@@ -1,5 +1,0 @@
-$kind: http-request
-description: جلب تفاصيل وظيفة + زيادة عداد المشاهدات.
-url: "{{base_url}}/api/jobs/{{job_id}}/"
-method: GET
-order: 3000

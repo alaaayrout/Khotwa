@@ -1,6 +1,0 @@
-$kind: http-request
-url: ""
-method: GET
-headers:
-  Authorization: JobSeekerToken {{jobseeker_token}}
-order: 10000

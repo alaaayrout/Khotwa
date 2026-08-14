@@ -1,5 +1,0 @@
-$kind: http-request
-description: "**Response:** `cities`, `employment_types`, `work_modes`, `job_statuses`"
-url: "{{base_url}}/api/jobs/choices/"
-method: GET
-order: 1000

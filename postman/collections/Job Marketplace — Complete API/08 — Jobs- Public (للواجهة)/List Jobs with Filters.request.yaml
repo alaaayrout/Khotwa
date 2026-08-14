@@ -1,9 +1,0 @@
-$kind: http-request
-url: "{{base_url}}/api/jobs/?city=damascus&employment_type=full_time&work_mode=remote&specialization_id=1"
-method: GET
-queryParams:
-  city: damascus
-  employment_type: full_time
-  work_mode: remote
-  specialization_id: "1"
-order: 2000

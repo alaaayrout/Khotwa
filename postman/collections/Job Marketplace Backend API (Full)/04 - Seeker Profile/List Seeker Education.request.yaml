@@ -1,6 +1,0 @@
-$kind: http-request
-url: "{{base_url}}/api/seeker/education/"
-method: GET
-headers:
-  Authorization: JobSeekerToken {{jobseeker_token}}
-order: 8000

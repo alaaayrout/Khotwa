@@ -1,0 +1,648 @@
+{
+  "info": {
+    "name": "Job Marketplace Backend API (Full)",
+    "description": "Complete Postman collection for the Django job marketplace backend. Import this file and use the companion environment file to test the API locally.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8000", "type": "string" },
+    { "key": "company_token", "value": "", "type": "string" },
+    { "key": "jobseeker_token", "value": "", "type": "string" },
+    { "key": "auth_token", "value": "", "type": "string" },
+    { "key": "job_id", "value": "1", "type": "string" },
+    { "key": "application_id", "value": "1", "type": "string" },
+    { "key": "specialization_id", "value": "1", "type": "string" },
+    { "key": "skill_id", "value": "1", "type": "string" },
+    { "key": "experience_id", "value": "1", "type": "string" },
+    { "key": "education_id", "value": "1", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "01 - Utility",
+      "item": [
+        {
+          "name": "API Home",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/"
+          }
+        },
+        {
+          "name": "Get Choices",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/choices/"
+          }
+        },
+        {
+          "name": "Job Seekers Count",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/jobseekers/count/"
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 - Authentication",
+      "item": [
+        {
+          "name": "Register Job Seeker",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"full_name\": \"Test Seeker\",\n  \"email\": \"seeker@example.com\",\n  \"phone_number\": \"+963912345678\",\n  \"password\": \"securepass123\",\n  \"password_confirm\": \"securepass123\"\n}"
+            },
+            "url": "{{base_url}}/api/auth/job-seeker/register/"
+          }
+        },
+        {
+          "name": "Verify Job Seeker OTP",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"seeker@example.com\",\n  \"otp\": \"123456\"\n}"
+            },
+            "url": "{{base_url}}/api/auth/job-seeker/verify-otp/"
+          }
+        },
+        {
+          "name": "Login Job Seeker",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var data = JSON.parse(responseBody);",
+                  "if (data && data.token) {",
+                  "  pm.collectionVariables.set('jobseeker_token', data.token);",
+                  "  pm.environment.set('jobseeker_token', data.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"seeker@example.com\",\n  \"password\": \"securepass123\"\n}"
+            },
+            "url": "{{base_url}}/api/auth/login/"
+          }
+        },
+        {
+          "name": "Register Company",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"company_name\": \"Example Co\",\n  \"email\": \"company@example.com\",\n  \"phone_number\": \"+963912345679\",\n  \"governorate\": \"damascus\",\n  \"company_type\": \"programming\",\n  \"website_url\": \"https://example.com\",\n  \"description\": \"Sample company description\",\n  \"password\": \"securepass123\",\n  \"password_confirm\": \"securepass123\"\n}"
+            },
+            "url": "{{base_url}}/api/auth/company/register/"
+          }
+        },
+        {
+          "name": "Verify Company OTP",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"company@example.com\",\n  \"otp\": \"123456\"\n}"
+            },
+            "url": "{{base_url}}/api/auth/company/verify-otp/"
+          }
+        },
+        {
+          "name": "Login Company",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var data = JSON.parse(responseBody);",
+                  "if (data && data.token) {",
+                  "  pm.collectionVariables.set('company_token', data.token);",
+                  "  pm.environment.set('company_token', data.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"company@example.com\",\n  \"password\": \"securepass123\"\n}"
+            },
+            "url": "{{base_url}}/api/auth/login/"
+          }
+        },
+        {
+          "name": "Google Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_token\": \"your-google-id-token\"\n}"
+            },
+            "url": "{{base_url}}/api/auth/google/login/"
+          }
+        },
+        {
+          "name": "Password Reset Request",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"seeker@example.com\"\n}"
+            },
+            "url": "{{base_url}}/api/auth/password/reset/"
+          }
+        },
+        {
+          "name": "Password Reset Validate",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"uidb64\": \"MQ\",\n  \"token\": \"your-reset-token\"\n}"
+            },
+            "url": "{{base_url}}/api/auth/password/reset/validate/"
+          }
+        },
+        {
+          "name": "Password Reset Confirm",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"uidb64\": \"MQ\",\n  \"token\": \"your-reset-token\",\n  \"new_password\": \"newsecurepass123\"\n}"
+            },
+            "url": "{{base_url}}/api/auth/password/reset/confirm/"
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 - Company Profile",
+      "item": [
+        {
+          "name": "Get Company Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "CompanyToken {{company_token}}"
+              }
+            ],
+            "url": "{{base_url}}/api/company/profile/"
+          }
+        },
+        {
+          "name": "Upload Company Profile Picture",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "CompanyToken {{company_token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "profile_picture", "type": "file", "src": [] }
+              ]
+            },
+            "url": "{{base_url}}/api/company/profile/picture/"
+          }
+        }
+      ]
+    },
+    {
+      "name": "04 - Seeker Profile",
+      "item": [
+        {
+          "name": "Get Seeker Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "JobSeekerToken {{jobseeker_token}}"
+              }
+            ],
+            "url": "{{base_url}}/api/seeker/profile/"
+          }
+        },
+        {
+          "name": "Upload Seeker CV",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "JobSeekerToken {{jobseeker_token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [{ "key": "cv_file", "type": "file", "src": [] }]
+            },
+            "url": "{{base_url}}/api/seeker/profile/cv/"
+          }
+        },
+        {
+          "name": "Upload Seeker Profile Picture",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "JobSeekerToken {{jobseeker_token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "profile_picture", "type": "file", "src": [] }
+              ]
+            },
+            "url": "{{base_url}}/api/seeker/profile/picture/"
+          }
+        },
+        {
+          "name": "List Seeker Skills",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "JobSeekerToken {{jobseeker_token}}"
+              }
+            ],
+            "url": "{{base_url}}/api/seeker/skills/"
+          }
+        },
+        {
+          "name": "Create Seeker Skill",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              {
+                "key": "Authorization",
+                "value": "JobSeekerToken {{jobseeker_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Python\"\n}"
+            },
+            "url": "{{base_url}}/api/seeker/skills/"
+          }
+        },
+        {
+          "name": "List Seeker Experiences",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "JobSeekerToken {{jobseeker_token}}"
+              }
+            ],
+            "url": "{{base_url}}/api/seeker/experience/"
+          }
+        },
+        {
+          "name": "Create Seeker Experience",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              {
+                "key": "Authorization",
+                "value": "JobSeekerToken {{jobseeker_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Backend Developer\",\n  \"company\": \"Example Corp\",\n  \"date_from\": \"2022-01-01\",\n  \"date_to\": \"2024-01-01\",\n  \"current\": false\n}"
+            },
+            "url": "{{base_url}}/api/seeker/experience/"
+          }
+        },
+        {
+          "name": "List Seeker Education",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "JobSeekerToken {{jobseeker_token}}"
+              }
+            ],
+            "url": "{{base_url}}/api/seeker/education/"
+          }
+        },
+        {
+          "name": "Create Seeker Education",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              {
+                "key": "Authorization",
+                "value": "JobSeekerToken {{jobseeker_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"degree\": \"Bachelor\",\n  \"institution\": \"Example University\",\n  \"year\": 2023\n}"
+            },
+            "url": "{{base_url}}/api/seeker/education/"
+          }
+        }
+      ]
+    },
+    {
+      "name": "05 - Jobs - Public",
+      "item": [
+        {
+          "name": "List Public Jobs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/jobs/"
+          }
+        },
+        {
+          "name": "Get Public Job Detail",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/jobs/{{job_id}}/"
+          }
+        },
+        {
+          "name": "Apply to Job",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              {
+                "key": "Authorization",
+                "value": "JobSeekerToken {{jobseeker_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cover_letter\": \"I am interested in this role and would love to contribute.\"\n}"
+            },
+            "url": "{{base_url}}/api/jobs/{{job_id}}/apply/"
+          }
+        }
+      ]
+    },
+    {
+      "name": "06 - Jobs - Choices & Specializations",
+      "item": [
+        {
+          "name": "Get Job Choices",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/jobs/choices/"
+          }
+        },
+        {
+          "name": "List Specializations",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/jobs/specializations/"
+          }
+        },
+        {
+          "name": "Create Specialization",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              {
+                "key": "Authorization",
+                "value": "CompanyToken {{company_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name_en\": \"Software Engineering\",\n  \"name_ar\": \"هندسة البرمجيات\",\n  \"is_active\": true\n}"
+            },
+            "url": "{{base_url}}/api/jobs/specializations/create/"
+          }
+        },
+        {
+          "name": "Get Specialization Detail",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/jobs/specializations/{{specialization_id}}/"
+          }
+        },
+        {
+          "name": "Update Specialization",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              {
+                "key": "Authorization",
+                "value": "CompanyToken {{company_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name_en\": \"Software Development\"\n}"
+            },
+            "url": "{{base_url}}/api/jobs/specializations/{{specialization_id}}/update/"
+          }
+        },
+        {
+          "name": "Delete Specialization",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "CompanyToken {{company_token}}"
+              }
+            ],
+            "url": "{{base_url}}/api/jobs/specializations/{{specialization_id}}/delete/"
+          }
+        }
+      ]
+    },
+    {
+      "name": "07 - Jobs - Company Management",
+      "item": [
+        {
+          "name": "List Company Jobs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "CompanyToken {{company_token}}"
+              }
+            ],
+            "url": "{{base_url}}/api/jobs/company/jobs/"
+          }
+        },
+        {
+          "name": "Create Company Job",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              {
+                "key": "Authorization",
+                "value": "CompanyToken {{company_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Senior Django Developer\",\n  \"description\": \"Build and maintain backend services\",\n  \"city\": \"damascus\",\n  \"employment_type\": \"full_time\",\n  \"work_mode\": \"remote\",\n  \"status\": \"open\",\n  \"expires_at\": \"2026-12-31\",\n  \"specialization\": 1\n}"
+            },
+            "url": "{{base_url}}/api/jobs/company/jobs/"
+          }
+        },
+        {
+          "name": "Get Company Job Detail",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "CompanyToken {{company_token}}"
+              }
+            ],
+            "url": "{{base_url}}/api/jobs/company/jobs/{{job_id}}/"
+          }
+        },
+        {
+          "name": "Update Company Job",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              {
+                "key": "Authorization",
+                "value": "CompanyToken {{company_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Lead Django Developer\"\n}"
+            },
+            "url": "{{base_url}}/api/jobs/company/jobs/{{job_id}}/"
+          }
+        },
+        {
+          "name": "Delete Company Job",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "CompanyToken {{company_token}}"
+              }
+            ],
+            "url": "{{base_url}}/api/jobs/company/jobs/{{job_id}}/"
+          }
+        },
+        {
+          "name": "List Job Applications",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "CompanyToken {{company_token}}"
+              }
+            ],
+            "url": "{{base_url}}/api/jobs/company/jobs/applications/"
+          }
+        },
+        {
+          "name": "Get Job Application Detail",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "CompanyToken {{company_token}}"
+              }
+            ],
+            "url": "{{base_url}}/api/jobs/company/jobs/applications/{{application_id}}/"
+          }
+        },
+        {
+          "name": "Update Job Application Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              {
+                "key": "Authorization",
+                "value": "CompanyToken {{company_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"reviewed\"\n}"
+            },
+            "url": "{{base_url}}/api/jobs/company/jobs/applications/{{application_id}}/"
+          }
+        }
+      ]
+    },
+    {
+      "name": "08 - Recommendations",
+      "item": [
+        {
+          "name": "Get Recommended Jobs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "JobSeekerToken {{jobseeker_token}}"
+              }
+            ],
+            "url": "{{base_url}}/api/recommendations/jobs/"
+          }
+        }
+      ]
+    }
+  ]
+}
