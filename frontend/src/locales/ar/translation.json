@@ -73,7 +73,7 @@
   "error_required": "يرجى تعبئة جميع الحقول",
 "email_already_registered": "هذا البريد الإلكتروني مسجل بالفعل",
   "error_password_match": "كلمة المرور غير متطابقة",
-  "error_password_length": "كلمة المرور يجب أن تكون 8 أحرف على الأقل",
+  "error_password_length": "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل",
   "error_full_name_invalid": "يجب أن يحتوي الاسم الكامل على أحرف ومسافات فقط",
   "error_phone_length_range": "يجب أن يكون رقم الهاتف بين 9 و 10 أرقام",
   "error_email_format": "يرجى إدخال بريد إلكتروني صالح بالشكل: example@email.com",
@@ -100,7 +100,7 @@
   "cannot_change_pending_data": "لا يمكن تغيير بيانات التسجيل حالياً. أكمل التسجيل بالبيانات الحالية ثم عدّلها لاحقاً، أو انتظر 24 ساعة لإعادة التسجيل ببيانات جديدة."
 },
 "company_signup": {
-  "title": "تسجيل شركة جديدة",
+  "title": " إنشاء حساب شركة جديد ",
   "company_name": "اسم الشركة",
   "company_name_placeholder": "مثال: شركة التقنية المتقدمة",
   "email": "البريد الإلكتروني",
@@ -127,7 +127,7 @@
   "resend_code_in": "إعادة الإرسال بعد {{seconds}} ثانية",
   "verifying": "جارٍ التحقق...",
 "submitting": "جارٍ إرسال الطلب...",
-"error_network": "حدث خطأ في الاتصال بالخادم",
+"error_network": "حدث خطأ أثناء الاتصال بالخادم",
 "error_otp_invalid": "رمز التحقق غير صحيح",
 "success_title": "تم إرسال الطلب بنجاح",
 "success_message": "تم إرسال طلب تسجيل الشركة وهو الآن بانتظار موافقة المسؤول.",
@@ -138,7 +138,7 @@
 "email_exists": "البريد الإلكتروني مستخدم مسبقاً",
 "error_email_format": "يرجى إدخال بريد إلكتروني صالح بالشكل: example@email.com",
 "error_phone_length_range": "يجب أن يكون رقم الهاتف بين 9 و 10 أرقام",
-"error_company_name_invalid": "اسم الشركة يجب أن يحتوي على أحرف وأرقام ومسافات فقط",
+"error_company_name_invalid": " يجب أن يحتوي اسم الشركة على أحرف وأرقام ومسافات فقط",
 "error_website_format": "يرجى إدخال موقع إلكتروني صالح بالشكل: https://www.example.com",
 "error_description_length": "الوصف يجب أن يكون بين 50 و 500 حرفاً",
 "cannot_change_pending_data": "لا يمكن تغيير بيانات التسجيل حالياً. أكمل التسجيل بالبيانات الحالية ثم عدّلها لاحقاً، أو انتظر 24 ساعة لإعادة التسجيل ببيانات جديدة.  "
@@ -183,7 +183,7 @@
   "latest_jobs": "أحدث الوظائف",
   "see_all": "عرض الكل",
   "rights": "جميع الحقوق محفوظة",
-  "load_error": "تعذر تحميل البيانات، حاول مرة تانية",
+  "load_error": "تعذر تحميل البيانات، يُرجى المحاولة مرة أخرى",
   "recommended_jobs" :"وظائف موصى بها لك",
   "no_recommendations": "لا توجد توصيات حالياً، حاول تحديث ملفك الشخصي أو إضافة مهارات جديدة",
   "footer_name": "خطوة"
@@ -250,7 +250,7 @@
       "load_error": "تعذر تحميل الوظائف",
       "action_error": "حدث خطأ",
       "loading": "جاري التحميل...",
-      "empty": "ما في وظائف بهاد التصنيف",
+      "empty": "لا توجد وظائف ضمن هذا التصنيف",
       "search_placeholder": "بحث عن وظيفة...",
       "tabs": {
         "all": "الكل",
@@ -330,22 +330,22 @@
     },
     "profile": {
   "default_title": "شركتك",
-  "completion": "اكتمال البروفايل {{percent}}%",
+  "completion": "اكتمال الملف الشخصي {{percent}}%",
   "change_logo": "تغيير الشعار",
   "upload_logo": "رفع الشعار",
   "uploading": "جاري الرفع...",
   "logo_success": "تم تحديث الشعار بنجاح",
-  "loading": "جاري تحميل البروفايل...",
-  "load_error": "فشل تحميل البروفايل",
+  "loading": "جاري تحميل الملف الشخصي...",
+  "load_error": "فشل تحميل الملف الشخصي",
   "save_success": "تم حفظ التعديلات بنجاح",
   "saving": "جاري الحفظ...",
   "save": "حفظ التعديلات",
   "basic_info": "المعلومات الأساسية",
-  "generic_error": "صار في خطأ، حاولي مرة ثانية.",
+  "generic_error": "حدث خطأ، يُرجى المحاولة مرة أخرى.",
   "cancel_logo": "إلغاء",
   "logo_invalid_type": "الرجاء رفع صورة JPG أو PNG أو WebP.",
   "logo_too_large": "يجب أن يكون حجم الشعار أقل من {{max}} ميجابايت.",
-  "unsaved_changes": "في تعديلات غير محفوظة",
+  "unsaved_changes": " توجد تعديلات غير محفوظة",
   "rejection_cta": "يرجى تحديث بياناتك وحفظها مرة أخرى لإعادة الإرسال للمراجعة.",
   "rejection_reason_label": "سبب الرفض",
   "approval_status": {
@@ -359,17 +359,17 @@
     "description": "الوصف",
     "company_type": "نوع الشركة",
     "governorate": "المحافظة",
-    "select_governorate": "اختاري المحافظة",
+    "select_governorate": "اختر المحافظة",
     "website_url": "الموقع الإلكتروني",
     "phone_number": "رقم الهاتف",
     "linkedin_url": "لينكدإن",
-    "select_company_type": "اختاري نوع الشركة"
+    "select_company_type": "اختر نوع الشركة"
   }
 },
  "applications": {
       "title": "إدارة الطلبات",
       "subtitle": "{{count}} طلب بانتظار المراجعة",
-      "load_error": "صار خطأ بالتحميل",
+      "load_error": "حدث خطأ أثناء تحميل البيانات",
       "sort_label": "ترتيب حسب",
       "sort": {
         "newest": "الأحدث",
@@ -378,15 +378,15 @@
         "match_disabled_tooltip": "نسبة التطابق غير متوفرة بعد من الباك إند"
       },
       "hide_rejected": "إخفاء الطلبات المرفوضة",
-      "loading": "عم يتم التحميل...",
-      "empty": "ما في طلبات لسا",
+      "loading": "جارٍ التحميل...",
+      "empty": "لا توجد طلبات حتى الآن",
       "group_summary": "{{total}} طلب · {{pending}} قيد الانتظار",
       "view_all": "عرض الكل ({{count}})",
       "show_less": "عرض أقل",
       "accept": "قبول",
       "reject": "رفض",
-      "contact_email": "تواصل عبر الإيميل",
-      "email_unavailable": "الإيميل غير متوفر بعد",
+      "contact_email": "التواصل عبر البريد الإلكتروني ",
+      "email_unavailable": "البريد الإلكتروني غير متوفر حاليًا",
       "email_subject": "بخصوص طلب التوظيف - {{job}}",
       "status_updated": "تم تحديث حالة الطلب",
       "match_unavailable_tooltip": "نسبة التطابق غير متوفرة حالياً",
@@ -401,7 +401,7 @@
       },
       "confirm_reject": {
         "title": "تأكيد رفض الطلب",
-        "message": "رح ترفضي طلب \"{{name}}\". هل أنتِ متأكدة؟",
+        "message": "سيتم رفض طلب \"{{name}}\". هل أنت متأكد؟",
         "cancel": "تراجع",
         "confirm": "تأكيد الرفض"
       }
@@ -481,7 +481,7 @@
   },
   "jobs": {
     "title": "استكشف الوظائف المتاحة",
-    "subtitle": "آلاف الفرص بانتظارك في السوق السوري",
+    "subtitle": "آلاف الفرص بانتظارك في سوق العمل السوري",
     "search_placeholder": "ابحث عن وظيفة أو شركة أو مهارة...",
     "search_btn": "بحث",
     "clear_filters": "مسح الفلاتر",
@@ -501,7 +501,7 @@
   "apply_already_applied_msg": "لقد قدمت بالفعل على هذه الوظيفة.",
   "apply_success": "تم إرسال طلبك بنجاح.",
   "apply_error": "حدث خطأ أثناء التقديم. يرجى المحاولة مرة أخرى.",
-  "apply_soon": "ميزة التقديم قيد التطوير قريباً",
+  "apply_soon": "ميزة التقديم قيد التطوير، وستتوفر قريبًا",
   "description_title": "الوصف الوظيفي",
   "company_title": "عن الشركة",
   "quick_facts": "معلومات سريعة",
@@ -578,7 +578,7 @@
       "step4_desc": "تواصل مع الشركات، وتابع حالة طلباتك أولاً بأول."
     },
     "cta": {
-      "title": "جاهز لتخطو خطوتك التالية؟",
+      "title": "هل أنت مستعد لاتخاذ خطوتك التالية؟",
       "sub": "سواء كنت تبحث عن فرصتك القادمة، أو عن الكفاءة التي تحتاجها شركتك، ابدأ معنا اليوم",
       "seeker_btn": "سجّل كباحث عن عمل",
       "company_btn": "سجّل شركتك"
@@ -595,17 +595,17 @@
       "categories": "التصنيفات"
     },
     "auth": {
-      "need_token": "لسا ما في صفحة دخول جاهزة. حطي توكن الأدمن (الطالع من create_admin) لحتى تدخلي.",
+      "need_token": "لا توجد صفحة تسجيل دخول جاهزة حاليًا. أدخل رمز المسؤول (Token) الناتج عن create_admin لتسجيل الدخول.",
       "token_placeholder": "توكن الأدمن",
       "enter": "دخول",
-      "logout": "تسجيل خروج",
+      "logout": "تسجيل الخروج",
       "switch_language": "تغيير اللغة"
     },
     "common": {
       "search": "بحث...",
       "loading": "جاري التحميل...",
-      "load_error": "صار في خطأ بتحميل البيانات، جربي كمان مرة",
-      "empty": "ما في نتائج",
+      "load_error": " حدث خطأ أثناء تحميل البيانات، يُرجى المحاولة مرة أخرى",
+      "empty": "لا توجد نتائج",
       "actions": "الإجراءات",
       "status": "الحالة",
       "active": "فعّال",
@@ -625,60 +625,74 @@
       "reject": "رفض",
       "processing": "جاري التنفيذ...",
       "prev": "السابق",
-      "next": "التالي"
+      "next": "التالي",
+      "reason_label": "السبب",
+      "reason_placeholder": "أدخل سبب الإجراء..."
     },
     "seekers": {
       "col_name": "الاسم",
       "col_email": "البريد الإلكتروني",
       "col_phone": "رقم الهاتف",
       "col_joined": "تاريخ التسجيل",
-      "search_ph": "دوري باسم أو بريد إلكتروني...",
+      "search_ph": " ابحث بالاسم أو البريد الإلكتروني...",
       "confirm_delete_title": "حذف حساب باحث عمل",
-      "confirm_delete_msg": "متأكدة إنك بدك تحذفي حساب \"{{name}}\"؟ هالإجراء ما رح ينرجع.",
+      "confirm_delete_msg": "هل أنت متأكد من رغبتك في حذف حساب \"{{name}}\" ؟ لا يمكن التراجع عن هذا الإجراء.",
       "confirm_suspend_title": "إيقاف الحساب",
       "confirm_activate_title": "تفعيل الحساب",
-      "confirm_toggle_msg": "متأكدة من تغيير حالة حساب \"{{name}}\"؟"
+      "confirm_toggle_msg": "هل أنت متأكد من تغيير حالة حساب \"{{name}}\"؟"
     },
     "companies": {
       "col_name": "اسم الشركة",
       "col_email": "البريد الإلكتروني",
       "col_sector": "المجال",
-      "search_ph": "دوري باسم شركة...",
+      "search_ph": "ابحث باسم شركة...",
       "confirm_approve_title": "الموافقة على الشركة",
-      "confirm_approve_msg": "بدك توافقي على انضمام \"{{name}}\" للمنصة؟",
+      "confirm_approve_msg": "هل توافق على انضمام \"{{name}}\" للمنصة؟",
       "confirm_reject_title": "رفض الشركة",
-      "confirm_reject_msg": "بدك ترفضي طلب \"{{name}}\"؟",
+      "confirm_reject_msg": "هل تريد رفض طلب \"{{name}}\"؟",
       "confirm_delete_title": "حذف حساب الشركة",
-      "confirm_delete_msg": "متأكدة إنك بدك تحذفي \"{{name}}\"؟ هالإجراء ما رح ينرجع."
+      "confirm_delete_msg": "هل أنت متأكد من رغبتك في حذف \"{{name}}\"؟ لا يمكن التراجع عن هذا الإجراء.",
+        "detail_title": "تفاصيل الشركة",
+      "field_phone": "رقم الهاتف",
+      "field_governorate": "المحافظة",
+      "field_website": "رابط الموقع",
+      "field_description": "الوصف",
+      "field_not_provided": "غير متوفر",
+      "field_rejection_reason": "سبب الرفض",
+      "field_created_at": "تاريخ التسجيل",
+      "reject_reason_label": "سبب الرفض",
+      "reject_reason_ph": "أدخل سبب الرفض (اختياري)..."
     },
     "jobs": {
       "col_title": "عنوان الوظيفة",
       "col_company": "الشركة",
       "col_location": "المحافظة",
       "col_posted": "تاريخ النشر",
-      "search_ph": "دوري بعنوان وظيفة أو شركة...",
+      "search_ph": "ابحث بعنوان وظيفة أو باسم الشركة...",
       "edit_title": "تعديل إعلان الوظيفة",
       "field_title": "العنوان",
       "field_description": "الوصف",
       "field_governorate": "المحافظة",
       "confirm_suspend_title": "إيقاف الإعلان",
-      "confirm_suspend_msg": "بدك توقفي إعلان \"{{title}}\"؟ ما رح يظهر للمستخدمين.",
+      "confirm_suspend_msg": "هل تريد إيقاف إعلان \"{{title}}\"؟ لن يظهر الإعلان للمستخدمين بعد ذلك.",
       "confirm_activate_title": "إعادة تفعيل الإعلان",
-      "confirm_activate_msg": "بدك تفعلي إعلان \"{{title}}\" من جديد؟",
+      "confirm_activate_msg": "هل تريد إعادة تفعيل إعلان \"{{title}}\"؟",
       "confirm_delete_title": "حذف الإعلان",
-      "confirm_delete_msg": "متأكدة إنك بدك تحذفي إعلان \"{{title}}\"؟ هالإجراء ما رح ينرجع."
+      "confirm_delete_msg": "هل أنت متأكد من رغبتك في حذف إعلان \"{{title}}\"؟ لا يمكن التراجع عن هذا الإجراء.",
+      "delete_reason_label": "سبب الحذف (إلزامي)",
+      "delete_reason_ph": "مثلاً: إعلان مخالف لسياسة المنصة..."
     },
     "cvs": {
       "col_owner": "صاحب السيرة الذاتية",
       "col_file": "اسم الملف",
       "col_uploaded": "تاريخ الرفع",
-      "search_ph": "دوري باسم صاحب السيرة الذاتية...",
+      "search_ph": "ابحث باسم صاحب السيرة الذاتية...",
       "confirm_delete_title": "حذف السيرة الذاتية",
-      "confirm_delete_msg": "متأكدة إنك بدك تحذفي السيرة الذاتية تبع \"{{name}}\"؟"
+      "confirm_delete_msg": "هل أنت متأكد من رغبتك في حذف السيرة الذاتية الخاصة بـ \"{{name}}\"؟"
     },
     "categories": {
-      "col_name_ar": "الاسم بالعربي",
-      "col_name_en": "الاسم بالإنجليزي",
+      "col_name_ar": "الاسم بالعربية",
+      "col_name_en": "الاسم بالإنجليزية",
       "col_jobs_count": "عدد الوظائف",
       "add": "إضافة تصنيف",
       "add_title": "إضافة تصنيف جديد",
@@ -686,7 +700,8 @@
       "field_name_ar": "الاسم بالعربي",
       "field_name_en": "الاسم بالإنجليزي",
       "confirm_delete_title": "حذف التصنيف",
-      "confirm_delete_msg": "متأكدة إنك بدك تحذفي تصنيف \"{{name}}\"؟"
+      "confirm_delete_msg": "هل أنت متأكد من رغبتك في حذف تصنيف \"{{name}}\"؟",
+      "delete_error_generic": "حدث خطأ أثناء حذف التصنيف، يُرجى المحاولة مرة أخرى."
     }
   }
 
