@@ -1,0 +1,21 @@
+$kind: http-request
+url: ""
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: CompanyToken {{company_token}}
+body:
+  type: text
+  content: |-
+    {
+      "title": "Backend Developer",
+      "description": "Build REST APIs with Django.",
+      "specialization_id": 1,
+      "city": "damascus",
+      "employment_type": "full_time",
+      "work_mode": "remote",
+      "status": "open",
+      "expires_at": "2026-12-31",
+      "is_active": true
+    }
+order: 2000

@@ -1,0 +1,15 @@
+$kind: http-request
+url: "{{base_url}}/api/seeker/education/"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: JobSeekerToken {{jobseeker_token}}
+body:
+  type: text
+  content: |-
+    {
+      "degree": "Bachelor",
+      "institution": "Example University",
+      "year": 2023
+    }
+order: 9000

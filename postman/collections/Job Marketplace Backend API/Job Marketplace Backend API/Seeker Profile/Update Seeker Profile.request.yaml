@@ -1,0 +1,16 @@
+$kind: http-request
+url: ""
+method: PUT
+headers:
+  Content-Type: application/json
+  Authorization: JobSeekerToken {{jobseeker_token}}
+body:
+  type: text
+  content: |-
+    {
+      "full_name": "Updated Name",
+      "phone_number": "+963912345678",
+      "city": "damascus",
+      "bio": "I am looking for a backend role."
+    }
+order: 2000

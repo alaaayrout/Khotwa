@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{base_url}}/api/seeker/experience/"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: JobSeekerToken {{jobseeker_token}}
+body:
+  type: text
+  content: |-
+    {
+      "title": "Backend Developer",
+      "company": "Example Corp",
+      "date_from": "2022-01-01",
+      "date_to": "2024-01-01",
+      "current": false
+    }
+order: 7000

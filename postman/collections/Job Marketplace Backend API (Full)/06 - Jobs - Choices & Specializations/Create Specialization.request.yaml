@@ -1,0 +1,15 @@
+$kind: http-request
+url: "{{base_url}}/api/jobs/specializations/create/"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: CompanyToken {{company_token}}
+body:
+  type: text
+  content: |-
+    {
+      "name_en": "Software Engineering",
+      "name_ar": "هندسة البرمجيات",
+      "is_active": true
+    }
+order: 3000

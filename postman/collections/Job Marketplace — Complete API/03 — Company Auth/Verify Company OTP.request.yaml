@@ -1,0 +1,14 @@
+$kind: http-request
+description: التحقق من OTP — الطلب يُرسل لموافقة الأدمن.
+url: "{{base_url}}/api/auth/company/verify-otp/"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "email": "company@example.com",
+      "otp": "123456"
+    }
+order: 2000

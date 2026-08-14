@@ -1,0 +1,13 @@
+$kind: http-request
+url: ""
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: CompanyToken {{company_token}}
+body:
+  type: text
+  content: |-
+    {
+      "name": "New Specialization"
+    }
+order: 3000

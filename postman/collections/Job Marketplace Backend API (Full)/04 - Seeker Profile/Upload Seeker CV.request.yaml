@@ -1,0 +1,12 @@
+$kind: http-request
+url: "{{base_url}}/api/seeker/profile/cv/"
+method: POST
+headers:
+  Authorization: JobSeekerToken {{jobseeker_token}}
+body:
+  type: formdata
+  content:
+    - type: file
+      key: cv_file
+      src: []
+order: 2000

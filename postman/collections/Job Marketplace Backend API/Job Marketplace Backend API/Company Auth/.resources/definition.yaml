@@ -1,0 +1,3 @@
+$kind: collection
+description: Register, verify OTP, and login for companies.
+order: 3000

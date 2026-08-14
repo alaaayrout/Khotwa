@@ -1,0 +1,20 @@
+$kind: http-request
+url: ""
+method: PUT
+headers:
+  Content-Type: application/json
+  Authorization: CompanyToken {{company_token}}
+body:
+  type: text
+  content: |-
+    {
+      "company_name": "Example Co",
+      "phone_number": "+963991234567",
+      "governorate": "damascus",
+      "company_type": "programming",
+      "website_url": "https://example.com",
+      "description": "Updated company description.",
+      "external_logo_url": "https://example.com/logo.png",
+      "linkedin_url": "https://linkedin.com/company/example"
+    }
+order: 2000

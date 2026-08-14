@@ -1,0 +1,20 @@
+$kind: http-request
+url: "{{base_url}}/api/auth/company/register/"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "company_name": "Example Co",
+      "email": "company@example.com",
+      "phone_number": "+963912345679",
+      "governorate": "damascus",
+      "company_type": "programming",
+      "website_url": "https://example.com",
+      "description": "Sample company description",
+      "password": "securepass123",
+      "password_confirm": "securepass123"
+    }
+order: 4000

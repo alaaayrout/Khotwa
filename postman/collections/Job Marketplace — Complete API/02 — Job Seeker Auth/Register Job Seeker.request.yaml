@@ -1,0 +1,17 @@
+$kind: http-request
+description: إرسال رمز OTP إلى البريد الإلكتروني.
+url: "{{base_url}}/api/auth/job-seeker/register/"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "full_name": "Ahmad Ali",
+      "email": "ahmad@example.com",
+      "phone_number": "+963912345678",
+      "password": "securepass123",
+      "password_confirm": "securepass123"
+    }
+order: 1000

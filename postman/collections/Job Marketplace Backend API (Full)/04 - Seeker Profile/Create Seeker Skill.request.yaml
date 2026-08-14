@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{base_url}}/api/seeker/skills/"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: JobSeekerToken {{jobseeker_token}}
+body:
+  type: text
+  content: |-
+    {
+      "name": "Python"
+    }
+order: 5000

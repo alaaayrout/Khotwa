@@ -1,0 +1,22 @@
+name: Job Marketplace Local
+values:
+  - key: base_url
+    value: 'http://localhost:8000'
+  - key: company_token
+    value: ''
+  - key: jobseeker_token
+    value: ''
+  - key: auth_token
+    value: ''
+  - key: job_id
+    value: '1'
+  - key: application_id
+    value: '1'
+  - key: specialization_id
+    value: '1'
+  - key: skill_id
+    value: '1'
+  - key: experience_id
+    value: '1'
+  - key: education_id
+    value: '1'

@@ -1,0 +1,6 @@
+$kind: http-request
+url: "{{base_url}}/api/auth/user/"
+method: GET
+headers:
+  Authorization: Token {{auth_token}}
+order: 3000

@@ -1,0 +1,17 @@
+$kind: http-request
+description: |-
+  تسجيل دخول باحث عن عمل.
+
+  **Response:** `message`, `user_type`, `data` (id, full_name, email, phone_number)
+url: "{{base_url}}/api/auth/job-seeker/login/"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "email": "ahmad@example.com",
+      "password": "securepass123"
+    }
+order: 3000

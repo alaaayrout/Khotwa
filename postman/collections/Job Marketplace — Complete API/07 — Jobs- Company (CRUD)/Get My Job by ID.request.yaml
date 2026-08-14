@@ -1,0 +1,6 @@
+$kind: http-request
+url: "{{base_url}}/api/jobs/company/jobs/{{job_id}}/"
+method: GET
+headers:
+  Authorization: CompanyToken {{company_token}}
+order: 3000

@@ -1,0 +1,7 @@
+$kind: http-request
+description: حذف ناعم (is_active=false).
+url: "{{base_url}}/api/jobs/specializations/{{specialization_id}}/delete/"
+method: DELETE
+headers:
+  Authorization: CompanyToken {{company_token}}
+order: 5000

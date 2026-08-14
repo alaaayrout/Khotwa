@@ -1,0 +1,12 @@
+$kind: http-request
+url: ""
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "access_token": "<google-oauth-token>"
+    }
+order: 5000

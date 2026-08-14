@@ -1,0 +1,6 @@
+$kind: http-request
+url: "{{base_url}}/api/seeker/experience/"
+method: GET
+headers:
+  Authorization: JobSeekerToken {{jobseeker_token}}
+order: 6000

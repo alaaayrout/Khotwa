@@ -1,0 +1,6 @@
+$kind: http-request
+url: "{{base_url}}/api/company/profile/"
+method: GET
+headers:
+  Authorization: CompanyToken {{company_token}}
+order: 1000

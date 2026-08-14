@@ -1,0 +1,22 @@
+$kind: http-request
+url: "{{base_url}}/api/auth/login/"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "email": "seeker@example.com",
+      "password": "securepass123"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      var data = JSON.parse(responseBody);
+      if (data && data.token) {
+        pm.collectionVariables.set('jobseeker_token', data.token);
+        pm.environment.set('jobseeker_token', data.token);
+      }
+    language: text/javascript
+order: 3000
