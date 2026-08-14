@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { NavLink, useNavigate } from "react-router-dom"
 import { useTranslation } from "react-i18next"
+import { API_BASE } from "../../config"
 
 const NAV_ITEMS = [
   {
@@ -61,7 +62,7 @@ export default function CompanyLayout({ children }) {
 
     const fetchCompanyProfile = async () => {
       try {
-        const res = await fetch("/api/company/profile/", {
+        const res = await fetch(`${API_BASE}/company/profile/`, {
           headers: { Authorization: `CompanyToken ${token}` },
         })
 
@@ -108,7 +109,7 @@ export default function CompanyLayout({ children }) {
           </svg>
         </button>
         <span className="text-base font-semibold text-white">
-          Job<span className="text-blue-300">Portal</span>
+          <span className="text-blue-300">خطوة</span>
         </span>
         <div className="w-6 h-6 rounded-lg bg-blue-400/20 text-blue-200 text-[10px] font-semibold flex items-center justify-center overflow-hidden flex-shrink-0">
           {companyLogoUrl && !logoError ? (
@@ -138,7 +139,7 @@ export default function CompanyLayout({ children }) {
         <div className="px-6 py-5 border-b border-white/10 flex items-start justify-between">
           <div>
             <span className="text-lg font-semibold text-white">
-              Job<span className="text-blue-300">Portal</span>
+              <span className="text-blue-300">خطوة</span>
             </span>
             <p className="text-xs text-white/40 mt-0.5">{t("company.layout.panel")}</p>
           </div>

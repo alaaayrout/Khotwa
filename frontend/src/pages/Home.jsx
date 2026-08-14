@@ -105,7 +105,16 @@ function isRecommendedJobStillOpen(rawJob) {
 // ── توحيد شكل عنصر الـ recommendation القادم من /api/recommendations/jobs/ ─────
 // شكل الـ response الفعلي (تأكدنا منه عبر Network tab): array مباشر، كل عنصر فيه قيم خام
 // (city/employment_type/work_mode/status) بدون *_label، وبدون company_logo_url ولا specialization.
-// ملاحظة: بالقصد ما منستخدم/ما منعرض similarity_score أبداً حتى إنها موجودة بالبيانات.
+// TODO(Farah): similarity_score حالياً منجيبها من item أو item.job (جربي الاتنين لأنو مش متأكدين
+// وين بالضبط الباك اند حاطها بالـ response). إذا القيمة نسبة عشرية (0 → 1) منضربها *100،
+// وإذا أصلاً رقم مئوي (0 → 100) منستخدمها زي ما هي — الفحص عبر normalizeSimilarityToPercent.
+function normalizeSimilarityToPercent(rawScore) {
+  if (rawScore == null || isNaN(rawScore)) return null
+  const num = Number(rawScore)
+  const percent = num <= 1 ? num * 100 : num
+  return Math.max(0, Math.min(100, Math.round(percent)))
+}
+
 function normalizeRecommendedJob(item, isAr) {
   const job = item?.job || item?.job_data || item
   if (!job || job.id == null) return null
@@ -122,6 +131,9 @@ function normalizeRecommendedJob(item, isAr) {
     employment_type_label: job.employment_type_label || labelOf(JOB_TYPES, job.employment_type, isAr),
     work_mode_label: job.work_mode_label || labelOf(WORK_TYPES, job.work_mode, isAr),
     specialization: job.specialization || null,
+    match_percent: normalizeSimilarityToPercent(
+      item?.similarity_score ?? item?.score ?? job?.similarity_score ?? job?.score
+    ),
   }
 }
 
@@ -472,7 +484,7 @@ transition={{
                   <p className="text-xs text-gray-500 mb-3">
                     {job.company_name} · {job.city_label}
                   </p>
-                  <div className="flex gap-2 flex-wrap">
+                  <div className="flex gap-2 flex-wrap mb-3">
                     {job.work_mode_label && (
                       <span className="text-xs px-2 py-1 bg-gray-50 text-gray-500 rounded-md">
                         {job.work_mode_label}
@@ -484,6 +496,16 @@ transition={{
                       </span>
                     )}
                   </div>
+                  {job.match_percent != null && (
+                    <div className="flex items-center justify-end pt-3 border-t border-gray-50">
+                      <span className="text-xs font-medium px-2 py-1 rounded-full bg-green-50 text-green-700 flex items-center gap-1">
+                        <span className="text-gray-500 font-normal">
+                          {isAr ? "نسبة التوافق" : "Match score"}
+                        </span>
+                        {job.match_percent}%
+                      </span>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -503,67 +525,40 @@ transition={{
     }}
     className="px-4 md:px-10 py-10"
 >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
-            {/* وظائف زارها مؤخراً */}
-            <div>
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-lg font-medium text-gray-900">{t("home.recently_viewed")}</h2>
-                <span className="text-sm text-blue-600 cursor-pointer">{t("home.see_all")}</span>
-              </div>
-              <div className="flex flex-col gap-3">
-                {jobs.slice(0, 2).map(job => (
-                  <div key={job.id} onClick={() => navigate(`/jobs/${job.id}`)} className="bg-white border border-gray-100 rounded-xl p-4 flex justify-between items-center cursor-pointer hover:-translate-y-2
-                  hover:shadow-2xl
-                  hover:scale-[1.02]
-                  transition-all
-                  duration-300 transition">
-                    <div>
-                      <p className="text-sm font-medium text-gray-900">{job.title}</p>
-                      <p className="text-xs text-gray-500">{job.company_name} · {job.city_label}</p>
-                    </div>
-                    <span className="text-xs px-2 py-1 rounded-full bg-blue-50 text-blue-700">{job.employment_type_label}</span>
+          {/* طلباته الأخيرة */}
+          <div>
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-medium text-gray-900">{t("home.my_applications")}</h2>
+              <span className="text-sm text-blue-600 cursor-pointer">{t("home.see_all")}</span>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {applicationsLoading ? (
+                [1, 2].map(i => (
+                  <div key={i} className="bg-white border border-gray-100 rounded-xl p-4 animate-pulse">
+                    <div className="h-4 bg-gray-100 rounded w-3/4 mb-2" />
+                    <div className="h-3 bg-gray-100 rounded w-1/2" />
                   </div>
-                ))}
-              </div>
-            </div>
-
-            {/* طلباته الأخيرة */}
-            <div>
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-lg font-medium text-gray-900">{t("home.my_applications")}</h2>
-                <span className="text-sm text-blue-600 cursor-pointer">{t("home.see_all")}</span>
-              </div>
-              <div className="flex flex-col gap-3">
-                {applicationsLoading ? (
-                  [1, 2].map(i => (
-                    <div key={i} className="bg-white border border-gray-100 rounded-xl p-4 animate-pulse">
-                      <div className="h-4 bg-gray-100 rounded w-3/4 mb-2" />
-                      <div className="h-3 bg-gray-100 rounded w-1/2" />
+                ))
+              ) : applicationsError ? (
+                <p className="text-sm text-red-400 text-center py-4">{t("home.load_error")}</p>
+              ) : applications.length === 0 ? (
+                <p className="text-sm text-gray-400 text-center py-4">{t("home.no_jobs")}</p>
+              ) : (
+                applications.slice(0, 2).map(application => (
+                  <button
+                    key={application.id}
+                    type="button"
+                    onClick={() => navigate(`/jobs/${application.id}`)}
+                    className="w-full bg-white border border-gray-100 rounded-xl p-4 flex justify-between items-center hover:-translate-y-2 hover:shadow-2xl hover:scale-[1.02] transition-all duration-300"
+                  >
+                    <div className="w-full text-right">
+                      <p className="text-sm font-medium text-gray-900">{application.job_title}</p>
+                      <p className="text-xs text-gray-500">{application.company_name}</p>
                     </div>
-                  ))
-                ) : applicationsError ? (
-                  <p className="text-sm text-red-400 text-center py-4">{t("home.load_error")}</p>
-                ) : applications.length === 0 ? (
-                  <p className="text-sm text-gray-400 text-center py-4">{t("home.no_jobs")}</p>
-                ) : (
-                  applications.slice(0, 2).map(application => (
-                    <button
-                      key={application.id}
-                      type="button"
-                      onClick={() => navigate(`/jobs/${application.id}`)}
-                      className="w-full bg-white border border-gray-100 rounded-xl p-4 flex justify-between items-center hover:-translate-y-2 hover:shadow-2xl hover:scale-[1.02] transition-all duration-300"
-                    >
-                      <div className="w-full text-right">
-                        <p className="text-sm font-medium text-gray-900">{application.job_title}</p>
-                        <p className="text-xs text-gray-500">{application.company_name}</p>
-                      </div>
-                    </button>
-                  ))
-                )}
-              </div>
+                  </button>
+                ))
+              )}
             </div>
-
           </div>
         </motion.section>
       )}

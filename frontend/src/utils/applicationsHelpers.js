@@ -63,7 +63,51 @@ export function getMatchScore(app) {
   const seekerSkills = app.seeker_skills || app.applicant_skills || null
   return computeSkillOverlapScore(requiredSkills, seekerSkills)
 }
+export function filterApplicationsByJob(applications, jobId) {
+  return applications.filter(app => String(getJobId(app)) === String(jobId))
+}
 
+export function getJobTitle(app) {
+  return app.job_title || app.job?.title || app.job_posting_title || "-"
+}
+
+export function getSeekerName(app) {
+  return (
+    app.seeker_name ||
+    app.applicant_name ||
+    app.full_name ||
+    app.applicant_profile?.full_name ||
+    app.job_seeker?.full_name ||
+    app.seeker?.full_name ||
+    "-"
+  )
+}
+
+export function getSeekerSkills(app) {
+  const skills =
+    app.seeker_skills ||
+    app.applicant_skills ||
+    app.applicant_profile?.skills ||
+    app.job_seeker?.skills ||
+    app.seeker?.skills ||
+    []
+
+  return Array.isArray(skills)
+    ? skills.map(s => (typeof s === "string" ? s : s?.name)).filter(Boolean)
+    : []
+}
+
+export function getRequiredSkills(app) {
+  const skills =
+    app.job_required_skills ||
+    app.job_skills ||
+    app.job?.required_skills ||
+    []
+
+  return Array.isArray(skills)
+    ? skills.map(s => (typeof s === "string" ? s : s?.name)).filter(Boolean)
+    : []
+}
 // ── تجميع الطلبات حسب الوظيفة ───────────────────────────────────────────
 export function groupApplicationsByJob(applications) {
   const map = new Map()
