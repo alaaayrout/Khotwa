@@ -8,7 +8,7 @@ import {
 } from "../../api/companyApplicationsApi"
 import {
   groupApplicationsByJob,
-
+  filterApplicationsByJob,
   sortApplications,
   getMatchScore,
   getAppliedAt,
@@ -22,10 +22,10 @@ import {
 
 const PAGE_SIZE = 10 // أول عشرة طلبات لكل وظيفة قبل ما نحتاج "عرض الكل"
 
-// TODO(Farah): applicationsHelpers.js (getApplicantProfile) ما فيها حقل id ظاهر بالـ
-// applicant_profile الحالي (بس full_name/email/skills). جربي هالاحتمالات، وإذا ولا وحدة
-// منهن موجودة فعلياً بالـ response، لازم تطلبي من زميلتك تضيف seeker id (أو applicant_profile.id)
-// بالـ /api/applications/company/applications/ حتى يصير فيك تربطي كل طلب بصفحة بروفايل الباحث.
+// TODO(Farah): applicant_profile (المصدر الوحيد لبيانات الباحث بالـ response حسب
+// applicationsHelpers.js) فيها بس full_name/email/skills — ما في حقل id ظاهر.
+// جربي هالاحتمالات، وإذا ولا وحدة منهن شغالة اطلبي من زميلتك تضيف seeker id
+// (أو applicant_profile.id) حتى يصير فيك تربطي كل طلب بصفحة بروفايل الباحث.
 function getSeekerId(app) {
   return (
     app.seeker_id ??
@@ -126,6 +126,7 @@ function MatchScoreModal({ score, app, t, onClose }) {
   )
 }
 
+// ===== زر نسبة التطابق (تفاعلي: يفتح مودال التفاصيل) =====
 function MatchScoreButton({ score, app, t }) {
   const [open, setOpen] = useState(false)
 
@@ -163,82 +164,102 @@ function MatchScoreButton({ score, app, t }) {
 }
 
 // ===== صف طلب واحد =====
-function ApplicationRow({ app, isAr, t, onAccept, onReject, onMarkReviewed, busy }) {
+function ApplicationRow({ app, isAr, t, navigate, onAccept, onReject, onMarkReviewed, busy }) {
   const status = app.status || "applied"
   const score = getMatchScore(app)
   const seekerEmail = getSeekerEmail(app)
   const seekerName = getSeekerName(app)
+  const seekerId = getSeekerId(app)
+  const initials = (seekerName || "؟").trim().slice(0, 2)
 
   return (
     <div className="px-6 py-4 hover:bg-gray-50/50 transition">
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <p className="text-sm font-medium text-gray-900 truncate">
-            {seekerName || "-"}
-          </p>
-          <div className="flex items-center gap-2 mt-1">
-            <p className="text-xs text-gray-400">
-              {formatAppliedDate(getAppliedAt(app), isAr)}
-            </p>
-            <span className="text-gray-200">·</span>
-            <MatchScorePill score={score} t={t} />
-          </div>
+      <div className="flex items-start gap-3">
+        {/* أفاتار الباحث */}
+        <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-800 text-xs font-semibold flex items-center justify-center flex-shrink-0">
+          {initials}
         </div>
-        <StatusBadge status={status} t={t} />
-      </div>
 
-      {/* ===== إجراءات ===== */}
-      <div className="flex items-center gap-2 mt-3">
-        {isOpenStatus(status) && (
-          <>
-            <button
-              disabled={busy}
-              onClick={() => onAccept(app)}
-              className="text-xs px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition disabled:opacity-50"
-            >
-              {t("company.applications.accept")}
-            </button>
-            <button
-              disabled={busy}
-              onClick={() => onReject(app)}
-              className="text-xs px-3 py-1.5 rounded-lg bg-white border border-gray-200 hover:border-red-200 hover:text-red-600 text-gray-600 font-medium transition disabled:opacity-50"
-            >
-              {t("company.applications.reject")}
-            </button>
-            {status === "applied" && (
+        <div className="min-w-0 flex-1">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <p className="text-sm font-medium text-gray-900 truncate">
+                {seekerName || "-"}
+              </p>
+              <div className="flex items-center gap-2 mt-1 flex-wrap">
+                <p className="text-xs text-gray-400">
+                  {formatAppliedDate(getAppliedAt(app), isAr)}
+                </p>
+                <span className="text-gray-200">·</span>
+                <MatchScoreButton score={score} app={app} t={t} />
+              </div>
+            </div>
+            <StatusBadge status={status} t={t} />
+          </div>
+
+          {/* ===== إجراءات ===== */}
+          <div className="flex items-center flex-wrap gap-2 mt-3">
+            {seekerId && (
               <button
-                disabled={busy}
-                onClick={() => onMarkReviewed(app)}
-                className="text-xs px-3 py-1.5 rounded-lg text-gray-400 hover:text-gray-600 font-medium transition disabled:opacity-50"
+                onClick={() => navigate(`/company/seekers/${seekerId}`)}
+                className="text-xs px-3 py-1.5 rounded-lg bg-white border border-gray-200 hover:border-blue-200 hover:text-blue-700 text-gray-600 font-medium transition inline-flex items-center gap-1.5"
               >
-                {t("company.applications.mark_reviewed")}
+                👤 {t("company.applications.view_profile")}
               </button>
             )}
-          </>
-        )}
 
-        {status === "accepted" &&
-          (seekerEmail ? (
-            <a
-              href={`mailto:${seekerEmail}?subject=${encodeURIComponent(
-                t("company.applications.email_subject", { job: app.job_title || "" })
-              )}`}
-              className="text-xs px-3 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 font-medium transition inline-flex items-center gap-1.5"
-            >
-              ✉️ {t("company.applications.contact_email")}
-            </a>
-          ) : (
-            // TODO(Farah): ما في إيميل الباحث بالـ response الحالي، لازم يضاف الحقل
-            <span className="text-xs text-gray-300">
-              {t("company.applications.email_unavailable")}
-            </span>
-          ))}
+            {isOpenStatus(status) && (
+              <>
+                <button
+                  disabled={busy}
+                  onClick={() => onAccept(app)}
+                  className="text-xs px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition disabled:opacity-50"
+                >
+                  {t("company.applications.accept")}
+                </button>
+                <button
+                  disabled={busy}
+                  onClick={() => onReject(app)}
+                  className="text-xs px-3 py-1.5 rounded-lg bg-white border border-gray-200 hover:border-red-200 hover:text-red-600 text-gray-600 font-medium transition disabled:opacity-50"
+                >
+                  {t("company.applications.reject")}
+                </button>
+                {status === "applied" && (
+                  <button
+                    disabled={busy}
+                    onClick={() => onMarkReviewed(app)}
+                    className="text-xs px-3 py-1.5 rounded-lg text-gray-400 hover:text-gray-600 font-medium transition disabled:opacity-50"
+                  >
+                    {t("company.applications.mark_reviewed")}
+                  </button>
+                )}
+              </>
+            )}
 
-        {status === "rejected" && (
-          <span className="text-xs text-gray-300">
-            {t("company.applications.status_updated")}
-          </span>
-        )}
+            {status === "accepted" &&
+              (seekerEmail ? (
+                <a
+                  href={`mailto:${seekerEmail}?subject=${encodeURIComponent(
+                    t("company.applications.email_subject", { job: app.job_title || "" })
+                  )}`}
+                  className="text-xs px-3 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 font-medium transition inline-flex items-center gap-1.5"
+                >
+                  ✉️ {t("company.applications.contact_email")}
+                </a>
+              ) : (
+                // TODO(Farah): ما في إيميل الباحث بالـ response الحالي، لازم يضاف الحقل
+                <span className="text-xs text-gray-300">
+                  {t("company.applications.email_unavailable")}
+                </span>
+              ))}
+
+            {status === "rejected" && (
+              <span className="text-xs text-gray-300">
+                {t("company.applications.status_updated")}
+              </span>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   )
@@ -250,6 +271,7 @@ function JobApplicationsGroup({
   sortBy,
   isAr,
   t,
+  navigate,
   onAccept,
   onReject,
   onMarkReviewed,
@@ -296,6 +318,7 @@ function JobApplicationsGroup({
               app={app}
               isAr={isAr}
               t={t}
+              navigate={navigate}
               onAccept={onAccept}
               onReject={onReject}
               onMarkReviewed={onMarkReviewed}
@@ -624,6 +647,7 @@ export default function CompanyApplications() {
                 sortBy={sortBy}
                 isAr={isAr}
                 t={t}
+                navigate={navigate}
                 showHeader={!jobId}
                 onAccept={handleAccept}
                 onReject={app => setRejectTarget(app)}

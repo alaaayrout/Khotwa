@@ -363,6 +363,7 @@
       "title": "Manage Applications",
       "subtitle": "{{count}} applications awaiting review",
       "load_error": "Load error",
+      "back_to_jobs": "Back to Jobs",
       "sort_label": "Sort by",
       "sort": {
         "newest": "Newest",
@@ -391,6 +392,32 @@
         "reviewed": "Reviewed",
         "accepted": "Accepted",
         "rejected": "Rejected"
+      },
+       "status_plural": {
+        "all": "All",
+        "applied": "Applied",
+        "reviewed": "Under Review",
+        "accepted": "Accepted",
+        "rejected": "Rejected"
+      },
+      "search_placeholder": "Search for an applicant...",
+
+
+      "no_match_filters": "No applications match the selected filters.",
+      
+      "job_scope_fallback_title": "Job Applications",
+
+      
+
+
+      "view_profile": "View Profile",
+     
+      "match_modal": {
+        "title": "Match Score Details",
+        "description": "The match score indicates how well the applicant's skills match the skills required for the job.",
+        "matched_skills": "Matched Skills",
+        "no_shared_skills": "No Shared Skills",
+        "skills_unavailable": "Skills Data Unavailable"
       },
       "confirm_reject": {
         "title": "Confirm rejection",

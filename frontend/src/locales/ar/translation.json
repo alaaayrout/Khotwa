@@ -369,6 +369,7 @@
  "applications": {
       "title": "إدارة الطلبات",
       "subtitle": "{{count}} طلب بانتظار المراجعة",
+      "back_to_jobs": "العودة إلى الوظائف",
       "load_error": "حدث خطأ أثناء تحميل البيانات",
       "sort_label": "ترتيب حسب",
       "sort": {
@@ -399,12 +400,36 @@
         "accepted": "مقبول",
         "rejected": "مرفوض"
       },
+       "status_plural": {
+        "all": "الكل",
+        "applied": "المقدَّمة",
+        "reviewed": "قيد المراجعة",
+        "accepted": "المقبولة",
+        "rejected": "المرفوضة"
+      },
+      "view_profile": "عرض الملف الشخصي",
       "confirm_reject": {
         "title": "تأكيد رفض الطلب",
         "message": "سيتم رفض طلب \"{{name}}\". هل أنت متأكد؟",
         "cancel": "تراجع",
         "confirm": "تأكيد الرفض"
-      }
+      },
+      "match_modal": {
+        "title": "تفاصيل نسبة التطابق",
+        "description": "تعكس نسبة التطابق مدى توافق مهارات المتقدم مع المهارات المطلوبة للوظيفة.",
+        "matched_skills": "المهارات المتطابقة",
+        "no_shared_skills": "لا توجد مهارات مشتركة",
+        "skills_unavailable": "بيانات المهارات غير متاحة"
+      },
+       "search_placeholder": "البحث عن متقدم...",
+
+
+      
+      "no_match_filters": "لا توجد طلبات تطابق عوامل التصفية.",
+      
+
+      "job_scope_fallback_title": "طلبات الوظيفة"
+
     }
   },
     "seeker": {
