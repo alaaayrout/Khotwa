@@ -8,35 +8,26 @@ import {
 } from "../../api/companyApplicationsApi"
 import {
   groupApplicationsByJob,
-
+  filterApplicationsByJob,
   sortApplications,
   getMatchScore,
   getAppliedAt,
   getJobTitle,
   getSeekerName,
   getSeekerEmail,
+  getSeekerPhone,
+  getSeekerGovernorate,
+  getSeekerBio,
+  getSeekerCv,
+  getSeekerProfilePicture,
   getSeekerSkills,
+  getSeekerExperiences,
+  getSeekerEducation,
   getRequiredSkills,
   formatAppliedDate,
 } from "../../utils/applicationsHelpers"
 
 const PAGE_SIZE = 10 // أول عشرة طلبات لكل وظيفة قبل ما نحتاج "عرض الكل"
-
-// TODO(Farah): applicationsHelpers.js (getApplicantProfile) ما فيها حقل id ظاهر بالـ
-// applicant_profile الحالي (بس full_name/email/skills). جربي هالاحتمالات، وإذا ولا وحدة
-// منهن موجودة فعلياً بالـ response، لازم تطلبي من زميلتك تضيف seeker id (أو applicant_profile.id)
-// بالـ /api/applications/company/applications/ حتى يصير فيك تربطي كل طلب بصفحة بروفايل الباحث.
-function getSeekerId(app) {
-  return (
-    app.seeker_id ??
-    app.job_seeker_id ??
-    app.applicant_id ??
-    app.applicant_profile?.id ??
-    app.applicant_profile?.seeker_id ??
-    app.seeker?.id ??
-    null
-  )
-}
 
 // ── مؤكّد من الباك إند: القيم المسموحة هي applied / reviewed / accepted / rejected
 const STATUS_BADGE = {
@@ -46,7 +37,7 @@ const STATUS_BADGE = {
   rejected: "bg-red-50 text-red-600 border-red-100",
 }
 
-const STATUS_TABS = ["all", "applied", "reviewed", "accepted", "rejected"]
+const STATUS_TABS = ["all", "applied", "reviewed", "accepted"]
 
 // حالات غير نهائية بعدها الطلب "قيد المراجعة" (لسا فيها إمكانية قبول/رفض)
 function isOpenStatus(status) {
@@ -126,6 +117,7 @@ function MatchScoreModal({ score, app, t, onClose }) {
   )
 }
 
+// ===== زر نسبة التطابق (تفاعلي: يفتح مودال التفاصيل) =====
 function MatchScoreButton({ score, app, t }) {
   const [open, setOpen] = useState(false)
 
@@ -162,84 +154,265 @@ function MatchScoreButton({ score, app, t }) {
   )
 }
 
+// ===== مودال بروفايل الباحث =====
+// البيانات كلها موجودة أصلاً بـ applicant_profile ضمن الـ response (اسم، إيميل،
+// تلفون، محافظة، bio، مهارات، خبرات، تعليم، CV) — ما بيحتاج id ولا صفحة منفصلة.
+function SeekerProfileModal({ app, t, onClose }) {
+  const [imgError, setImgError] = useState(false)
+  const name = getSeekerName(app)
+  const email = getSeekerEmail(app)
+  const phone = getSeekerPhone(app)
+  const governorate = getSeekerGovernorate(app)
+  const bio = getSeekerBio(app)
+  const cv = getSeekerCv(app)
+  const picture = getSeekerProfilePicture(app)
+  const skills = getSeekerSkills(app)
+  const experiences = getSeekerExperiences(app)
+  const education = getSeekerEducation(app)
+  const initials = (name || "؟").trim().slice(0, 2)
+
+  return (
+    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4" onClick={onClose}>
+      <div className="bg-white rounded-2xl p-6 max-w-lg w-full max-h-[85vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+        <div className="flex items-start justify-between mb-4">
+          <div className="flex items-center gap-3">
+            {picture && !imgError ? (
+              <img
+                src={picture}
+                alt={name || ""}
+                onError={() => setImgError(true)}
+                className="w-12 h-12 rounded-xl object-cover flex-shrink-0 bg-blue-50"
+              />
+            ) : (
+              <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-800 text-sm font-semibold flex items-center justify-center flex-shrink-0">
+                {initials}
+              </div>
+            )}
+            <div>
+              <h3 className="text-base font-semibold text-gray-900">{name}</h3>
+              {governorate && <p className="text-xs text-gray-400 mt-0.5">{governorate}</p>}
+            </div>
+          </div>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-sm">✕</button>
+        </div>
+
+        <div className="space-y-1 mb-4 text-xs text-gray-600">
+          {email && <p>✉️ {email}</p>}
+          {phone && <p>📞 {phone}</p>}
+        </div>
+
+        {bio && (
+          <div className="mb-4">
+            <p className="text-xs font-medium text-gray-700 mb-1">
+              {t("company.applications.profile_modal.bio")}
+            </p>
+            <p className="text-xs text-gray-500 leading-relaxed">{bio}</p>
+          </div>
+        )}
+
+        {skills.length > 0 && (
+          <div className="mb-4">
+            <p className="text-xs font-medium text-gray-700 mb-1.5">
+              {t("company.applications.profile_modal.skills")}
+            </p>
+            <div className="flex flex-wrap gap-1.5">
+              {skills.map(s => (
+                <span key={s} className="text-xs px-2 py-1 rounded-md bg-blue-50 text-blue-700">
+                  {s}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {experiences.length > 0 && (
+          <div className="mb-4">
+            <p className="text-xs font-medium text-gray-700 mb-1.5">
+              {t("company.applications.profile_modal.experience")}
+            </p>
+            <div className="space-y-2">
+              {experiences.map((exp, i) => (
+                <div key={i} className="text-xs">
+                  <p className="text-gray-800 font-medium">
+                    {exp.title} — {exp.company}
+                  </p>
+                  <p className="text-gray-400">
+                    {exp.date_from} - {exp.current ? t("company.applications.profile_modal.current") : exp.date_to}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {education.length > 0 && (
+          <div className="mb-4">
+            <p className="text-xs font-medium text-gray-700 mb-1.5">
+              {t("company.applications.profile_modal.education")}
+            </p>
+            <div className="space-y-2">
+              {education.map((edu, i) => (
+                <div key={i} className="text-xs">
+                  <p className="text-gray-800 font-medium">
+                    {edu.degree} — {edu.institution}
+                  </p>
+                  <p className="text-gray-400">{edu.year}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {cv && (
+          <a
+            href={cv}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition"
+          >
+            📄 {t("company.applications.profile_modal.view_cv")}
+          </a>
+        )}
+      </div>
+    </div>
+  )
+}
+
 // ===== صف طلب واحد =====
-function ApplicationRow({ app, isAr, t, onAccept, onReject, onMarkReviewed, busy }) {
+function ApplicationRow({ app, isAr, t, navigate, onAccept, onReject, onMarkReviewed, busy }) {
+  const [showProfile, setShowProfile] = useState(false)
+  const [imgError, setImgError] = useState(false)
   const status = app.status || "applied"
   const score = getMatchScore(app)
   const seekerEmail = getSeekerEmail(app)
   const seekerName = getSeekerName(app)
+  const seekerCv = getSeekerCv(app)
+  const seekerPicture = getSeekerProfilePicture(app)
+  const experiencesCount = getSeekerExperiences(app).length
+  const initials = (seekerName || "؟").trim().slice(0, 2)
 
   return (
     <div className="px-6 py-4 hover:bg-gray-50/50 transition">
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <p className="text-sm font-medium text-gray-900 truncate">
-            {seekerName || "-"}
-          </p>
-          <div className="flex items-center gap-2 mt-1">
-            <p className="text-xs text-gray-400">
-              {formatAppliedDate(getAppliedAt(app), isAr)}
-            </p>
-            <span className="text-gray-200">·</span>
-            <MatchScorePill score={score} t={t} />
+      <div className="flex items-start gap-3">
+        {/* أفاتار الباحث: صورة فعلية لو موجودة وتحمّلت، وإلا الأحرف الأولى */}
+        {seekerPicture && !imgError ? (
+          <img
+            src={seekerPicture}
+            alt={seekerName || ""}
+            onError={() => setImgError(true)}
+            className="w-10 h-10 rounded-xl object-cover flex-shrink-0 bg-blue-50"
+          />
+        ) : (
+          <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-800 text-xs font-semibold flex items-center justify-center flex-shrink-0">
+            {initials}
+          </div>
+        )}
+
+        <div className="min-w-0 flex-1">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <p className="text-sm font-medium text-gray-900 truncate">
+                {seekerName || "-"}
+              </p>
+              <div className="flex items-center gap-2 mt-1 flex-wrap">
+                <p className="text-xs text-gray-400">
+                  {formatAppliedDate(getAppliedAt(app), isAr)}
+                </p>
+                <span className="text-gray-200">·</span>
+                <MatchScoreButton score={score} app={app} t={t} />
+                {experiencesCount > 0 && (
+                  <>
+                    <span className="text-gray-200">·</span>
+                    <span className="text-xs text-gray-400">
+                      💼 {t("company.applications.experience_count", { count: experiencesCount })}
+                    </span>
+                  </>
+                )}
+                {seekerCv && (
+                  <>
+                    <span className="text-gray-200">·</span>
+                    <a
+                      href={seekerCv}
+                      target="_blank"
+                      rel="noreferrer"
+                      onClick={e => e.stopPropagation()}
+                      className="text-xs text-blue-600 hover:underline font-medium inline-flex items-center gap-1"
+                    >
+                      📄 {t("company.applications.profile_modal.view_cv")}
+                    </a>
+                  </>
+                )}
+              </div>
+            </div>
+            <StatusBadge status={status} t={t} />
+          </div>
+
+          {/* ===== إجراءات ===== */}
+          <div className="flex items-center flex-wrap gap-2 mt-3">
+            <button
+              onClick={() => setShowProfile(true)}
+              className="text-xs px-3 py-1.5 rounded-lg bg-white border border-gray-200 hover:border-blue-200 hover:text-blue-700 text-gray-600 font-medium transition inline-flex items-center gap-1.5"
+            >
+              👤 {t("company.applications.view_profile")}
+            </button>
+
+            {isOpenStatus(status) && (
+              <>
+                <button
+                  disabled={busy}
+                  onClick={() => onAccept(app)}
+                  className="text-xs px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition disabled:opacity-50"
+                >
+                  {t("company.applications.accept")}
+                </button>
+                <button
+                  disabled={busy}
+                  onClick={() => onReject(app)}
+                  className="text-xs px-3 py-1.5 rounded-lg bg-white border border-gray-200 hover:border-red-200 hover:text-red-600 text-gray-600 font-medium transition disabled:opacity-50"
+                >
+                  {t("company.applications.reject")}
+                </button>
+                {status === "applied" && (
+                  <button
+                    disabled={busy}
+                    onClick={() => onMarkReviewed(app)}
+                    className="text-xs px-3 py-1.5 rounded-lg text-gray-400 hover:text-gray-600 font-medium transition disabled:opacity-50"
+                  >
+                    {t("company.applications.mark_reviewed")}
+                  </button>
+                )}
+              </>
+            )}
+
+            {status === "accepted" &&
+              (seekerEmail ? (
+                <a
+                  href={`mailto:${seekerEmail}?subject=${encodeURIComponent(
+                    t("company.applications.email_subject", { job: app.job_title || "" })
+                  )}`}
+                  className="text-xs px-3 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 font-medium transition inline-flex items-center gap-1.5"
+                >
+                  ✉️ {t("company.applications.contact_email")}
+                </a>
+              ) : (
+                // TODO(Farah): ما في إيميل الباحث بالـ response الحالي، لازم يضاف الحقل
+                <span className="text-xs text-gray-300">
+                  {t("company.applications.email_unavailable")}
+                </span>
+              ))}
+
+            {status === "rejected" && (
+              <span className="text-xs text-gray-300">
+                {t("company.applications.status_updated")}
+              </span>
+            )}
           </div>
         </div>
-        <StatusBadge status={status} t={t} />
       </div>
 
-      {/* ===== إجراءات ===== */}
-      <div className="flex items-center gap-2 mt-3">
-        {isOpenStatus(status) && (
-          <>
-            <button
-              disabled={busy}
-              onClick={() => onAccept(app)}
-              className="text-xs px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition disabled:opacity-50"
-            >
-              {t("company.applications.accept")}
-            </button>
-            <button
-              disabled={busy}
-              onClick={() => onReject(app)}
-              className="text-xs px-3 py-1.5 rounded-lg bg-white border border-gray-200 hover:border-red-200 hover:text-red-600 text-gray-600 font-medium transition disabled:opacity-50"
-            >
-              {t("company.applications.reject")}
-            </button>
-            {status === "applied" && (
-              <button
-                disabled={busy}
-                onClick={() => onMarkReviewed(app)}
-                className="text-xs px-3 py-1.5 rounded-lg text-gray-400 hover:text-gray-600 font-medium transition disabled:opacity-50"
-              >
-                {t("company.applications.mark_reviewed")}
-              </button>
-            )}
-          </>
-        )}
-
-        {status === "accepted" &&
-          (seekerEmail ? (
-            <a
-              href={`mailto:${seekerEmail}?subject=${encodeURIComponent(
-                t("company.applications.email_subject", { job: app.job_title || "" })
-              )}`}
-              className="text-xs px-3 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 font-medium transition inline-flex items-center gap-1.5"
-            >
-              ✉️ {t("company.applications.contact_email")}
-            </a>
-          ) : (
-            // TODO(Farah): ما في إيميل الباحث بالـ response الحالي، لازم يضاف الحقل
-            <span className="text-xs text-gray-300">
-              {t("company.applications.email_unavailable")}
-            </span>
-          ))}
-
-        {status === "rejected" && (
-          <span className="text-xs text-gray-300">
-            {t("company.applications.status_updated")}
-          </span>
-        )}
-      </div>
+      {showProfile && (
+        <SeekerProfileModal app={app} t={t} onClose={() => setShowProfile(false)} />
+      )}
     </div>
   )
 }
@@ -250,6 +423,7 @@ function JobApplicationsGroup({
   sortBy,
   isAr,
   t,
+  navigate,
   onAccept,
   onReject,
   onMarkReviewed,
@@ -268,7 +442,7 @@ function JobApplicationsGroup({
 
   return (
     <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden">
-      {showHeader && (
+      {showHeader && group.jobTitle && group.jobTitle !== "-" && (
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-50">
           <div>
             <h3 className="text-sm font-semibold text-gray-800">
@@ -296,6 +470,7 @@ function JobApplicationsGroup({
               app={app}
               isAr={isAr}
               t={t}
+              navigate={navigate}
               onAccept={onAccept}
               onReject={onReject}
               onMarkReviewed={onMarkReviewed}
@@ -410,10 +585,11 @@ export default function CompanyApplications() {
   }
 
   // نطاق الصفحة: كل الطلبات، أو طلبات وظيفة وحدة إذا مفتوحة من /company/jobs/:jobId/applications
-  const scoped = useMemo(
-    () => (jobId ? filterApplicationsByJob(applications, jobId) : applications),
-    [applications, jobId]
-  )
+  // الطلبات المرفوضة (rejected) مستبعدة نهائياً من الصفحة — بمجرد ما ينرفض الطلب بيختفي فوراً
+  const scoped = useMemo(() => {
+    const base = jobId ? filterApplicationsByJob(applications, jobId) : applications
+    return base.filter(a => a.status !== "rejected")
+  }, [applications, jobId])
 
   const scopedJobTitle = useMemo(() => {
     if (!jobId) return null
@@ -501,7 +677,7 @@ export default function CompanyApplications() {
   const SORT_OPTIONS = [
     { key: "newest", label: t("company.applications.sort.newest") },
     { key: "oldest", label: t("company.applications.sort.oldest") },
-    { key: "match", label: t("company.applications.sort.match") },
+   /*  { key: "match", label: t("company.applications.sort.match") }, */
   ]
 
   return (
@@ -564,7 +740,7 @@ export default function CompanyApplications() {
             />
           </div>
 
-          <div className="flex items-center gap-2 border-t border-gray-50 pt-3">
+           <div className="flex items-center gap-2 border-t border-gray-50 pt-3">
             <span className="text-xs text-gray-400">
               {t("company.applications.sort_label")}:
             </span>
@@ -592,8 +768,8 @@ export default function CompanyApplications() {
                 </button>
               )
             })}
-          </div>
-        </div>
+          </div> 
+        </div> 
 
         {/* ===== حالة التحميل ===== */}
         {loading && (
@@ -624,6 +800,7 @@ export default function CompanyApplications() {
                 sortBy={sortBy}
                 isAr={isAr}
                 t={t}
+                navigate={navigate}
                 showHeader={!jobId}
                 onAccept={handleAccept}
                 onReject={app => setRejectTarget(app)}
