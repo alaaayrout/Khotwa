@@ -407,6 +407,9 @@
         "accepted": "المقبولة",
         "rejected": "المرفوضة"
       },
+      "profile_modal":{
+        "skills" :"المهارات"
+      },
       "view_profile": "عرض الملف الشخصي",
       "confirm_reject": {
         "title": "تأكيد رفض الطلب",

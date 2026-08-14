@@ -400,6 +400,9 @@
         "accepted": "Accepted",
         "rejected": "Rejected"
       },
+      "profile_modal":{
+        "skills" :"Skills"
+      },
       "search_placeholder": "Search for an applicant...",
 
 
