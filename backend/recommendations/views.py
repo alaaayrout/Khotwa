@@ -1,3 +1,4 @@
+
 from rest_framework import status
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.response import Response
@@ -6,7 +7,6 @@ from jobs.models import JobPosting
 from seeker_profiles.authentication import JobSeekerTokenAuthentication
 from seeker_profiles.permissions import IsJobSeekerAuthenticated
 from .services import EmbeddingService
-
 def get_company_logo(company, request):
     profile = getattr(company, 'profile', None)
     if profile is None:
@@ -16,7 +16,9 @@ def get_company_logo(company, request):
     if profile.external_picture_url:
            return profile.external_picture_url
     return None
-
+def build_block(header, items):
+    content = "\n".join(filter(None, items))
+    return [header, content] if content else []
 
 @api_view(['GET'])
 @authentication_classes([JobSeekerTokenAuthentication])
@@ -28,28 +30,19 @@ def recommended_jobs_for_seeker(request):
     if seeker_profile is None:
         return Response({'detail': 'Seeker profile not found.'}, status=status.HTTP_404_NOT_FOUND)
 
+    
     embedding_service = EmbeddingService()
-    seeker_text = "\n".join(filter(None, [
-     seeker.full_name,
-     seeker_profile.bio,
-     seeker_profile.governorate,
 
-     "Skills",
-     "\n".join(skill.name for skill in seeker_profile.skills.all()),
+    seeker_parts = [seeker_profile.bio]
+    seeker_parts += build_block("Skills", [s.name for s in seeker_profile.skills.all()])
+    seeker_parts += build_block("Education", [f"{e.degree} {e.institution}" for e in seeker_profile.education_entries.all()])
 
-     "Experience",
-     "\n".join(
-        f"{exp.title} {exp.company}"
-        for exp in seeker_profile.experiences.all()
-    ),
-
-     "Education",
-     "\n".join(
-        f"{edu.degree} {edu.institution}"
-        for edu in seeker_profile.education_entries.all()
-    ),
-]))
-
+    seeker_text = "\n".join(filter(None, seeker_parts))
+    seeker_text_with_location = "\n".join(
+    filter(None, seeker_parts + [seeker_profile.governorate])
+)
+    seeker_vector_without_location = embedding_service.encode(seeker_text)
+    seeker_vector_with_location = embedding_service.encode(seeker_text_with_location)
     jobs = (
         JobPosting.objects.filter(status='open', is_active=True, expires_at__gte=timezone.localdate())
         .select_related('company','company__profile','specialization')
@@ -59,35 +52,22 @@ def recommended_jobs_for_seeker(request):
 
     if not jobs:
         return Response([], status=status.HTTP_200_OK)
-    job_texts = []
-
-    for job in jobs:
-        is_remote = job.work_mode == "remote"
-        location_text = "" if is_remote else job.city
-        job_text = "\n".join(filter(None, [
-            job.title,
-
-            job.specialization.name_en if getattr(job.specialization, "name_en", None) else "",
-            job.specialization.name_ar if getattr(job.specialization, "name_ar", None) else "",
-
-            job.description,
-
-            "Skills",
-            "\n".join(job.required_skills or []),
-
-            location_text,
-            job.employment_type,
-            job.work_mode,
-        ]))
-
-        job_texts.append(job_text)
-
-    all_texts = [seeker_text] + job_texts
-    all_vectors = embedding_service.encode_batch(all_texts)
-    seeker_vector, job_vectors = all_vectors[0], all_vectors[1:]
-
+    seeker_skill_names = [
+    skill.name
+    for skill in seeker_profile.skills.all()
+]
     ranked = []
-    for job, job_vector in zip(jobs, job_vectors):
+    for job in jobs:
+        job_vector = embedding_service.deserialize_vector(job.embedding)
+        if job_vector.size == 0:
+            continue
+
+        if job.work_mode == "remote":
+            seeker_vector = seeker_vector_without_location
+        else:
+            seeker_vector = seeker_vector_with_location
+  
+
         similarity = embedding_service.cosine_similarity(seeker_vector, job_vector)
         ranked.append({
             'id': job.id,

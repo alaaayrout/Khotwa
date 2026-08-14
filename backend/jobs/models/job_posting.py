@@ -25,6 +25,7 @@ class JobPosting(models.Model):
         on_delete=models.PROTECT,
         related_name='job_postings',
     )
+
     city = models.CharField(max_length=50, choices=SYRIAN_CITY_CHOICES)
     employment_type = models.CharField(max_length=20, choices=EMPLOYMENT_TYPE_CHOICES)
     work_mode = models.CharField(max_length=20, choices=WORK_MODE_CHOICES)
@@ -35,7 +36,7 @@ class JobPosting(models.Model):
     expires_at = models.DateField(help_text='تاريخ انتهاء مدة الوظيفة — إجباري')
     is_active = models.BooleanField(default=True)
     views_count = models.PositiveIntegerField(default=0)
-
+    embedding = models.TextField(blank=True, null=True, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

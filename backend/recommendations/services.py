@@ -1,4 +1,4 @@
-# matching/services.py
+
 import numpy as np
 from sentence_transformers import SentenceTransformer
 
@@ -6,17 +6,16 @@ from sentence_transformers import SentenceTransformer
 class EmbeddingService:
     """Semantic embedding service using multilingual Sentence-BERT."""
 
-    _model = None
+    _models = {}
     MODEL_NAME = "paraphrase-multilingual-MiniLM-L12-v2"
 
     def __init__(self, model_name: str = None):
         self.model_name = model_name or self.MODEL_NAME
 
-    @classmethod
-    def _get_model(cls) -> SentenceTransformer:
-        if cls._model is None:
-            cls._model = SentenceTransformer(cls.MODEL_NAME)
-        return cls._model
+    def _get_model(self) -> SentenceTransformer:
+        if self.model_name not in self.__class__._models:
+            self.__class__._models[self.model_name] = SentenceTransformer(self.model_name)
+        return self.__class__._models[self.model_name]
 
     def encode_batch(self, texts: list[str]) -> np.ndarray:
         model = self._get_model()

@@ -132,7 +132,7 @@ class JobSeeker(models.Model):
     )
     phone_regex = RegexValidator(
     regex=r'^\+\d{10,13}$',
-    message="Phone must be like +963991234567"
+    message="Phone must be like +963991234567 (include the country calling code)"
 )
     phone_number = models.CharField(
         validators=[phone_regex],
@@ -193,7 +193,7 @@ class Company(models.Model):
 
     phone_regex = RegexValidator(
     regex=r'^\+\d{10,13}$',
-    message="Phone must be like +963991234567"
+    message="Phone must be like +963991234567 (include the country calling code)"
 )
 
     phone_number = models.CharField(
