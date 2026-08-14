@@ -3,4 +3,4 @@ __pycache__/
 node_modules/
 .env
 db.sqlite3
-venv
+venv_/
