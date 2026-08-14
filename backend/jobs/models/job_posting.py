@@ -29,7 +29,7 @@ class JobPosting(models.Model):
     city = models.CharField(max_length=50, choices=SYRIAN_CITY_CHOICES)
     employment_type = models.CharField(max_length=20, choices=EMPLOYMENT_TYPE_CHOICES)
     work_mode = models.CharField(max_length=20, choices=WORK_MODE_CHOICES)
-    required_skills = models.JSONField(default=list, blank=True, help_text='المهارات المطلوبة للوظيفة - JSON array')
+    required_skills = models.JSONField(default=list, blank=False, help_text='المهارات المطلوبة للوظيفة - JSON array')
 
     # إعدادات النشر
     status = models.CharField(max_length=10, choices=JOB_STATUS_CHOICES, default='draft')

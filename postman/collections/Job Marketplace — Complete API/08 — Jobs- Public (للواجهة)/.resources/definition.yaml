@@ -1,0 +1,4 @@
+$kind: collection
+name: "08 — Jobs: Public (للواجهة)"
+description: عرض الوظائف للمستخدمين — بدون مصادقة
+order: 8000

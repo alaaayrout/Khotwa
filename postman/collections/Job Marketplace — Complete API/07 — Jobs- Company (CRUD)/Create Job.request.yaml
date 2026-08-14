@@ -1,0 +1,28 @@
+$kind: http-request
+description: |-
+  **الحقول الإجبارية:** title, description, specialization_id, city, employment_type, work_mode, expires_at
+
+  **city:** damascus, aleppo, homs...
+  **employment_type:** full_time, part_time, contract, internship, freelance
+  **work_mode:** onsite, remote, hybrid
+  **status:** open, closed, draft
+url: "{{base_url}}/api/jobs/company/jobs/"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: CompanyToken {{company_token}}
+body:
+  type: text
+  content: |-
+    {
+      "title": "مطور Backend",
+      "description": "نبحث عن مطور Django ذو خبرة في بناء APIs.",
+      "specialization_id": 1,
+      "city": "damascus",
+      "employment_type": "full_time",
+      "work_mode": "hybrid",
+      "status": "open",
+      "expires_at": "2026-12-31",
+      "is_active": true
+    }
+order: 1000

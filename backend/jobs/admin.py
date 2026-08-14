@@ -2,7 +2,6 @@ from django.contrib import admin
 
 from .models import Specialization, JobPosting, CompanyAuthToken
 
-
 @admin.register(Specialization)
 class SpecializationAdmin(admin.ModelAdmin):
     list_display = ['name_ar', 'name_en', 'is_active', 'created_at']
@@ -25,3 +24,4 @@ class JobPostingAdmin(admin.ModelAdmin):
 class CompanyAuthTokenAdmin(admin.ModelAdmin):
     list_display = ['company', 'key', 'created_at']
     search_fields = ['company__company_name', 'company__email']
+

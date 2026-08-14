@@ -1,0 +1,13 @@
+$kind: http-request
+url: ""
+method: PUT
+headers:
+  Content-Type: application/json
+  Authorization: CompanyToken {{company_token}}
+body:
+  type: text
+  content: |-
+    {
+      "name": "Updated Specialization"
+    }
+order: 4000

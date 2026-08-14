@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import SeekerProfile, Skill, Experience, Education
+from .models import SeekerProfile, Skill, Experience, Education, JobSeekerAuthToken
 
 
 class SkillInline(admin.TabularInline):
@@ -87,3 +87,13 @@ class ExperienceAdmin(admin.ModelAdmin):
 @admin.register(Education)
 class EducationAdmin(admin.ModelAdmin):
     list_display = ("degree", "institution", "year", "profile")
+
+@admin.register(JobSeekerAuthToken)
+class JobSeekerAuthTokenAdmin(admin.ModelAdmin):
+    list_display = ("job_seeker", "key", "created_at")
+    search_fields = (
+        "job_seeker__full_name",
+        "job_seeker__email",
+        "key",
+    )
+    readonly_fields = ("key", "created_at")

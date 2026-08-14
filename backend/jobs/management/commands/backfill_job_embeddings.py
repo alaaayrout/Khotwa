@@ -12,6 +12,7 @@ class Command(BaseCommand):
         service = EmbeddingService()
 
 
+        # jobs = JobPosting.objects.all()
         jobs = JobPosting.objects.filter(embedding__isnull=True)
         total = jobs.count()
 

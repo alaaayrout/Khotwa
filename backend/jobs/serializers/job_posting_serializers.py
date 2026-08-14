@@ -24,7 +24,11 @@ class JobPostingCreateSerializer(serializers.ModelSerializer):
         queryset=Specialization.objects.filter(is_active=True),
         source='specialization',
     )
-
+    required_skills = serializers.ListField(
+    child=serializers.CharField(),
+    required=True,
+    allow_empty=False,
+)
     class Meta:
         model = JobPosting
         fields = [
@@ -34,6 +38,7 @@ class JobPostingCreateSerializer(serializers.ModelSerializer):
             'city',
             'employment_type',
             'work_mode',
+            'required_skills',
             'status',
             'expires_at',
             'is_active',
@@ -69,7 +74,11 @@ class JobPostingUpdateSerializer(serializers.ModelSerializer):
         source='specialization',
         required=False,
     )
-
+    required_skills = serializers.ListField(
+        child=serializers.CharField(),
+        required=False,
+        allow_empty=False,
+)
     class Meta:
         model = JobPosting
         fields = [
@@ -79,6 +88,7 @@ class JobPostingUpdateSerializer(serializers.ModelSerializer):
             'city',
             'employment_type',
             'work_mode',
+            'required_skills',
             'status',
             'expires_at',
             'is_active',
@@ -127,6 +137,7 @@ class JobPostingListSerializer(serializers.ModelSerializer):
             'employment_type_label',
             'work_mode',
             'work_mode_label',
+            'required_skills',
             'status',
             'status_label',
             'expires_at',

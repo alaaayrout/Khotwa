@@ -1,0 +1,13 @@
+$kind: http-request
+url: ""
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "email": "company@example.com",
+      "otp": "123456"
+    }
+order: 2000

@@ -1,0 +1,20 @@
+$kind: http-request
+url: "{{base_url}}/api/jobs/company/jobs/"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: CompanyToken {{company_token}}
+body:
+  type: text
+  content: |-
+    {
+      "title": "Senior Django Developer",
+      "description": "Build and maintain backend services",
+      "city": "damascus",
+      "employment_type": "full_time",
+      "work_mode": "remote",
+      "status": "open",
+      "expires_at": "2026-12-31",
+      "specialization": 1
+    }
+order: 2000

@@ -90,6 +90,8 @@ def recommended_jobs_for_seeker(request):
             'company_logo': get_company_logo(job.company, request),
             'similarity_score': round(float(final_score), 4),
             'city': job.city,
+            'description': job.description,
+            'required_skills': job.required_skills,
             'employment_type': job.employment_type,
             'work_mode': job.work_mode,
             'status': job.status,

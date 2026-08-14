@@ -1,0 +1,3 @@
+$kind: collection
+description: CustomUser authentication and password reset endpoints.
+order: 4000

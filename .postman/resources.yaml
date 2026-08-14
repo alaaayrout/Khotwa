@@ -1,0 +1,19 @@
+# Use this workspace to collaborate
+workspace:
+  id: 356098d5-9cfc-42ab-8034-f795285fcf5f
+
+localResources:
+  collections:
+    - ../backend/postman/Full_Backend_Project.postman_collection.json
+    - ../backend/postman/Job_Marketplace_Complete.postman_collection.json
+    - ../backend/postman/Job_Marketplace_Full.postman_collection.json
+  environments:
+    - ../backend/postman/Job_Marketplace_Local.postman_environment.json
+
+# Each entry here maps a local resource to one or more corresponding objects in Postman Cloud
+
+cloudResources:
+  collections:
+    ../postman/collections/Job Marketplace Backend API: aecc6ec6-4adf-4587-b607-d09ac6dbabc0
+    ../postman/collections/Job Marketplace — Complete API: 2fe5e74e-db8a-45bc-9afc-95987970af8d
+    ../postman/collections/Job Marketplace Backend API (Full): f9ebac3d-98d9-4bd0-9113-8a5ed766f043

@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{base_url}}/api/jobs/company/jobs/{{job_id}}/"
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: CompanyToken {{company_token}}
+body:
+  type: text
+  content: |-
+    {
+      "status": "closed"
+    }
+order: 4000

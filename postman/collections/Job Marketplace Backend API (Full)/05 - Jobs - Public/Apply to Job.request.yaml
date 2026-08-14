@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{base_url}}/api/jobs/{{job_id}}/apply/"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: JobSeekerToken {{jobseeker_token}}
+body:
+  type: text
+  content: |-
+    {
+      "cover_letter": "I am interested in this role and would love to contribute."
+    }
+order: 3000

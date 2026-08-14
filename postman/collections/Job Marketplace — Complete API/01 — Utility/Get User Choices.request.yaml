@@ -1,0 +1,8 @@
+$kind: http-request
+description: |-
+  قوائم المحافظات وأنواع الشركات (لتسجيل الشركة).
+
+  **Response:** `governorates`, `company_types`
+url: "{{base_url}}/api/choices/"
+method: GET
+order: 2000

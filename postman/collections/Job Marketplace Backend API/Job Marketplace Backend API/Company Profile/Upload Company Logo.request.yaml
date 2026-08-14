@@ -1,0 +1,13 @@
+$kind: http-request
+url: ""
+method: POST
+headers:
+  Authorization: CompanyToken {{company_token}}
+body:
+  type: formdata
+  content:
+    - type: file
+      key: logo
+      src:
+        - ""
+order: 3000

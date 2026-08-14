@@ -1,0 +1,14 @@
+$kind: http-request
+description: تسجيل دخول عبر dj-rest-auth — يُرجع `key` (Token).
+url: "{{base_url}}/api/auth/login/"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "email": "user@example.com",
+      "password": "securepass123"
+    }
+order: 1000

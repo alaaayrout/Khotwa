@@ -21,7 +21,7 @@ def _build_job_embedding_text(job):
         job.description,
     ]
     parts += build_block("Skills", job.required_skills or [])
-    parts += [location_text, job.employment_type, job.work_mode]
+    parts += [location_text, job.work_mode]
 
     return "\n".join(filter(None, parts))
 

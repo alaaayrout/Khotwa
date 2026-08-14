@@ -1,0 +1,13 @@
+$kind: http-request
+url: ""
+method: POST
+headers:
+  Authorization: JobSeekerToken {{jobseeker_token}}
+body:
+  type: formdata
+  content:
+    - type: file
+      key: cv_file
+      src:
+        - ""
+order: 3000

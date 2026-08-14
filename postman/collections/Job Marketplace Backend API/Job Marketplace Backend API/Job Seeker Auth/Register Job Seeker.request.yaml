@@ -1,0 +1,16 @@
+$kind: http-request
+url: ""
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "full_name": "Test Seeker",
+      "email": "seeker@example.com",
+      "phone_number": "+963912345678",
+      "password": "securepass123",
+      "password_confirm": "securepass123"
+    }
+order: 1000

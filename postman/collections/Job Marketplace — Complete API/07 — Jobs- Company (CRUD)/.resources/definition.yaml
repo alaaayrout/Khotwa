@@ -1,0 +1,4 @@
+$kind: collection
+name: "07 — Jobs: Company (CRUD)"
+description: إدارة وظائف الشركة — تتطلب CompanyToken من Company Login
+order: 7000
