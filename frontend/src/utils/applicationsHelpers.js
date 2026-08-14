@@ -1,5 +1,6 @@
 // src/utils/applicationsHelpers.js
 // أدوات مساعدة لصفحة "إدارة الطلبات" (Company Applications)
+import { API_BASE } from "../config"
 
 // ── مؤكّد من الباك إند: الحقل يلي بيربط الطلب بالوظيفة هو job_posting (FK) ─
 export function getJobId(app) {
@@ -11,11 +12,61 @@ export function getAppliedAt(app) {
   return app.applied_at || app.created_at || app.submitted_at || null
 }
 
-// ── TODO(Farah): مؤكّد من الباك إند إنو الإيميل مش مضاف بالـ serializer حالياً ─
-// موجود بالموديل (job_seeker.email) بس ناقص من الـ response. لما ينضاف رح ياخد
-// اسم متل seeker_email على الأغلب - غطّينا كذا احتمال لحد ما تتأكدي من الاسم النهائي
+// ── الإيميل موجود ضمن applicant_profile.email (CompanyApplicationSerializer) ─
 export function getSeekerEmail(app) {
-  return app.seeker_email || app.email || app.job_seeker?.email || app.seeker?.email || null
+  return (
+    app.seeker_email ||
+    app.email ||
+    app.applicant_profile?.email ||
+    app.job_seeker?.email ||
+    app.seeker?.email ||
+    null
+  )
+}
+
+// ── باقي حقول بروفايل الباحث (كلها موجودة ضمن applicant_profile) ──────────
+export function getSeekerPhone(app) {
+  return app.applicant_profile?.phone_number || null
+}
+
+export function getSeekerGovernorate(app) {
+  return app.applicant_profile?.governorate || null
+}
+
+export function getSeekerBio(app) {
+  return app.applicant_profile?.bio || null
+}
+
+export function getSeekerCv(app) {
+  return app.applicant_profile?.cv_file || null
+}
+
+// ── صورة البروفايل: تدعم applicant_profile.profile_picture (CompanyApplicationSerializer)
+// و seeker_profile_picture (JobApplicationSerializer) حسب أي serializer فعلياً مستخدم
+// ── مؤكّد من الباك إند: الحقل بيرجع مسار نسبي ("/media/profile_pictures/...")
+// مش رابط كامل، لأنو الـ serializer عم يتنادى بدون context={'request': request} بالـ view.
+// لحد ما ينضاف هيك بالباك إند، منبني الرابط الكامل هون بإضافة أصل السيرفر (origin).
+function getMediaOrigin() {
+  try {
+    return new URL(API_BASE).origin
+  } catch {
+    return ""
+  }
+}
+
+export function getSeekerProfilePicture(app) {
+  const raw = app.applicant_profile?.profile_picture || app.seeker_profile_picture || null
+  if (!raw) return null
+  if (raw.startsWith("http")) return raw // أصلاً رابط كامل، ما بنلمسه
+  return `${getMediaOrigin()}${raw}`
+}
+
+export function getSeekerExperiences(app) {
+  return app.applicant_profile?.experiences || []
+}
+
+export function getSeekerEducation(app) {
+  return app.applicant_profile?.education_entries || []
 }
 
 // ── نسبة التطابق (Match Score) ──────────────────────────────────────────
@@ -73,10 +124,10 @@ export function getJobTitle(app) {
 
 export function getSeekerName(app) {
   return (
+    app.applicant_profile?.full_name ||
     app.seeker_name ||
     app.applicant_name ||
     app.full_name ||
-    app.applicant_profile?.full_name ||
     app.job_seeker?.full_name ||
     app.seeker?.full_name ||
     "-"
@@ -85,9 +136,9 @@ export function getSeekerName(app) {
 
 export function getSeekerSkills(app) {
   const skills =
+    app.applicant_profile?.skills ||
     app.seeker_skills ||
     app.applicant_skills ||
-    app.applicant_profile?.skills ||
     app.job_seeker?.skills ||
     app.seeker?.skills ||
     []

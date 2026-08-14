@@ -66,6 +66,7 @@ class JobApplicationSerializer(serializers.ModelSerializer):
         read_only=True
     )
     seeker_skills = serializers.SerializerMethodField(read_only=True)
+    seeker_profile_picture = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = JobApplication
@@ -81,6 +82,7 @@ class JobApplicationSerializer(serializers.ModelSerializer):
             'updated_at',
             'job_required_skills',
             'seeker_skills',
+            'seeker_profile_picture',
         ]
 
     def get_seeker_skills(self, obj):
@@ -91,6 +93,17 @@ class JobApplicationSerializer(serializers.ModelSerializer):
             return list(skills)
         except:
             return []
+
+    def get_seeker_profile_picture(self, obj):
+        """استخراج رابط صورة الباحث من SeekerProfile"""
+        try:
+            picture = obj.job_seeker.seeker_profile.profile_picture
+            if not picture:
+                return None
+            request = self.context.get('request')
+            return request.build_absolute_uri(picture.url) if request else picture.url
+        except:
+            return None
 
 
 class JobApplicationStatusSerializer(serializers.ModelSerializer):
