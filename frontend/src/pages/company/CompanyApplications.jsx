@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from "react"
 import { useTranslation } from "react-i18next"
+import { useParams, useNavigate } from "react-router-dom"
 import CompanyLayout from "../../components/company/CompanyLayout"
 import {
   fetchCompanyApplications,
@@ -7,14 +8,35 @@ import {
 } from "../../api/companyApplicationsApi"
 import {
   groupApplicationsByJob,
+
   sortApplications,
   getMatchScore,
   getAppliedAt,
+  getJobTitle,
+  getSeekerName,
   getSeekerEmail,
+  getSeekerSkills,
+  getRequiredSkills,
   formatAppliedDate,
 } from "../../utils/applicationsHelpers"
 
 const PAGE_SIZE = 10 // أول عشرة طلبات لكل وظيفة قبل ما نحتاج "عرض الكل"
+
+// TODO(Farah): applicationsHelpers.js (getApplicantProfile) ما فيها حقل id ظاهر بالـ
+// applicant_profile الحالي (بس full_name/email/skills). جربي هالاحتمالات، وإذا ولا وحدة
+// منهن موجودة فعلياً بالـ response، لازم تطلبي من زميلتك تضيف seeker id (أو applicant_profile.id)
+// بالـ /api/applications/company/applications/ حتى يصير فيك تربطي كل طلب بصفحة بروفايل الباحث.
+function getSeekerId(app) {
+  return (
+    app.seeker_id ??
+    app.job_seeker_id ??
+    app.applicant_id ??
+    app.applicant_profile?.id ??
+    app.applicant_profile?.seeker_id ??
+    app.seeker?.id ??
+    null
+  )
+}
 
 // ── مؤكّد من الباك إند: القيم المسموحة هي applied / reviewed / accepted / rejected
 const STATUS_BADGE = {
@@ -24,9 +46,20 @@ const STATUS_BADGE = {
   rejected: "bg-red-50 text-red-600 border-red-100",
 }
 
+const STATUS_TABS = ["all", "applied", "reviewed", "accepted", "rejected"]
+
 // حالات غير نهائية بعدها الطلب "قيد المراجعة" (لسا فيها إمكانية قبول/رفض)
 function isOpenStatus(status) {
   return status !== "accepted" && status !== "rejected"
+}
+
+function IconArrowBack(props) {
+  const isAr = props.isAr
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+      {isAr ? <path d="M5 12h14M13 6l6 6-6 6" /> : <path d="M19 12H5M11 18l-6-6 6-6" />}
+    </svg>
+  )
 }
 
 function StatusBadge({ status, t }) {
@@ -38,7 +71,64 @@ function StatusBadge({ status, t }) {
   )
 }
 
-function MatchScorePill({ score, t }) {
+// ===== مودال تفاصيل نسبة التطابق =====
+function MatchScoreModal({ score, app, t, onClose }) {
+  const seekerSkills = getSeekerSkills(app)
+  const requiredSkills = getRequiredSkills(app)
+  const hasSkillsData = requiredSkills.length > 0
+  const matched = requiredSkills.filter(s =>
+    seekerSkills.some(ss => String(ss).toLowerCase().trim() === String(s).toLowerCase().trim())
+  )
+
+  return (
+    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4" onClick={onClose}>
+      <div className="bg-white rounded-2xl p-6 max-w-sm w-full" onClick={e => e.stopPropagation()}>
+        <div className="flex items-start justify-between mb-3">
+          <h3 className="text-sm font-semibold text-gray-900">
+            {t("company.applications.match_modal.title")}
+          </h3>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-sm">✕</button>
+        </div>
+
+        <div className="flex items-center gap-3 mb-4">
+          <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-base font-bold ${
+            score >= 70 ? "bg-emerald-50 text-emerald-600" : score >= 40 ? "bg-amber-50 text-amber-600" : "bg-gray-50 text-gray-500"
+          }`}>
+            {score}%
+          </div>
+          <p className="text-xs text-gray-500 leading-relaxed">
+            {t("company.applications.match_modal.description")}
+          </p>
+        </div>
+
+        {hasSkillsData ? (
+          <div className="space-y-2">
+            <p className="text-xs font-medium text-gray-700">
+              {t("company.applications.match_modal.matched_skills")}
+            </p>
+            <div className="flex flex-wrap gap-1.5">
+              {matched.length > 0 ? matched.map(skill => (
+                <span key={skill} className="text-xs px-2 py-1 rounded-md bg-emerald-50 text-emerald-700">
+                  {skill}
+                </span>
+              )) : (
+                <span className="text-xs text-gray-400">{t("company.applications.match_modal.no_shared_skills")}</span>
+              )}
+            </div>
+          </div>
+        ) : (
+          <p className="text-xs text-gray-400">
+            {t("company.applications.match_modal.skills_unavailable")}
+          </p>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function MatchScoreButton({ score, app, t }) {
+  const [open, setOpen] = useState(false)
+
   if (score === null) {
     return (
       <span
@@ -49,15 +139,26 @@ function MatchScorePill({ score, t }) {
       </span>
     )
   }
+
   const color =
-    score >= 70 ? "text-emerald-600" : score >= 40 ? "text-amber-600" : "text-gray-400"
+    score >= 70 ? "text-emerald-700 bg-emerald-50 hover:bg-emerald-100" :
+    score >= 40 ? "text-amber-700 bg-amber-50 hover:bg-amber-100" :
+    "text-gray-500 bg-gray-50 hover:bg-gray-100"
+
   return (
-    <span
-      className={`text-xs font-semibold ${color}`}
-      title={t("company.applications.match_method_tooltip")}
-    >
-      {t("company.applications.match_value", { score })}
-    </span>
+    <>
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        title={t("company.applications.match_method_tooltip")}
+        className={`text-xs font-semibold px-2 py-0.5 rounded-full transition ${color}`}
+      >
+        {t("company.applications.match_value", { score })}
+      </button>
+      {open && (
+        <MatchScoreModal score={score} app={app} t={t} onClose={() => setOpen(false)} />
+      )}
+    </>
   )
 }
 
@@ -66,13 +167,14 @@ function ApplicationRow({ app, isAr, t, onAccept, onReject, onMarkReviewed, busy
   const status = app.status || "applied"
   const score = getMatchScore(app)
   const seekerEmail = getSeekerEmail(app)
+  const seekerName = getSeekerName(app)
 
   return (
     <div className="px-6 py-4 hover:bg-gray-50/50 transition">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <p className="text-sm font-medium text-gray-900 truncate">
-            {app.seeker_name || "-"}
+            {seekerName || "-"}
           </p>
           <div className="flex items-center gap-2 mt-1">
             <p className="text-xs text-gray-400">
@@ -143,7 +245,17 @@ function ApplicationRow({ app, isAr, t, onAccept, onReject, onMarkReviewed, busy
 }
 
 // ===== مجموعة طلبات وظيفة واحدة =====
-function JobApplicationsGroup({ group, sortBy, isAr, t, onAccept, onReject, onMarkReviewed, busyId }) {
+function JobApplicationsGroup({
+  group,
+  sortBy,
+  isAr,
+  t,
+  onAccept,
+  onReject,
+  onMarkReviewed,
+  busyId,
+  showHeader = true,
+}) {
   const [expanded, setExpanded] = useState(false)
 
   const sorted = useMemo(
@@ -156,32 +268,42 @@ function JobApplicationsGroup({ group, sortBy, isAr, t, onAccept, onReject, onMa
 
   return (
     <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden">
-      <div className="flex items-center justify-between px-6 py-4 border-b border-gray-50">
-        <div>
-          <h3 className="text-sm font-semibold text-gray-800">{group.jobTitle}</h3>
-          <p className="text-xs text-gray-400 mt-0.5">
-            {t("company.applications.group_summary", {
-              total: group.applications.length,
-              pending: pendingCount,
-            })}
-          </p>
+      {showHeader && (
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-50">
+          <div>
+            <h3 className="text-sm font-semibold text-gray-800">
+              {group.jobTitle || t("company.applications.job_scope_fallback_title")}
+            </h3>
+            <p className="text-xs text-gray-400 mt-0.5">
+              {t("company.applications.group_summary", {
+                total: group.applications.length,
+                pending: pendingCount,
+              })}
+            </p>
+          </div>
         </div>
-      </div>
+      )}
 
-      <div className="divide-y divide-gray-50">
-        {visible.map(app => (
-          <ApplicationRow
-            key={app.id}
-            app={app}
-            isAr={isAr}
-            t={t}
-            onAccept={onAccept}
-            onReject={onReject}
-            onMarkReviewed={onMarkReviewed}
-            busy={busyId === app.id}
-          />
-        ))}
-      </div>
+      {sorted.length === 0 ? (
+        <div className="py-10 text-center text-sm text-gray-400">
+          {t("company.applications.no_match_filters")}
+        </div>
+      ) : (
+        <div className="divide-y divide-gray-50">
+          {visible.map(app => (
+            <ApplicationRow
+              key={app.id}
+              app={app}
+              isAr={isAr}
+              t={t}
+              onAccept={onAccept}
+              onReject={onReject}
+              onMarkReviewed={onMarkReviewed}
+              busy={busyId === app.id}
+            />
+          ))}
+        </div>
+      )}
 
       {sorted.length > PAGE_SIZE && (
         <div className="px-6 py-3 border-t border-gray-50 text-center">
@@ -210,7 +332,7 @@ function ConfirmRejectModal({ app, t, onConfirm, onCancel }) {
         </h3>
         <p className="text-sm text-gray-500 mb-5">
           {t("company.applications.confirm_reject.message", {
-            name: app.seeker_name || "-",
+            name: getSeekerName(app) || "-",
           })}
         </p>
         <div className="flex gap-2 justify-end">
@@ -232,15 +354,41 @@ function ConfirmRejectModal({ app, t, onConfirm, onCancel }) {
   )
 }
 
+// ===== شريط ملخّص أرقام سريع =====
+function StatsBar({ counts, t }) {
+  const items = [
+    { key: "all", value: counts.all, cls: "text-gray-900" },
+    { key: "applied", value: counts.applied, cls: "text-blue-700" },
+    { key: "reviewed", value: counts.reviewed, cls: "text-amber-700" },
+    { key: "accepted", value: counts.accepted, cls: "text-emerald-700" },
+    { key: "rejected", value: counts.rejected, cls: "text-red-600" },
+  ]
+  return (
+    <div className="grid grid-cols-5 gap-3">
+      {items.map(item => (
+        <div key={item.key} className="bg-white border border-gray-100 rounded-xl px-4 py-3 text-center">
+          <p className={`text-lg font-bold ${item.cls}`}>{item.value}</p>
+          <p className="text-[11px] text-gray-400 mt-0.5">
+            {t(`company.applications.status_plural.${item.key}`)}
+          </p>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 export default function CompanyApplications() {
   const { t, i18n } = useTranslation()
+  const navigate = useNavigate()
+  const { jobId } = useParams() // موجود فقط لما الصفحة تنفتح من /company/jobs/:jobId/applications
   const isAr = i18n.language === "ar"
 
   const [applications, setApplications] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [sortBy, setSortBy] = useState("newest") // newest | oldest | match
-  const [hideRejected, setHideRejected] = useState(false)
+  const [statusFilter, setStatusFilter] = useState("all")
+  const [search, setSearch] = useState("")
   const [busyId, setBusyId] = useState(null)
   const [rejectTarget, setRejectTarget] = useState(null)
 
@@ -261,23 +409,49 @@ export default function CompanyApplications() {
     }
   }
 
-  const visibleApplications = useMemo(
-    () =>
-      hideRejected
-        ? applications.filter(a => (a.status || "applied") !== "rejected")
-        : applications,
-    [applications, hideRejected]
+  // نطاق الصفحة: كل الطلبات، أو طلبات وظيفة وحدة إذا مفتوحة من /company/jobs/:jobId/applications
+  const scoped = useMemo(
+    () => (jobId ? filterApplicationsByJob(applications, jobId) : applications),
+    [applications, jobId]
   )
 
+  const scopedJobTitle = useMemo(() => {
+    if (!jobId) return null
+    return getJobTitle(scoped[0] || {}) || t("company.applications.job_scope_fallback_title")
+  }, [jobId, scoped, t])
+
+  const counts = useMemo(
+    () => ({
+      all: scoped.length,
+      applied: scoped.filter(a => (a.status || "applied") === "applied").length,
+      reviewed: scoped.filter(a => a.status === "reviewed").length,
+      accepted: scoped.filter(a => a.status === "accepted").length,
+      rejected: scoped.filter(a => a.status === "rejected").length,
+    }),
+    [scoped]
+  )
+
+  const filtered = useMemo(() => {
+    let list = scoped
+    if (statusFilter !== "all") {
+      list = list.filter(a => (a.status || "applied") === statusFilter)
+    }
+    if (search.trim()) {
+      const q = search.trim().toLowerCase()
+      list = list.filter(a => (getSeekerName(a) || "").toLowerCase().includes(q))
+    }
+    return list
+  }, [scoped, statusFilter, search])
+
   const groups = useMemo(
-    () => groupApplicationsByJob(visibleApplications),
-    [visibleApplications]
+    () => (jobId ? [{ jobId, jobTitle: scopedJobTitle, applications: filtered }] : groupApplicationsByJob(filtered)),
+    [jobId, scopedJobTitle, filtered]
   )
 
   // هل في أي match score حقيقي بأي طلب؟ إذا لأ منعطّل خيار الترتيب حسب التطابق
   const hasMatchScores = useMemo(
-    () => applications.some(a => getMatchScore(a) !== null),
-    [applications]
+    () => scoped.some(a => getMatchScore(a) !== null),
+    [scoped]
   )
 
   async function handleAccept(app) {
@@ -324,8 +498,6 @@ export default function CompanyApplications() {
     }
   }
 
-  const totalPending = applications.filter(a => isOpenStatus(a.status || "applied")).length
-
   const SORT_OPTIONS = [
     { key: "newest", label: t("company.applications.sort.newest") },
     { key: "oldest", label: t("company.applications.sort.oldest") },
@@ -337,11 +509,20 @@ export default function CompanyApplications() {
       <div className="px-8 py-8 space-y-6">
         {/* ===== Header ===== */}
         <div>
+          {jobId && (
+            <button
+              onClick={() => navigate("/company/jobs")}
+              className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-gray-600 mb-3 transition"
+            >
+              <IconArrowBack isAr={isAr} />
+              {t("company.applications.back_to_jobs")}
+            </button>
+          )}
           <h1 className="text-xl font-semibold text-gray-900">
-            {t("company.applications.title")}
+            {jobId ? scopedJobTitle : t("company.applications.title")}
           </h1>
           <p className="text-sm text-gray-400 mt-0.5">
-            {t("company.applications.subtitle", { count: totalPending })}
+            {t("company.applications.subtitle", { count: counts.applied })}
           </p>
         </div>
 
@@ -351,9 +532,39 @@ export default function CompanyApplications() {
           </div>
         )}
 
-        {/* ===== أدوات التحكم: الترتيب + إخفاء المرفوض ===== */}
-        <div className="flex flex-wrap items-center justify-between gap-3 bg-white border border-gray-100 rounded-2xl px-5 py-3">
-          <div className="flex items-center gap-2">
+        {/* ===== ملخّص الأرقام ===== */}
+        {!loading && <StatsBar counts={counts} t={t} />}
+
+        {/* ===== أدوات التحكم: تبويبات الحالة + بحث + ترتيب ===== */}
+        <div className="bg-white border border-gray-100 rounded-2xl px-5 py-3 space-y-3">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-1 bg-gray-50 border border-gray-100 rounded-xl p-1">
+              {STATUS_TABS.map(tab => (
+                <button
+                  key={tab}
+                  onClick={() => setStatusFilter(tab)}
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition ${
+                    statusFilter === tab
+                      ? "bg-white text-gray-900 shadow-sm"
+                      : "text-gray-500 hover:text-gray-700"
+                  }`}
+                >
+                  {t(`company.applications.status_plural.${tab}`)}{" "}
+                  <span className="text-gray-400">({counts[tab]})</span>
+                </button>
+              ))}
+            </div>
+
+            <input
+              type="text"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              placeholder={t("company.applications.search_placeholder")}
+              className="w-56 px-3 py-2 text-sm bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300"
+            />
+          </div>
+
+          <div className="flex items-center gap-2 border-t border-gray-50 pt-3">
             <span className="text-xs text-gray-400">
               {t("company.applications.sort_label")}:
             </span>
@@ -382,16 +593,6 @@ export default function CompanyApplications() {
               )
             })}
           </div>
-
-          <label className="flex items-center gap-2 text-xs text-gray-500 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={hideRejected}
-              onChange={e => setHideRejected(e.target.checked)}
-              className="rounded border-gray-300"
-            />
-            {t("company.applications.hide_rejected")}
-          </label>
         </div>
 
         {/* ===== حالة التحميل ===== */}
@@ -402,17 +603,19 @@ export default function CompanyApplications() {
         )}
 
         {/* ===== حالة فارغة ===== */}
-        {!loading && groups.length === 0 && (
+        {!loading && filtered.length === 0 && (
           <div className="bg-white border border-gray-100 rounded-2xl py-14 text-center">
             <div className="text-3xl mb-3">📩</div>
             <p className="text-sm text-gray-500">
-              {t("company.applications.empty")}
+              {scoped.length === 0
+                ? t("company.applications.empty")
+                : t("company.applications.no_match_filters")}
             </p>
           </div>
         )}
 
         {/* ===== المجموعات ===== */}
-        {!loading && groups.length > 0 && (
+        {!loading && filtered.length > 0 && (
           <div className="space-y-5">
             {groups.map(group => (
               <JobApplicationsGroup
@@ -421,6 +624,7 @@ export default function CompanyApplications() {
                 sortBy={sortBy}
                 isAr={isAr}
                 t={t}
+                showHeader={!jobId}
                 onAccept={handleAccept}
                 onReject={app => setRejectTarget(app)}
                 onMarkReviewed={handleMarkReviewed}
