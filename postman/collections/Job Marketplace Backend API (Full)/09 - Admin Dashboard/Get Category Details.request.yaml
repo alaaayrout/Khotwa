@@ -1,0 +1,6 @@
+$kind: http-request
+url: "{{base_url}}/api/admin/categories/{{specialization_id}}/"
+method: GET
+headers:
+  Authorization: AdminToken {{admin_token}}
+order: 3520

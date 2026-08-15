@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{base_url}}/api/admin/jobs/{{job_id}}/"
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: AdminToken {{admin_token}}
+body:
+  type: text
+  content: |-
+    {
+      "status": "open",
+      "is_active": true
+    }
+order: 3320

@@ -1,0 +1,6 @@
+$kind: http-request
+url: "{{base_url}}/api/admin/cvs/{{seeker_id}}/"
+method: DELETE
+headers:
+  Authorization: AdminToken {{admin_token}}
+order: 3420

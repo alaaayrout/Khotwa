@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{base_url}}/api/seeker/skills/{{skill_id}}/"
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: JobSeekerToken {{jobseeker_token}}
+body:
+  type: text
+  content: |-
+    {
+      "name": "Python",
+      "proficiency_level": "expert"
+    }
+order: 1520

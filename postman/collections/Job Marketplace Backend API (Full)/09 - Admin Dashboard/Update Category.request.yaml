@@ -1,0 +1,15 @@
+$kind: http-request
+url: "{{base_url}}/api/admin/categories/{{specialization_id}}/"
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: AdminToken {{admin_token}}
+body:
+  type: text
+  content: |-
+    {
+      "name": "Updated Category Name",
+      "description": "Updated description",
+      "is_active": true
+    }
+order: 3530

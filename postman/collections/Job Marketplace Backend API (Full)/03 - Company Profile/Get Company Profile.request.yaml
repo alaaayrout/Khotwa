@@ -3,4 +3,16 @@ url: "{{base_url}}/api/company/profile/"
 method: GET
 headers:
   Authorization: CompanyToken {{company_token}}
+scripts:
+  - type: test
+    code: |-
+      pm.test("Status code is 200", function () {
+        pm.response.to.have.status(200);
+      });
+      pm.test("Response contains company profile data", function () {
+        var jsonData = pm.response.json();
+        pm.expect(jsonData).to.have.property('company');
+        pm.expect(jsonData).to.have.property('description');
+      });
+    language: text/javascript
 order: 1000

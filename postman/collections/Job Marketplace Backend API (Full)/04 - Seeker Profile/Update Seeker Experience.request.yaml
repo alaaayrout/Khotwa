@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{base_url}}/api/seeker/experience/{{experience_id}}/"
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: JobSeekerToken {{jobseeker_token}}
+body:
+  type: text
+  content: |-
+    {
+      "company_name": "Tech Startup",
+      "job_title": "Senior Developer",
+      "start_date": "2020-01-15",
+      "end_date": "2024-01-15",
+      "description": "Led backend development team"
+    }
+order: 1620

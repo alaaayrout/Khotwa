@@ -1,0 +1,6 @@
+$kind: http-request
+url: "{{base_url}}/api/seeker/skills/{{skill_id}}/"
+method: GET
+headers:
+  Authorization: JobSeekerToken {{jobseeker_token}}
+order: 1510

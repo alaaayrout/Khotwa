@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{base_url}}/api/admin/companies/{{company_id}}/reject/"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: AdminToken {{admin_token}}
+body:
+  type: text
+  content: |-
+    {
+      "reason": "Invalid company information"
+    }
+order: 3240

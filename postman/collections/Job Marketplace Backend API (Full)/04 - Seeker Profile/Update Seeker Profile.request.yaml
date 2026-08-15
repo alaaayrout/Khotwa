@@ -1,0 +1,15 @@
+$kind: http-request
+url: "{{base_url}}/api/seeker/profile/"
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: JobSeekerToken {{jobseeker_token}}
+body:
+  type: text
+  content: |-
+    {
+      "bio": "Experienced software developer with 5 years in full-stack development",
+      "governorate": "Damascus",
+      "phone_number": "+963912345678"
+    }
+order: 1100

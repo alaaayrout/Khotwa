@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{base_url}}/api/admin/seekers/{{seeker_id}}/"
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: AdminToken {{admin_token}}
+body:
+  type: text
+  content: |-
+    {
+      "is_active": true,
+      "full_name": "Updated Name"
+    }
+order: 3120

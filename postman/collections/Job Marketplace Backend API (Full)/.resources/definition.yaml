@@ -4,8 +4,11 @@ variables:
   base_url: http://localhost:8000
   company_token: ""
   jobseeker_token: ""
+  admin_token: ""
   auth_token: ""
   job_id: "1"
+  company_id: "1"
+  seeker_id: "1"
   application_id: "1"
   specialization_id: "1"
   skill_id: "1"

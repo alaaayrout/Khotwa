@@ -1,0 +1,6 @@
+$kind: http-request
+url: "{{base_url}}/api/admin/companies/{{company_id}}/approve/"
+method: POST
+headers:
+  Authorization: AdminToken {{admin_token}}
+order: 3230

@@ -1,0 +1,18 @@
+$kind: http-request
+url: "{{base_url}}/api/company/profile/"
+method: PATCH
+headers:
+  Content-Type: application/json
+  Authorization: CompanyToken {{company_token}}
+body:
+  type: text
+  content: |-
+    {
+      "description": "Leading tech company in Middle East",
+      "website": "https://example.com",
+      "industry": "Technology",
+      "employee_count": "500-1000",
+      "founded_year": 2010,
+      "headquarters_city": "Damascus"
+    }
+order: 2100

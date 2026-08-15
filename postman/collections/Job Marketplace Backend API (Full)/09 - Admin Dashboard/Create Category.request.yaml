@@ -1,0 +1,15 @@
+$kind: http-request
+url: "{{base_url}}/api/admin/categories/"
+method: POST
+headers:
+  Content-Type: application/json
+  Authorization: AdminToken {{admin_token}}
+body:
+  type: text
+  content: |-
+    {
+      "name": "Full-Stack Developer",
+      "description": "Developer with both frontend and backend skills",
+      "is_active": true
+    }
+order: 3510

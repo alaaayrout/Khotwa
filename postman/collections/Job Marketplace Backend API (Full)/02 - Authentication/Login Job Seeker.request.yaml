@@ -19,4 +19,16 @@ scripts:
         pm.environment.set('jobseeker_token', data.token);
       }
     language: text/javascript
+  - type: test
+    code: |-
+      pm.test("Status code is 200", function () {
+        pm.response.to.have.status(200);
+      });
+      pm.test("Response contains token", function () {
+        var jsonData = pm.response.json();
+        pm.expect(jsonData).to.have.property('token');
+        pm.expect(jsonData).to.have.property('user_type');
+        pm.expect(jsonData.user_type).to.equal('job_seeker');
+      });
+    language: text/javascript
 order: 3000

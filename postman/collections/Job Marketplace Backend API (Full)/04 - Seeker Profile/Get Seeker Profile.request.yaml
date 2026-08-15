@@ -3,4 +3,16 @@ url: "{{base_url}}/api/seeker/profile/"
 method: GET
 headers:
   Authorization: JobSeekerToken {{jobseeker_token}}
+scripts:
+  - type: test
+    code: |-
+      pm.test("Status code is 200", function () {
+        pm.response.to.have.status(200);
+      });
+      pm.test("Response contains profile data", function () {
+        var jsonData = pm.response.json();
+        pm.expect(jsonData).to.have.property('user');
+        pm.expect(jsonData).to.have.property('bio');
+      });
+    language: text/javascript
 order: 1000

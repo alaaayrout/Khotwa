@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{base_url}}/api/admin/jobs/{{job_id}}/"
+method: DELETE
+headers:
+  Content-Type: application/json
+  Authorization: AdminToken {{admin_token}}
+body:
+  type: text
+  content: |-
+    {
+      "reason": "Job posting violates policy"
+    }
+order: 3330
