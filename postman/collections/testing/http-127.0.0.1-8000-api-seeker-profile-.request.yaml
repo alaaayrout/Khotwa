@@ -1,0 +1,8 @@
+$kind: http-request
+name: http://127.0.0.1:8000/api/seeker/profile/
+description: ""
+url: http://127.0.0.1:8000/api/seeker/profile/
+method: GET
+headers:
+  Authorization: JobSeekerToken b94c81c03ab9f62675b0a47e14f9ab273653b38d12d081ec541b01aee9a76135
+order: 2953507208316812

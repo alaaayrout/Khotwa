@@ -41,6 +41,24 @@ class EmbeddingService:
             return 0.0
         return float(np.dot(left, right) / (left_norm * right_norm))
 
+    def best_skill_similarity(self, seeker_skills: list[str], job_skills: list[str]) -> float:
+        if not seeker_skills or not job_skills:
+            return 0.0
+
+        seeker_vectors = self.encode_batch(seeker_skills)
+        job_vectors = self.encode_batch(job_skills)
+
+        similarities = []
+
+        for seeker_vector in seeker_vectors:
+            scores = [
+                self.cosine_similarity(seeker_vector, job_vector)
+                for job_vector in job_vectors
+            ]
+            similarities.append(max(scores))
+
+        return float(np.mean(similarities))
+
     def serialize_vector(self, vector: np.ndarray) -> str:
         import json
         return json.dumps(np.asarray(vector).tolist())

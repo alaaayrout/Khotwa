@@ -1,0 +1,8 @@
+$kind: http-request
+name: http://127.0.0.1:8000/api/recommendations/jobs/
+description: ""
+url: http://127.0.0.1:8000/api/recommendations/jobs/
+method: GET
+headers:
+  Authorization: JobSeekerToken 6c9631b232d8bdcf6a3160ec12ff0fb06f93cb26e93e3b1634f5ea5754eb0b03
+order: 1786748943841

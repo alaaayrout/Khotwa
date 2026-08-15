@@ -6,9 +6,15 @@ values:
     value: ''
   - key: jobseeker_token
     value: ''
+  - key: admin_token
+    value: ''
   - key: auth_token
     value: ''
   - key: job_id
+    value: '1'
+  - key: company_id
+    value: '1'
+  - key: seeker_id
     value: '1'
   - key: application_id
     value: '1'
