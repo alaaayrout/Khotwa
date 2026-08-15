@@ -309,16 +309,19 @@
         "is_active": "Job is active",
         "views_count": "Views",
         "expiration_date": "Expiration Date",
-        "created_at": "Created At"
+        "created_at": "Created At",
+        "required_skills": "Required Skills"
       },
       "placeholders": {
         "title": "e.g. Full Stack Developer",
         "description": "Write a clear description of the role, responsibilities, and required skills...",
-        "select": "Select..."
+        "select": "Select...",
+        "required_skills": "Type a skill and press Enter to add it"
       },
       "errors": {
         "required": "This field is required",
-        "expiration_past": "Expiration date must be after today"
+        "expiration_past": "Expiration date must be after today",
+        "required_skills_empty": "Please add at least one skill"
       }
     },
     "profile": {

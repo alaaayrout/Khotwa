@@ -53,6 +53,7 @@ const INITIAL_FORM = {
   status:          "open",
   is_active:       true,
   expires_at:      "",
+  required_skills: [],   // TODO(Farah): list[str] — لازم يتطابق الشكل مع اللي متوقعة EmbeddingService.encode_batch تستقبله
 }
 
 
@@ -80,6 +81,66 @@ function Section({ title, children }) {
       <div className="px-6 py-5 space-y-5">
         {children}
       </div>
+    </div>
+  )
+}
+
+// ===== Skills chip input =====
+// المستخدمة لحقل "المهارات المطلوبة" — الشركة تكتب المهارة وتضغط Enter أو فاصلة لإضافتها كـ chip.
+// القيمة بتنرسل للباك إند كـ required_skills: string[] عشان تتغذّى فيها خدمة الترشيح الذكي (EmbeddingService).
+function SkillsChipInput({ skills, onAdd, onRemove, placeholder, isAr, error }) {
+  const [draft, setDraft] = useState("")
+
+  const commit = () => {
+    const value = draft.trim()
+    if (!value) return
+    if (!skills.some(s => s.toLowerCase() === value.toLowerCase())) {
+      onAdd(value)
+    }
+    setDraft("")
+  }
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" || e.key === ",") {
+      e.preventDefault()
+      commit()
+    } else if (e.key === "Backspace" && !draft && skills.length) {
+      onRemove(skills[skills.length - 1])
+    }
+  }
+
+  return (
+    <div>
+      <div className={`flex flex-wrap items-center gap-2 w-full px-3.5 py-2.5 bg-gray-50 border rounded-xl
+                       focus-within:bg-white transition
+                       ${error ? "border-red-300" : "border-gray-200 focus-within:border-[#1e3a5f]"}`}>
+        {skills.map(skill => (
+          <span
+            key={skill}
+            className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-lg
+                       bg-blue-50 text-blue-700 border border-blue-100"
+          >
+            {skill}
+            <button
+              type="button"
+              onClick={() => onRemove(skill)}
+              className="text-blue-400 hover:text-blue-600 transition leading-none"
+            >
+              ×
+            </button>
+          </span>
+        ))}
+        <input
+          type="text"
+          value={draft}
+          onChange={e => setDraft(e.target.value)}
+          onKeyDown={handleKeyDown}
+          onBlur={commit}
+          placeholder={skills.length ? "" : placeholder}
+          className="flex-1 min-w-[120px] bg-transparent text-sm text-gray-800 outline-none placeholder:text-gray-300"
+        />
+      </div>
+
     </div>
   )
 }
@@ -160,6 +221,10 @@ export default function PostJob() {
             status:          job.status || "open",
             is_active:       job.is_active ?? true,
             expires_at:      job.expires_at ? job.expires_at.slice(0, 10) : "",
+            // TODO(Farah): تأكدي من اسم الحقل الفعلي بالباك إند (required_skills؟ skills؟) — fallback لمصفوفة فاضية لحتى ما تنكسر الصفحة
+            required_skills: Array.isArray(job.required_skills)
+              ? job.required_skills
+              : (Array.isArray(job.skills) ? job.skills : []),
           })
         } else {
           setJobLoadError(true)
@@ -180,6 +245,18 @@ export default function PostJob() {
     setErrors(prev => ({ ...prev, [key]: "" }))
   }
 
+  const addSkill = (skill) => {
+    setForm(prev => ({ ...prev, required_skills: [...(prev.required_skills || []), skill] }))
+    setErrors(prev => ({ ...prev, required_skills: "" }))
+  }
+
+  const removeSkill = (skill) => {
+    setForm(prev => ({
+      ...prev,
+      required_skills: (prev.required_skills || []).filter(s => s !== skill),
+    }))
+  }
+
   const validate = () => {
     const e = {}
     if (!form.title.trim())        e.title           = t("company.post_job.errors.required")
@@ -191,6 +268,8 @@ export default function PostJob() {
     if (!form.expires_at)          e.expires_at      = t("company.post_job.errors.required")
     else if (form.expires_at <= new Date().toISOString().slice(0, 10))
       e.expires_at = t("company.post_job.errors.expiration_past")
+    if (!(form.required_skills || []).length)
+      e.required_skills = t("company.post_job.errors.required_skills_empty")
     return e
   }
 
@@ -210,6 +289,7 @@ export default function PostJob() {
         status:             form.status,
         is_active:          form.is_active,
         expires_at:         form.expires_at,
+        required_skills:    form.required_skills,
       }
 
       const url    = isEditMode ? `${API_BASE}/jobs/company/jobs/${id}/` : `${API_BASE}/jobs/company/jobs/`
@@ -239,6 +319,7 @@ export default function PostJob() {
           employment_type:   "employment_type",
           work_mode:         "work_mode",
           expires_at:        "expires_at",
+          required_skills:   "required_skills",
         }
         Object.entries(data).forEach(([key, msgs]) => {
           const mapped = fieldMap[key] || key
@@ -420,6 +501,21 @@ export default function PostJob() {
             </Field>
 
           </div>
+
+          <Field
+            label={t("company.post_job.fields.required_skills")}
+            required
+            error={errors.required_skills}
+          >
+            <SkillsChipInput
+              skills={form.required_skills || []}
+              onAdd={addSkill}
+              onRemove={removeSkill}
+              placeholder={t("company.post_job.placeholders.required_skills")}
+              isAr={isAr}
+              error={errors.required_skills}
+            />
+          </Field>
         </Section>
 
         {/* ===== Publish Settings ===== */}
@@ -557,6 +653,18 @@ export default function PostJob() {
                 )}
               </div>
             </div>
+            {(form.required_skills || []).length > 0 && (
+              <div className="flex flex-wrap gap-1.5 mt-3 pt-3 border-t border-gray-50">
+                {(form.required_skills || []).map(skill => (
+                  <span
+                    key={skill}
+                    className="text-xs px-2 py-0.5 rounded-lg bg-gray-50 text-gray-600 border border-gray-100"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
         )}
 

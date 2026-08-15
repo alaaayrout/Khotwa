@@ -316,16 +316,19 @@
         "is_active": "الوظيفة نشطة",
         "views_count": "المشاهدات",
         "expiration_date": "تاريخ الانتهاء",
-        "created_at": "تاريخ الإنشاء"
+        "created_at": "تاريخ الإنشاء",
+         "required_skills": "المهارات المطلوبة"
       },
       "placeholders": {
         "title": "مثال: مطور Full Stack",
         "description": "اكتب وصفاً واضحاً للوظيفة، المهام المطلوبة، والمهارات اللازمة...",
-        "select": "اختر..."
+        "select": "اختر...",
+        "required_skills": "اكتب مهارة ثم اضغط Enter لإضافتها"
       },
       "errors": {
         "required": "هذا الحقل مطلوب",
-        "expiration_past": "تاريخ الانتهاء يجب أن يكون بعد تاريخ اليوم"
+        "expiration_past": "تاريخ الانتهاء يجب أن يكون بعد تاريخ اليوم",
+        "required_skills_empty": "يجب إضافة مهارة واحدة على الأقل"
       }
     },
     "profile": {
