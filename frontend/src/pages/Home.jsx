@@ -271,15 +271,23 @@ export default function Home() {
         // TODO(Farah): تأكدي من مفتاح التوكن الفعلي بالـ localStorage (هون مستخدم نفس مفتاح "token"
         // المستخدم فوق بفحص isLoggedIn — إذا صفحات ثانية عندك بتخزن توكن الـ seeker بمفتاح مختلف، وحّديه هون)
         const token = localStorage.getItem("token")
+        console.log("🟡 [recs] token =", token)
         const res = await fetch(`${API_BASE}/recommendations/jobs/`, {
           headers: { Authorization: `JobSeekerToken ${token}` },
         })
+        console.log("🟡 [recs] status =", res.status)
         if (res.ok) {
           const data = await res.json()
+          console.log("🟡 [recs] raw response =", data)
           const rawList = Array.isArray(data) ? data : data.results || []
+          console.log("🟡 [recs] rawList.length =", rawList.length)
+          const normalized = rawList.map(item => normalizeRecommendedJob(item, isAr)).filter(Boolean)
+          console.log("🟡 [recs] normalized =", normalized)
           // بنعتمد على الترتيب يلي راجع من الباك اند كما هو (الأنسب أولاً)، بدون عرض أي رقم/نسبة
-          setRecommendedJobs(rawList.map(item => normalizeRecommendedJob(item, isAr)).filter(Boolean))
+          setRecommendedJobs(normalized)
         } else {
+          const text = await res.text()
+          console.error("🔴 [recs] error response body =", text)
           setRecommendationsError(true)
         }
       } catch (err) {

@@ -47,7 +47,7 @@ export default function AdminLayout() {
   const handleLogout = () => {
     localStorage.removeItem(TOKEN_KEY);
     setToken(null);
-    navigate("/admin");
+    navigate("/");
   };
 
   const toggleLanguage = () => {

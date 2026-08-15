@@ -220,6 +220,25 @@ export default function JobDetails() {
                 )}
               </div>
 
+              {/* المهارات المطلوبة — TODO(Farah): تأكدي من اسم الحقل الفعلي بالباك إند (required_skills؟ skills؟) */}
+              {(job.required_skills || job.skills || []).length > 0 && (
+                <div className="bg-white border border-gray-100 rounded-2xl p-6">
+                  <h2 className="text-sm font-semibold text-gray-800 mb-3">
+                    {t("job_details.required_skills_title")}
+                  </h2>
+                  <div className="flex flex-wrap gap-2">
+                    {(job.required_skills || job.skills || []).map((skill, idx) => (
+                      <span
+                        key={idx}
+                        className="text-xs px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 border border-blue-100"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <div className="bg-white border border-gray-100 rounded-2xl p-6">
                 <h2 className="text-sm font-semibold text-gray-800 mb-3">
                   {t("job_details.quick_facts")}
