@@ -318,8 +318,10 @@ function ApplicationRow({ app, isAr, t, navigate, onAccept, onReject, onMarkRevi
                 <p className="text-xs text-gray-400">
                   {formatAppliedDate(getAppliedAt(app), isAr)}
                 </p>
+                {/* نسبة التطابق - موقوفة مؤقتاً، ما بدنا نعرضها حالياً
                 <span className="text-gray-200">·</span>
                 <MatchScoreButton score={score} app={app} t={t} />
+                */}
                 {experiencesCount > 0 && (
                   <>
                     <span className="text-gray-200">·</span>
