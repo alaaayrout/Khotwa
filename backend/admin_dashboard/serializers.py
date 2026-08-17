@@ -56,12 +56,12 @@ class AdminCompanyRejectSerializer(serializers.Serializer):
 class AdminJobListSerializer(serializers.ModelSerializer):
     company_name = serializers.CharField(source="company.company_name", read_only=True)
     governorate = serializers.CharField(source="city")
-   
+    description = serializers.CharField(source="job_description", read_only=True)
     status = serializers.SerializerMethodField()
 
     class Meta:
         model = JobPosting
-        fields = ["id", "title", "company_name", "governorate", "created_at", "status"]
+        fields = ["id", "title", "company_name","description", "governorate", "created_at", "status"]
 
     def get_status(self, obj):
         return "active" if obj.is_active else "suspended"
@@ -87,6 +87,7 @@ class AdminCVSerializer(serializers.Serializer):
     file_name = serializers.SerializerMethodField()
     file_url = serializers.SerializerMethodField()
     uploaded_at = serializers.DateTimeField(source="updated_at")
+
 
     def get_file_name(self, obj):
         return obj.cv_file.name.split("/")[-1] if obj.cv_file else None

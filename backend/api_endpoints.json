@@ -9,7 +9,10 @@
     "backend/jobs/routes/public_job_urls.py",
     "backend/jobs/routes/choices_urls.py",
     "backend/jobs/routes/specialization_urls.py",
-    "backend/jobs/routes/company_job_urls.py"
+    "backend/jobs/routes/company_job_urls.py",
+    "backend/recommendations/urls.py",
+    "backend/admin_dashboard/urls.py",
+    "backend/applications/urls.py"
   ],
   "endpoints": [
     {
@@ -19,195 +22,441 @@
     {
       "path": "/api/",
       "app": "users",
-      "name": "home"
+      "name": "home",
+      "methods": ["GET", "POST", "PUT", "PATCH", "DELETE"]
     },
     {
       "path": "/api/choices/",
       "app": "users",
-      "name": "get_choices"
+      "name": "get_choices",
+      "methods": ["GET"]
     },
     {
       "path": "/api/auth/job-seeker/register/",
       "app": "users",
-      "name": "job_seeker_register"
+      "name": "job_seeker_register",
+      "methods": ["POST"]
     },
     {
       "path": "/api/auth/job-seeker/verify-otp/",
       "app": "users",
-      "name": "verify_otp"
+      "name": "verify_otp",
+      "methods": ["POST"]
     },
     {
       "path": "/api/auth/login/",
       "app": "users",
-      "name": "login_user"
+      "name": "login_user",
+      "methods": ["POST"]
+    },
+    {
+      "path": "/api/auth/logout/",
+      "app": "dj_rest_auth",
+      "name": "rest_logout",
+      "methods": ["POST"]
+    },
+    {
+      "path": "/api/auth/user/",
+      "app": "dj_rest_auth",
+      "name": "rest_user_details",
+      "methods": ["GET", "PUT", "PATCH"]
+    },
+    {
+      "path": "/api/auth/password/change/",
+      "app": "dj_rest_auth",
+      "name": "rest_password_change",
+      "methods": ["POST"]
     },
     {
       "path": "/api/auth/company/register/",
       "app": "users",
-      "name": "company_register"
+      "name": "company_register",
+      "methods": ["POST"]
     },
     {
       "path": "/api/auth/company/verify-otp/",
       "app": "users",
-      "name": "company_verify_otp"
+      "name": "company_verify_otp",
+      "methods": ["POST"]
     },
     {
       "path": "/api/auth/google/login/",
       "app": "users",
-      "name": "google_login"
+      "name": "google_login",
+      "methods": ["POST"]
     },
     {
       "path": "/api/auth/password/reset/",
       "app": "users",
-      "name": "password_reset_request"
+      "name": "password_reset_request",
+      "methods": ["POST"]
     },
     {
       "path": "/api/auth/password/reset/validate/",
       "app": "users",
-      "name": "password_reset_validate"
+      "name": "password_reset_validate",
+      "methods": ["POST"]
     },
     {
       "path": "/api/auth/password/reset/confirm/",
-      "app": "users",
-      "name": "password_reset_confirm"
+      "app": "dj_rest_auth",
+      "name": "rest_password_reset_confirm",
+      "methods": ["POST"]
+    },
+    {
+      "path": "/api/auth/password/reset/confirm/<str:uidb64>/<str:token>/",
+      "app": "jobportal",
+      "name": "password_reset_confirm",
+      "methods": ["POST"]
+    },
+    {
+      "path": "/accounts/login/",
+      "app": "allauth.account",
+      "methods": ["GET", "POST"]
+    },
+    {
+      "path": "/accounts/logout/",
+      "app": "allauth.account",
+      "methods": ["GET", "POST"]
+    },
+    {
+      "path": "/accounts/inactive/",
+      "app": "allauth.account",
+      "methods": ["GET"]
+    },
+    {
+      "path": "/accounts/signup/",
+      "app": "allauth.account",
+      "methods": ["GET", "POST"]
+    },
+    {
+      "path": "/accounts/reauthenticate/",
+      "app": "allauth.account",
+      "methods": ["GET", "POST"]
+    },
+    {
+      "path": "/accounts/email/",
+      "app": "allauth.account",
+      "methods": ["GET", "POST"]
+    },
+    {
+      "path": "/accounts/confirm-email/",
+      "app": "allauth.account",
+      "methods": ["GET", "POST"]
+    },
+    {
+      "path": "/accounts/confirm-email/<str:key>/",
+      "app": "allauth.account",
+      "methods": ["GET"]
+    },
+    {
+      "path": "/accounts/password/change/",
+      "app": "allauth.account",
+      "methods": ["GET", "POST"]
+    },
+    {
+      "path": "/accounts/password/set/",
+      "app": "allauth.account",
+      "methods": ["GET", "POST"]
+    },
+    {
+      "path": "/accounts/password/reset/",
+      "app": "allauth.account",
+      "methods": ["GET", "POST"]
+    },
+    {
+      "path": "/accounts/password/reset/done/",
+      "app": "allauth.account",
+      "methods": ["GET"]
+    },
+    {
+      "path": "/accounts/password/reset/key/done/",
+      "app": "allauth.account",
+      "methods": ["GET"]
+    },
+    {
+      "path": "/accounts/password/reset/key/<uidb36>/<key>/",
+      "app": "allauth.account",
+      "methods": ["GET", "POST"]
+    },
+    {
+      "path": "/accounts/login/code/confirm/",
+      "app": "allauth.account",
+      "methods": ["GET", "POST"]
+    },
+    {
+      "path": "/accounts/3rdparty/login/cancelled/",
+      "app": "allauth.socialaccount",
+      "methods": ["GET"]
+    },
+    {
+      "path": "/accounts/3rdparty/login/error/",
+      "app": "allauth.socialaccount",
+      "methods": ["GET"]
+    },
+    {
+      "path": "/accounts/3rdparty/signup/",
+      "app": "allauth.socialaccount",
+      "methods": ["GET"]
+    },
+    {
+      "path": "/accounts/3rdparty/",
+      "app": "allauth.socialaccount",
+      "methods": ["GET"]
+    },
+    {
+      "path": "/accounts/google/login/",
+      "app": "allauth.google",
+      "methods": ["GET"]
+    },
+    {
+      "path": "/accounts/google/login/callback/",
+      "app": "allauth.google",
+      "methods": ["GET"]
+    },
+    {
+      "path": "/accounts/google/login/token/",
+      "app": "allauth.google",
+      "methods": ["POST"]
     },
     {
       "path": "/api/jobseekers/count/",
       "app": "users",
-      "name": "jobseeker_count",
       "methods": ["GET"]
     },
     {
       "path": "/api/jobs/",
       "app": "jobs",
-      "name": "public_job_list"
+      "name": "public_job_list",
+      "methods": ["GET"]
     },
     {
       "path": "/api/jobs/<int:pk>/",
       "app": "jobs",
-      "name": "public_job_detail"
+      "name": "public_job_detail",
+      "methods": ["GET"]
     },
     {
       "path": "/api/jobs/choices/",
       "app": "jobs",
-      "name": "jobs_choices"
+      "name": "jobs_choices",
+      "methods": ["GET"]
     },
     {
       "path": "/api/jobs/specializations/",
       "app": "jobs",
-      "name": "specialization_list"
+      "name": "specialization_list",
+      "methods": ["GET"]
     },
     {
       "path": "/api/jobs/specializations/create/",
       "app": "jobs",
-      "name": "specialization_create"
+      "name": "specialization_create",
+      "methods": ["POST"]
     },
     {
       "path": "/api/jobs/specializations/<int:pk>/",
       "app": "jobs",
-      "name": "specialization_detail"
+      "name": "specialization_detail",
+      "methods": ["GET"]
     },
     {
       "path": "/api/jobs/specializations/<int:pk>/update/",
       "app": "jobs",
-      "name": "specialization_update"
+      "name": "specialization_update",
+      "methods": ["PUT", "PATCH"]
     },
     {
       "path": "/api/jobs/specializations/<int:pk>/delete/",
       "app": "jobs",
-      "name": "specialization_delete"
+      "name": "specialization_delete",
+      "methods": ["DELETE"]
     },
     {
       "path": "/api/jobs/company/jobs/",
       "app": "jobs",
-      "name": "company_jobs_list_create"
+      "name": "company_jobs_list_create",
+      "methods": ["GET", "POST"]
     },
     {
       "path": "/api/jobs/company/jobs/<int:pk>/",
       "app": "jobs",
-      "name": "company_job_detail"
+      "name": "company_job_detail",
+      "methods": ["GET", "PUT", "PATCH", "DELETE"]
     },
     {
       "path": "/api/jobs/company/jobs/applications/",
       "app": "jobs",
-      "name": "company_applications_list"
+      "name": "company_applications_list",
+      "methods": ["GET"]
     },
     {
       "path": "/api/jobs/company/jobs/applications/<int:pk>/",
       "app": "jobs",
-      "name": "company_application_detail"
+      "name": "company_application_detail",
+      "methods": ["GET", "PATCH"]
     },
     {
       "path": "/api/jobs/<int:job_id>/apply/",
-      "app": "jobs",
-      "name": "job-apply"
+      "app": "applications",
+      "methods": ["POST"]
     },
     {
       "path": "/api/company/profile/",
       "app": "company_profile",
-      "name": "company-profile"
+      "name": "company-profile",
+      "methods": ["GET", "PUT", "PATCH"]
     },
     {
       "path": "/api/company/profile/picture/",
       "app": "company_profile",
-      "name": "company-profile-picture"
+      "name": "company-profile-picture",
+      "methods": ["POST", "DELETE"]
     },
     {
       "path": "/api/seeker/profile/",
       "app": "seeker_profiles",
-      "name": "seeker-profile"
+      "name": "seeker-profile",
+      "methods": ["GET", "PUT", "PATCH"]
     },
     {
       "path": "/api/seeker/profile/cv/",
       "app": "seeker_profiles",
-      "name": "seeker-cv"
+      "name": "seeker-cv",
+      "methods": ["POST", "DELETE"]
     },
     {
       "path": "/api/seeker/profile/picture/",
       "app": "seeker_profiles",
-      "name": "seeker-picture"
+      "name": "seeker-picture",
+      "methods": ["POST", "DELETE"]
     },
     {
       "path": "/api/seeker/skills/",
       "app": "seeker_profiles",
       "router": true,
-      "basename": "seeker-skill"
+      "basename": "seeker-skill",
+      "methods": ["GET", "POST"]
     },
     {
       "path": "/api/seeker/skills/<int:pk>/",
       "app": "seeker_profiles",
       "router": true,
-      "basename": "seeker-skill"
+      "basename": "seeker-skill",
+      "methods": ["GET", "PUT", "PATCH", "DELETE"]
     },
     {
       "path": "/api/seeker/experience/",
       "app": "seeker_profiles",
       "router": true,
-      "basename": "seeker-experience"
+      "basename": "seeker-experience",
+      "methods": ["GET", "POST"]
     },
     {
       "path": "/api/seeker/experience/<int:pk>/",
       "app": "seeker_profiles",
       "router": true,
-      "basename": "seeker-experience"
+      "basename": "seeker-experience",
+      "methods": ["GET", "PUT", "PATCH", "DELETE"]
     },
     {
       "path": "/api/seeker/education/",
       "app": "seeker_profiles",
       "router": true,
-      "basename": "seeker-education"
+      "basename": "seeker-education",
+      "methods": ["GET", "POST"]
     },
     {
       "path": "/api/seeker/education/<int:pk>/",
       "app": "seeker_profiles",
       "router": true,
-      "basename": "seeker-education"
-    }
-    ,
+      "basename": "seeker-education",
+      "methods": ["GET", "PUT", "PATCH", "DELETE"]
+    },
     {
       "path": "/api/recommendations/jobs/",
       "app": "recommendations",
       "name": "recommended-jobs",
+      "methods": ["GET"]
+    },
+    {
+      "path": "/api/admin/auth/login/",
+      "app": "admin_dashboard",
+      "methods": ["POST"]
+    },
+    {
+      "path": "/api/admin/seekers/",
+      "app": "admin_dashboard",
+      "methods": ["GET"]
+    },
+    {
+      "path": "/api/admin/seekers/<int:pk>/",
+      "app": "admin_dashboard",
+      "methods": ["GET", "PUT", "PATCH", "DELETE"]
+    },
+    {
+      "path": "/api/admin/companies/",
+      "app": "admin_dashboard",
+      "methods": ["GET"]
+    },
+    {
+      "path": "/api/admin/companies/<int:pk>/",
+      "app": "admin_dashboard",
+      "methods": ["GET", "DELETE"]
+    },
+    {
+      "path": "/api/admin/companies/<int:pk>/approve/",
+      "app": "admin_dashboard",
+      "methods": ["POST"]
+    },
+    {
+      "path": "/api/admin/companies/<int:pk>/reject/",
+      "app": "admin_dashboard",
+      "methods": ["POST"]
+    },
+    {
+      "path": "/api/admin/jobs/",
+      "app": "admin_dashboard",
+      "methods": ["GET"]
+    },
+    {
+      "path": "/api/admin/jobs/<int:pk>/",
+      "app": "admin_dashboard",
+      "methods": ["GET", "PUT", "PATCH", "DELETE"]
+    },
+    {
+      "path": "/api/admin/jobs/<int:pk>/suspend/",
+      "app": "admin_dashboard",
+      "methods": ["POST"]
+    },
+    {
+      "path": "/api/admin/jobs/<int:pk>/activate/",
+      "app": "admin_dashboard",
+      "methods": ["POST"]
+    },
+    {
+      "path": "/api/admin/cvs/",
+      "app": "admin_dashboard",
+      "methods": ["GET"]
+    },
+    {
+      "path": "/api/admin/cvs/<int:pk>/",
+      "app": "admin_dashboard",
+      "methods": ["DELETE"]
+    },
+    {
+      "path": "/api/admin/categories/",
+      "app": "admin_dashboard",
+      "methods": ["GET", "POST"]
+    },
+    {
+      "path": "/api/admin/categories/<int:pk>/",
+      "app": "admin_dashboard",
+      "methods": ["GET", "PUT", "PATCH", "DELETE"]
+    },
+    {
+      "path": "/api/applications/company/applications/",
+      "app": "applications",
       "methods": ["GET"]
     }
   ]
